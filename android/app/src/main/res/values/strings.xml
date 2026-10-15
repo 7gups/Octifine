@@ -550,6 +550,17 @@
     <string name="presets_section_debug">Debug</string>
     <string name="presets_section_quality">Quality</string>
     <string name="presets_section_network">Network</string>
+    <string name="presets_section_fun">Fun</string>
+    <string name="presets_clouds">Clouds</string>
+    <string name="presets_clouds_short">Renders clouds in the sky</string>
+    <string name="presets_drop_hat">Drop it like it\'s hat</string>
+    <string name="presets_drop_hat_short">Avatar hat drop animation</string>
+    <string name="presets_gotham_font">Gotham font in avatar editor</string>
+    <string name="presets_gotham_font_short">Uses the Gotham typeface in the editor</string>
+    <string name="presets_death_sounds">Rotating death sounds</string>
+    <string name="presets_death_sounds_short">Varies the sound played on death</string>
+    <string name="presets_bones">Show bones as constraints</string>
+    <string name="presets_bones_short">Draws rig bones as physics constraints</string>
     <string name="presets_mtu">MTU size</string>
     <string name="presets_mtu_short">Bytes sent per network packet</string>
     <string name="presets_hide_gui">Hide GUIs</string>

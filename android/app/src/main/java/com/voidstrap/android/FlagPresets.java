@@ -59,6 +59,11 @@ public final class FlagPresets {
     private static final String INDOOR_SPEC = "FFlagRenderFixIndoorSpecIBL";
     private static final String MTU = "DFIntConnectionMTUSize";
     private static final String HIDE_GUI_GROUP = "DFIntCanHideGuiGroupId";
+    private static final String CLOUDS = "FFlagRenderClouds";
+    private static final String DROP_HAT = "DFFlagDropItLikeItsHat2";
+    private static final String GOTHAM = "FFlagAvatarEditorGothamFont";
+    private static final String DEATH_SOUNDS = "FFlagUserRotatingDeathSounds";
+    private static final String BONES = "FFlagShowBonesAsConstraints";
     private static final long[][] PROFILES = {{2, 0, 0}, {1, 1, 1}, {4, 0, 0}};
 
     static final java.util.Set<String> KEYS = new java.util.HashSet<>();
@@ -69,6 +74,7 @@ public final class FlagPresets {
         java.util.Collections.addAll(KEYS, LOD);
         java.util.Collections.addAll(KEYS, ASYNC_TEX, MESH_OPT, ALPHA_PREPASS, AO, INDOOR_SPEC);
         java.util.Collections.addAll(KEYS, MTU, HIDE_GUI_GROUP);
+        java.util.Collections.addAll(KEYS, CLOUDS, DROP_HAT, GOTHAM, DEATH_SOUNDS, BONES);
         java.util.Collections.addAll(KEYS, SHADOWS);
     }
 
@@ -197,6 +203,15 @@ public final class FlagPresets {
         defaultOff(quality, R.string.presets_ambient_occlusion, R.string.presets_ambient_occlusion_short, AO);
         defaultOff(quality, R.string.presets_indoor_specular, R.string.presets_indoor_specular_short, INDOOR_SPEC);
 
+        if (ok(CLOUDS) || ok(DROP_HAT) || ok(GOTHAM) || ok(DEATH_SOUNDS) || ok(BONES)) {
+            LinearLayout fun = section(R.string.presets_section_fun);
+            defaultOff(fun, R.string.presets_clouds, R.string.presets_clouds_short, CLOUDS);
+            defaultOff(fun, R.string.presets_drop_hat, R.string.presets_drop_hat_short, DROP_HAT);
+            defaultOff(fun, R.string.presets_gotham_font, R.string.presets_gotham_font_short, GOTHAM);
+            defaultOn(fun, R.string.presets_death_sounds, R.string.presets_death_sounds_short, DEATH_SOUNDS);
+            defaultOn(fun, R.string.presets_bones, R.string.presets_bones_short, BONES);
+        }
+
         boolean detailAny = ok(LOD[0]) || ok(GRASS_MIN);
         LinearLayout detail = detailAny ? section(R.string.presets_section_detail) : null;
         boolean meshOn = values().containsKey(LOD[0]);
@@ -273,6 +288,17 @@ public final class FlagPresets {
         if (!ok(key)) return;
         toggle(parent, title, summary, on(key), checked -> {
             put(key, checked ? Boolean.TRUE : null);
+            commit.run();
+        });
+    }
+
+    /** A switch for a flag that ships on. Turning it off writes false; turning it back on removes the override. */
+    private void defaultOn(LinearLayout parent, int title, int summary, String key) {
+        if (!ok(key)) return;
+        Object v = values().get(key);
+        boolean checked = !(Boolean.FALSE.equals(v) || "false".equalsIgnoreCase(String.valueOf(v)));
+        toggle(parent, title, summary, checked, c -> {
+            put(key, c ? null : Boolean.FALSE);
             commit.run();
         });
     }
