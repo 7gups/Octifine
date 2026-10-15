@@ -527,8 +527,8 @@ public final class FlagPresets {
             // The list is the only scroller here. The sheet's NestedScrollView would otherwise take drags
             // before the list sees them, so nested scrolling is off and the parent is told to stay out.
             rv.setNestedScrollingEnabled(false);
-            rv.setOnTouchListener((v, e) -> {
-                if (v.getParent() != null) v.getParent().requestDisallowInterceptTouchEvent(true);
+            rv.setOnTouchListener((touched, event) -> {
+                if (touched.getParent() != null) touched.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
             });
 
