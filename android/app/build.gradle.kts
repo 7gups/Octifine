@@ -18,7 +18,7 @@ android {
     ndkVersion = "29.0.14206865"
 
     defaultConfig {
-        applicationId = "com.pekostrap.android"
+        applicationId = "com.octifine.android"
         minSdk = 24
         targetSdk = 36
         versionCode = mainVersionCode

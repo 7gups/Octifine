@@ -4,9 +4,11 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -465,27 +467,17 @@ public final class FlagPresets {
                 all.add(e);
                 found.add(e.getValue());
             }
-            List<String> categories = new ArrayList<>();
-            categories.add(null);
-            for (String c : CATEGORY_ORDER) if (found.remove(c)) categories.add(c);
-            categories.addAll(found);
-            CharSequence[] labels = new CharSequence[categories.size()];
-            labels[0] = a.getString(R.string.presets_allowlist_all);
-            for (int k = 1; k < labels.length; k++) labels[k] = categories.get(k);
+            List<String> order = new ArrayList<>();
+            for (String c : CATEGORY_ORDER) if (found.remove(c)) order.add(c);
+            order.addAll(found);
 
             // The list can hold thousands of flags, so it is recycled in a RecyclerView with a fixed height
             // instead of inflating every row up front inside the scrolling sheet.
-            AllowAdapter adapter = new AllowAdapter(all);
             RecyclerView rv = new RecyclerView(a);
             rv.setLayoutManager(new LinearLayoutManager(a));
-            rv.setAdapter(adapter);
+            rv.setAdapter(new AllowAdapter(all, order));
             rv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     (int) (a.getResources().getDisplayMetrics().heightPixels * 0.55f)));
-
-            Dropdown filter = new Dropdown(a, labels, 0, i -> adapter.setCategory(categories.get(i)));
-            LinearLayout.LayoutParams fp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            fp.setMargins(0, 0, 0, Math.round(12 * a.getResources().getDisplayMetrics().density));
-            list.addView(filter.view, fp);
             list.addView(rv);
             Ui.surface(a, R.string.presets_allowlist, R.string.presets_allowlist_body, list).show();
         });
@@ -494,42 +486,102 @@ public final class FlagPresets {
     private static final String[] CATEGORY_ORDER = {
             "Rendering", "Geometry", "Physics", "Performance", "Network", "Audio", "User Interface", "Scripting", "Debug", "Other"};
 
-    private final class AllowAdapter extends RecyclerView.Adapter<AllowAdapter.Holder> {
-        private final List<Map.Entry<String, String>> all;
-        private final List<Map.Entry<String, String>> shown = new ArrayList<>();
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_FLAG = 1;
 
-        AllowAdapter(List<Map.Entry<String, String>> all) {
-            this.all = all;
-            shown.addAll(all);
-        }
+    /**
+     * Flags grouped under collapsible category headers. Headers start closed; tapping one inserts or
+     * removes its flag rows with range notifications so the default item animator slides them in and out.
+     */
+    private final class AllowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        private final Map<String, List<Map.Entry<String, String>>> groups = new java.util.LinkedHashMap<>();
+        private final java.util.Set<String> open = new java.util.HashSet<>();
+        /** Each element is either a category name (header) or a flag entry. */
+        private final List<Object> visible = new ArrayList<>();
 
-        void setCategory(String category) {
-            shown.clear();
+        AllowAdapter(List<Map.Entry<String, String>> all, List<String> order) {
+            for (String c : order) groups.put(c, new ArrayList<>());
             for (Map.Entry<String, String> e : all) {
-                if (category == null || category.equals(e.getValue())) shown.add(e);
+                List<Map.Entry<String, String>> g = groups.get(e.getValue());
+                if (g != null) g.add(e);
             }
-            notifyDataSetChanged();
+            rebuild();
         }
 
-        final class Holder extends RecyclerView.ViewHolder {
+        private void rebuild() {
+            visible.clear();
+            for (Map.Entry<String, List<Map.Entry<String, String>>> g : groups.entrySet()) {
+                visible.add(g.getKey());
+                if (open.contains(g.getKey())) visible.addAll(g.getValue());
+            }
+        }
+
+        private void toggle(String category) {
+            int p = visible.indexOf(category);
+            if (p < 0) return;
+            int n = groups.get(category).size();
+            if (open.remove(category)) {
+                visible.subList(p + 1, p + 1 + n).clear();
+                notifyItemRangeRemoved(p + 1, n);
+            } else {
+                open.add(category);
+                visible.addAll(p + 1, groups.get(category));
+                notifyItemRangeInserted(p + 1, n);
+            }
+            notifyItemChanged(p);
+        }
+
+        final class HeaderHolder extends RecyclerView.ViewHolder {
+            final TextView name;
+            final TextView count;
+            final ImageView chevron;
+
+            HeaderHolder(View v) {
+                super(v);
+                name = v.findViewById(R.id.category_name);
+                count = v.findViewById(R.id.category_count);
+                chevron = v.findViewById(R.id.category_chevron);
+            }
+        }
+
+        final class FlagHolder extends RecyclerView.ViewHolder {
             final Row row;
 
-            Holder(Row row) {
+            FlagHolder(Row row) {
                 super(row.view);
                 this.row = row;
             }
         }
 
         @Override
-        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new Holder(Row.inflate(parent));
+        public int getItemViewType(int position) {
+            return visible.get(position) instanceof String ? TYPE_HEADER : TYPE_FLAG;
         }
 
         @Override
-        public void onBindViewHolder(Holder h, int position) {
-            Map.Entry<String, String> e = shown.get(position);
-            h.row.set(R.drawable.ic_flag, e.getKey(), e.getValue());
-            h.row.view.setOnClickListener(x -> {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType == TYPE_HEADER) {
+                return new HeaderHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_header, parent, false));
+            }
+            return new FlagHolder(Row.inflate(parent));
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (holder instanceof HeaderHolder) {
+                HeaderHolder h = (HeaderHolder) holder;
+                String category = (String) visible.get(position);
+                h.name.setText(category);
+                h.count.setText(String.valueOf(groups.get(category).size()));
+                boolean isOpen = open.contains(category);
+                h.chevron.setImageResource(isOpen ? R.drawable.ic_chevron_down : R.drawable.ic_chevron_right);
+                h.itemView.setOnClickListener(x -> toggle(category));
+                return;
+            }
+            Map.Entry<String, String> e = (Map.Entry<String, String>) visible.get(position);
+            FlagHolder f = (FlagHolder) holder;
+            f.row.set(R.drawable.ic_flag, e.getKey(), e.getValue());
+            f.row.view.setOnClickListener(x -> {
                 Ui.copy(a, e.getKey(), e.getKey());
                 Notify.say(a, Notify.COPY, a.getString(R.string.presets_copied, e.getKey()));
             });
@@ -537,7 +589,7 @@ public final class FlagPresets {
 
         @Override
         public int getItemCount() {
-            return shown.size();
+            return visible.size();
         }
     }
 
