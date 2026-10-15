@@ -49,11 +49,11 @@ public final class HelperServer {
         return "TMPDIR=/data/local/tmp\nexport TMPDIR\n"
                 + "p=$(pm path " + pkg + " | sed -n 's/^package://p' | grep base.apk | head -n 1)\n"
                 + "[ -z \"$p\" ] && p=$(pm path " + pkg + " | sed -n '1s/^package://p')\n"
-                + "[ -z \"$p\" ] && { echo 'Pekostrap is not installed'; exit 1; }\n"
+                + "[ -z \"$p\" ] && { echo 'Octifine is not installed'; exit 1; }\n"
                 + "b=$(ls \"${p%/*}\"/lib/*/" + LIBRARY + " 2>/dev/null | head -n 1)\n"
-                + "[ -z \"$b\" ] && { echo 'The Pekostrap helper is missing from this install'; exit 1; }\n"
+                + "[ -z \"$b\" ] && { echo 'The Octifine helper is missing from this install'; exit 1; }\n"
                 + "rm -f " + BINARY + "\n"
-                + "cp \"$b\" " + BINARY + " && chmod 0700 " + BINARY + " || { echo 'The Pekostrap helper could not be copied'; exit 1; }\n"
+                + "cp \"$b\" " + BINARY + " && chmod 0700 " + BINARY + " || { echo 'The Octifine helper could not be copied'; exit 1; }\n"
                 + "nohup " + BINARY + " " + pkg + " " + uid + " " + token + " \"$p\" >/dev/null 2>&1 <<'" + CLEANUP_END + "' &\n"
                 + CLEANUP
                 + CLEANUP_END + "\n";

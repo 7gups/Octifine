@@ -644,7 +644,7 @@ public final class FlagsFragment extends Page {
             h.value.setText(shown(e.getValue()));
             h.itemView.setActivated(selected.contains(key));
             h.itemView.setOnClickListener(x -> {
-                if (selected.isEmpty()) edit(key);
+                if (selected.isEmpty()) FlagInfo.show(requireActivity(), key, e.getValue(), () -> edit(key));
                 else toggle(key);
             });
             h.itemView.setOnLongClickListener(x -> {

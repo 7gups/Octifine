@@ -167,7 +167,7 @@ public final class Flags {
                     .put("targetPackage", targetPackage)
                     .put("created", created)
                     .put("updated", updated)
-                    .put("notes", "Saved by Voidstrap for Android.")
+                    .put("notes", "Saved by Octifine for Android.")
                     .put("flags", valuesJson());
         }
     }

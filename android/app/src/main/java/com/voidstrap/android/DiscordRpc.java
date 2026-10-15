@@ -20,8 +20,8 @@ import java.util.UUID;
 
 final class DiscordRpc {
     static final String PACKAGE = "com.discord";
-    static final DiscordRpc ROBLOX = new DiscordRpc(1559526807596830742L, "Pekora");
-    static final DiscordRpc VOIDSTRAP = new DiscordRpc(1559522162019274795L, "Pekostrap");
+    static final DiscordRpc ROBLOX = new DiscordRpc(1559526807596830742L, "Octane");
+    static final DiscordRpc VOIDSTRAP = new DiscordRpc(1559522162019274795L, "Octifine");
     /** Art asset key for the Pekostrap logo, uploaded under Rich Presence assets in the Discord developer portal. */
     static final String LOGO_ASSET = "pekostrap";
     /** Art asset key for the Pekora X, used by in-game presence. */

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 final class Core {
-    static final String UNAVAILABLE = "The Pekostrap core could not be loaded on this device.";
+    static final String UNAVAILABLE = "The Octifine core could not be loaded on this device.";
 
     private static final boolean LOADED = load();
 

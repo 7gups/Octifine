@@ -64,6 +64,8 @@ public final class FlagPresets {
     private static final String GOTHAM = "FFlagAvatarEditorGothamFont";
     private static final String DEATH_SOUNDS = "FFlagUserRotatingDeathSounds";
     private static final String BONES = "FFlagShowBonesAsConstraints";
+    private static final String BODY_OUTLINE = "DFFlagDebugDrawBvhNodes";
+    private static final String HUMANOID_DEBUG = "FFlagDebugHumanoidRendering";
     private static final long[][] PROFILES = {{2, 0, 0}, {1, 1, 1}, {4, 0, 0}};
 
     static final java.util.Set<String> KEYS = new java.util.HashSet<>();
@@ -74,7 +76,7 @@ public final class FlagPresets {
         java.util.Collections.addAll(KEYS, LOD);
         java.util.Collections.addAll(KEYS, ASYNC_TEX, MESH_OPT, ALPHA_PREPASS, AO, INDOOR_SPEC);
         java.util.Collections.addAll(KEYS, MTU, HIDE_GUI_GROUP);
-        java.util.Collections.addAll(KEYS, CLOUDS, DROP_HAT, GOTHAM, DEATH_SOUNDS, BONES);
+        java.util.Collections.addAll(KEYS, CLOUDS, DROP_HAT, GOTHAM, DEATH_SOUNDS, BONES, BODY_OUTLINE, HUMANOID_DEBUG);
         java.util.Collections.addAll(KEYS, SHADOWS);
     }
 
@@ -203,13 +205,15 @@ public final class FlagPresets {
         defaultOff(quality, R.string.presets_ambient_occlusion, R.string.presets_ambient_occlusion_short, AO);
         defaultOff(quality, R.string.presets_indoor_specular, R.string.presets_indoor_specular_short, INDOOR_SPEC);
 
-        if (ok(CLOUDS) || ok(DROP_HAT) || ok(GOTHAM) || ok(DEATH_SOUNDS) || ok(BONES)) {
+        if (ok(CLOUDS) || ok(DROP_HAT) || ok(GOTHAM) || ok(DEATH_SOUNDS) || ok(BONES) || ok(BODY_OUTLINE) || ok(HUMANOID_DEBUG)) {
             LinearLayout fun = section(R.string.presets_section_fun);
             defaultOff(fun, R.string.presets_clouds, R.string.presets_clouds_short, CLOUDS);
             defaultOff(fun, R.string.presets_drop_hat, R.string.presets_drop_hat_short, DROP_HAT);
             defaultOff(fun, R.string.presets_gotham_font, R.string.presets_gotham_font_short, GOTHAM);
             defaultOn(fun, R.string.presets_death_sounds, R.string.presets_death_sounds_short, DEATH_SOUNDS);
             defaultOn(fun, R.string.presets_bones, R.string.presets_bones_short, BONES);
+            defaultOff(fun, R.string.presets_body_outline, R.string.presets_body_outline_short, BODY_OUTLINE);
+            defaultOff(fun, R.string.presets_humanoid_debug, R.string.presets_humanoid_debug_short, HUMANOID_DEBUG);
         }
 
         boolean detailAny = ok(LOD[0]) || ok(GRASS_MIN);
@@ -485,6 +489,18 @@ public final class FlagPresets {
             LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             rp.setMargins(0, 0, 0, Math.round(12 * a.getResources().getDisplayMetrics().density));
             list.addView(request, rp);
+
+            com.google.android.material.textfield.TextInputLayout search =
+                    new com.google.android.material.textfield.TextInputLayout(new android.view.ContextThemeWrapper(a,
+                            com.google.android.material.R.style.Widget_Material3_TextInputLayout_OutlinedBox));
+            search.setHint(a.getString(R.string.flag_search_hint));
+            search.setStartIconDrawable(R.drawable.ic_search);
+            com.google.android.material.textfield.TextInputEditText field = new com.google.android.material.textfield.TextInputEditText(search.getContext());
+            field.setSingleLine(true);
+            search.addView(field);
+            LinearLayout.LayoutParams sp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            sp.setMargins(0, 0, 0, Math.round(8 * a.getResources().getDisplayMetrics().density));
+            list.addView(search, sp);
             // Categories come from the data so new ones show up without touching this code.
             java.util.Set<String> found = new java.util.TreeSet<>();
             List<Map.Entry<String, String>> all = new ArrayList<>();
@@ -501,10 +517,49 @@ public final class FlagPresets {
             // instead of inflating every row up front inside the scrolling sheet.
             RecyclerView rv = new RecyclerView(a);
             rv.setLayoutManager(new LinearLayoutManager(a));
-            rv.setAdapter(new AllowAdapter(all, order));
-            rv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            AllowAdapter adapter = new AllowAdapter(all, order);
+            rv.setAdapter(adapter);
+            field.addTextChangedListener(new android.text.TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence t, int st, int c, int af) {}
+                @Override public void onTextChanged(CharSequence t, int st, int b, int c) { adapter.setQuery(t.toString()); }
+                @Override public void afterTextChanged(android.text.Editable e) {}
+            });
+            // The list is the only scroller here. The sheet's NestedScrollView would otherwise take drags
+            // before the list sees them, so nested scrolling is off and the parent is told to stay out.
+            rv.setNestedScrollingEnabled(false);
+            rv.setOnTouchListener((v, e) -> {
+                if (v.getParent() != null) v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            });
+
+            com.google.android.material.floatingactionbutton.FloatingActionButton top =
+                    new com.google.android.material.floatingactionbutton.FloatingActionButton(a);
+            top.setSize(com.google.android.material.floatingactionbutton.FloatingActionButton.SIZE_MINI);
+            top.setImageResource(R.drawable.ic_chevron_up);
+            top.setContentDescription(a.getString(R.string.presets_scroll_top));
+            top.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Ui.attr(a, com.google.android.material.R.attr.colorSurfaceContainerHigh)));
+            top.setImageTintList(android.content.res.ColorStateList.valueOf(Ui.attr(a, R.attr.vsTextPrimary)));
+            top.hide();
+            top.setOnClickListener(x -> rv.smoothScrollToPosition(0));
+            rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView r, int dx, int dy) {
+                    LinearLayoutManager lm = (LinearLayoutManager) r.getLayoutManager();
+                    if (lm == null) return;
+                    if (lm.findFirstVisibleItemPosition() > 0) top.show();
+                    else top.hide();
+                }
+            });
+
+            android.widget.FrameLayout box = new android.widget.FrameLayout(a);
+            box.addView(rv, new android.widget.FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     (int) (a.getResources().getDisplayMetrics().heightPixels * 0.55f)));
-            list.addView(rv);
+            android.widget.FrameLayout.LayoutParams tp = new android.widget.FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, android.view.Gravity.BOTTOM | android.view.Gravity.END);
+            int m = Ui.dp(a, 12);
+            tp.setMargins(m, m, m, m);
+            box.addView(top, tp);
+            list.addView(box);
             Ui.surface(a, R.string.presets_allowlist, R.string.presets_allowlist_body, list).show();
         });
     }
@@ -524,6 +579,7 @@ public final class FlagPresets {
         private final java.util.Set<String> open = new java.util.HashSet<>();
         /** Each element is either a category name (header) or a flag entry. */
         private final List<Object> visible = new ArrayList<>();
+        private String query = "";
 
         AllowAdapter(List<Map.Entry<String, String>> all, List<String> order) {
             for (String c : order) groups.put(c, new ArrayList<>());
@@ -534,15 +590,33 @@ public final class FlagPresets {
             rebuild();
         }
 
+        /** Searching opens every category that has matches and locks the headers until the box is cleared. */
+        void setQuery(String text) {
+            query = text.trim().toLowerCase(java.util.Locale.ROOT);
+            rebuild();
+            notifyDataSetChanged();
+        }
+
+        private List<Map.Entry<String, String>> matches(String category) {
+            List<Map.Entry<String, String>> out = new ArrayList<>();
+            for (Map.Entry<String, String> e : groups.get(category)) {
+                if (query.isEmpty() || e.getKey().toLowerCase(java.util.Locale.ROOT).contains(query)) out.add(e);
+            }
+            return out;
+        }
+
         private void rebuild() {
             visible.clear();
-            for (Map.Entry<String, List<Map.Entry<String, String>>> g : groups.entrySet()) {
-                visible.add(g.getKey());
-                if (open.contains(g.getKey())) visible.addAll(g.getValue());
+            for (String c : groups.keySet()) {
+                List<Map.Entry<String, String>> m = matches(c);
+                if (!query.isEmpty() && m.isEmpty()) continue;
+                visible.add(c);
+                if (!query.isEmpty() || open.contains(c)) visible.addAll(m);
             }
         }
 
         private void toggle(String category) {
+            if (!query.isEmpty()) return;
             int p = visible.indexOf(category);
             if (p < 0) return;
             int n = groups.get(category).size();
@@ -598,7 +672,7 @@ public final class FlagPresets {
                 HeaderHolder h = (HeaderHolder) holder;
                 String category = (String) visible.get(position);
                 h.name.setText(category);
-                h.count.setText(String.valueOf(groups.get(category).size()));
+                h.count.setText(String.valueOf(matches(category).size()));
                 boolean isOpen = open.contains(category);
                 h.chevron.setImageResource(isOpen ? R.drawable.ic_chevron_down : R.drawable.ic_chevron_right);
                 h.itemView.setOnClickListener(x -> toggle(category));
@@ -607,10 +681,7 @@ public final class FlagPresets {
             Map.Entry<String, String> e = (Map.Entry<String, String>) visible.get(position);
             FlagHolder f = (FlagHolder) holder;
             f.row.set(R.drawable.ic_flag, e.getKey(), e.getValue());
-            f.row.view.setOnClickListener(x -> {
-                Ui.copy(a, e.getKey(), e.getKey());
-                Notify.say(a, Notify.COPY, a.getString(R.string.presets_copied, e.getKey()));
-            });
+            f.row.view.setOnClickListener(x -> FlagInfo.show(a, e.getKey(), values().get(e.getKey()), null));
         }
 
         @Override

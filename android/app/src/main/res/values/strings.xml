@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Pekostrap</string>
+    <string name="app_name" translatable="false">Octifine</string>
     <string name="url_website" translatable="false">https://octane.wtf</string>
     <string name="url_releases" translatable="false">https://github.com/7gups/Octifine/releases</string>
     <string name="pair">%1$s · %2$s</string>
@@ -35,45 +35,45 @@
     <string name="common_share">Share</string>
     <string name="error_no_browser">No app can open this link.</string>
     <string name="export_failed">Saving failed. Try a different location.</string>
-    <string name="export_denied">That location did not let Pekostrap save the file. Choose a folder on your device storage instead.</string>
+    <string name="export_denied">That location did not let Octifine save the file. Choose a folder on your device storage instead.</string>
 
     <string name="target_pekora">Octane (2021)</string>
     <string name="target_version">Installed · version %1$s</string>
     <string name="target_not_installed">Not installed on this device</string>
     <string name="target_disabled">Disabled in Android settings</string>
     <string name="target_no_launcher">Version %1$s · cannot be opened</string>
-    <string name="target_sheet_title">Pekora app</string>
-    <string name="target_sheet_body">Choose which official Pekora app Pekostrap opens. Your choice applies to the next launch.</string>
-    <string name="target_button_description">Pekora app: %1$s, %2$s. Double tap to change.</string>
+    <string name="target_sheet_title">Octane app</string>
+    <string name="target_sheet_body">Choose which official Octane app Octifine opens. Your choice applies to the next launch.</string>
+    <string name="target_button_description">Octane app: %1$s, %2$s. Double tap to change.</string>
     <string name="target_row">%1$s, %2$s</string>
     <string name="target_row_selected">%1$s, %2$s, selected</string>
 
-    <string name="launch_handed_off">Opened in Pekora</string>
-    <string name="launch_not_installed">Pekora is not installed</string>
-    <string name="launch_disabled">Pekora is disabled</string>
-    <string name="launch_no_handler">Pekora could not be opened</string>
-    <string name="launch_destination_unsupported">Pekora did not accept the link</string>
-    <string name="launch_busy">Already opening Pekora</string>
+    <string name="launch_handed_off">Opened in Octane</string>
+    <string name="launch_not_installed">Octane is not installed</string>
+    <string name="launch_disabled">Octane is disabled</string>
+    <string name="launch_no_handler">Octane could not be opened</string>
+    <string name="launch_destination_unsupported">Octane did not accept the link</string>
+    <string name="launch_busy">Already opening Octane</string>
     <string name="launch_failed">Android blocked the launch</string>
 
-    <string name="install_opening_plain">Download and install %1$s from the page that opened, then come back to Pekostrap.</string>
+    <string name="install_opening_plain">Download and install %1$s from the page that opened, then come back to Octifine.</string>
     <string name="install_opening_pending">Download and install %1$s from the page that opened. Your game launches as soon as it finishes.</string>
     <string name="install_get">Install %1$s</string>
     <string name="disabled_title">%1$s is disabled</string>
-    <string name="disabled_body">Enable the app in Android settings to launch it from Pekostrap.</string>
+    <string name="disabled_body">Enable the app in Android settings to launch it from Octifine.</string>
     <string name="unsupported_title">Link not accepted</string>
     <string name="unsupported_body">%1$s did not accept this game link. You can open the app and find the game there instead.</string>
 
     <string name="bar_save">Save</string>
     <string name="bar_save_launch">Save and Launch</string>
     <string name="bar_saved">Changes saved</string>
-    <string name="bar_saved_no_root">Changes saved. Mods and fonts need root to reach Pekora.</string>
-    <string name="bar_saved_mods_applied">Changes saved. Close and reopen Pekora to see your mods.</string>
-    <string name="bar_saved_mods_removed">Changes saved. Pekora is back to its original files.</string>
+    <string name="bar_saved_no_root">Changes saved. Mods and fonts need root to reach Octane.</string>
+    <string name="bar_saved_mods_applied">Changes saved. Close and reopen Octane to see your mods.</string>
+    <string name="bar_saved_mods_removed">Changes saved. Octane is back to its original files.</string>
     <string name="bar_target_description">Launch target: %1$s, %2$s. Double tap to change.</string>
     <string name="save_failed_title">Settings not saved</string>
-    <string name="save_failed_body">Pekostrap could not write your settings to storage. Free up some space and try again.</string>
-    <string name="home_news_title">Latest Pekora News</string>
+    <string name="save_failed_body">Octifine could not write your settings to storage. Free up some space and try again.</string>
+    <string name="home_news_title">Latest Octane News</string>
     <plurals name="home_news_count">
         <item quantity="one">(%1$d new)</item>
         <item quantity="other">(%1$d new)</item>
@@ -81,10 +81,10 @@
     <string name="home_news_explore">Explore all news</string>
     <string name="home_news_today">today</string>
     <string name="home_news_yesterday">yesterday</string>
-    <string name="home_news_announcement">pekora announcement</string>
+    <string name="home_news_announcement">octane announcement</string>
     <string name="home_news_description">%1$s, %2$s. Double tap to read.</string>
-    <string name="home_news_all_title">Pekora news</string>
-    <string name="home_news_all_body">Official announcements from the Pekora Developer Forum. Posts open in your browser.</string>
+    <string name="home_news_all_title">Octane news</string>
+    <string name="home_news_all_body">Official announcements from the Octane Developer Forum. Posts open in your browser.</string>
     <string name="home_news_loading">Loading news</string>
     <string name="home_news_failed">News could not be loaded. Check your connection and try again.</string>
     <string name="home_news_open_forum">Open all announcements</string>
@@ -92,17 +92,17 @@
     <string name="home_catalog_loading">Loading new catalog items…</string>
     <string name="home_catalog_empty">No new catalog items right now.</string>
     <string name="home_catalog_failed">Catalog items could not be loaded. Check your connection.</string>
-    <string name="home_catalog_description">%1$s by %2$s, %3$s. Double tap to open in Pekora.</string>
+    <string name="home_catalog_description">%1$s by %2$s, %3$s. Double tap to open in Octane.</string>
     <string name="home_free">Free</string>
     <string name="home_limited">Limited</string>
     <string name="home_continue_title">Continue Playing</string>
     <string name="home_continue_empty_title">No history yet</string>
-    <string name="home_continue_empty_body">Games you launch from Pekostrap will show up here so you can jump back in.</string>
+    <string name="home_continue_empty_body">Games you launch from Octifine will show up here so you can jump back in.</string>
     <string name="home_launched">Launched: %1$s</string>
     <string name="home_game_page">View the %1$s game page</string>
     <string name="home_play">Play %1$s</string>
     <string name="history_clear_title">Clear launch history?</string>
-    <string name="history_clear_body">This removes the list of launches started from Pekostrap. Pinned games stay.</string>
+    <string name="history_clear_body">This removes the list of launches started from Octifine. Pinned games stay.</string>
     <string name="history_cleared">Launch history cleared</string>
 
     <string name="library_home">Library Home</string>
@@ -110,13 +110,13 @@
     <string name="library_refresh">Refresh library</string>
     <string name="library_add_hint">Add by PlaceId or link</string>
     <string name="library_add">Add this game to your library</string>
-    <string name="library_add_invalid">Enter a valid PlaceId or Pekora game link.</string>
+    <string name="library_add_invalid">Enter a valid PlaceId or Octane game link.</string>
     <string name="library_add_failed">Could not find a game with that PlaceId.</string>
     <string name="library_added">Added %1$s to your library</string>
     <string name="library_group_pinned">PINNED</string>
     <string name="library_group_all">ALL</string>
     <string name="library_group_count">(%1$d)</string>
-    <string name="library_empty_all">Your library is empty. Play a game through Pekostrap or add one by PlaceId.</string>
+    <string name="library_empty_all">Your library is empty. Play a game through Octifine or add one by PlaceId.</string>
     <string name="library_events">Events</string>
     <string name="library_whats_new">What\'s New</string>
     <string name="library_recent">Recent Games</string>
@@ -165,23 +165,23 @@
     <string name="library_pin">Pin</string>
     <string name="library_invalid_link">That private server code is not valid.</string>
     <string name="library_invalid_instance">That server ID is not valid.</string>
-    <string name="library_share_link">Pekora share link</string>
+    <string name="library_share_link">Octane share link</string>
     <string name="library_pinned_toast">Pinned %1$s</string>
     <string name="game_copy_link">Copy game link</string>
     <string name="game_link_copied">Game link copied</string>
     <string name="game_unpinned">Removed %1$s from your library</string>
 
-    <string name="shortcut_unsupported">Your home screen app cannot add shortcuts. Pinned games still show when you long press the Pekostrap icon.</string>
+    <string name="shortcut_unsupported">Your home screen app cannot add shortcuts. Pinned games still show when you long press the Octifine icon.</string>
     <string name="shortcut_requested">Confirm the shortcut on your home screen.</string>
     <string name="shortcut_failed">The shortcut could not be requested.</string>
     <string name="shortcut_already">%1$s is already on your home screen. Its icon and name were updated.</string>
     <string name="shortcut_added">Added %1$s to your home screen</string>
     <string name="shortcut_broken">This shortcut is no longer valid. Create it again from the Library.</string>
-    <string name="shortcut_default_label">Pekora game</string>
+    <string name="shortcut_default_label">Octane game</string>
 
     <string name="mods_title">Mods</string>
-    <string name="mods_subtitle">Customize Pekora with presets, mod packs and your own files.</string>
-    <string name="mods_info">This folder works like the desktop Mods folder. Files under content, ExtraContent and PlatformContent/pc are loaded into Pekora.</string>
+    <string name="mods_subtitle">Customize Octane with presets, mod packs and your own files.</string>
+    <string name="mods_info">This folder works like the desktop Mods folder. Files under content, ExtraContent and PlatformContent/pc are loaded into Octane.</string>
     <string name="mods_import_files">Import files</string>
     <string name="mods_import_pack">Import pack</string>
     <string name="mods_new_folder">New folder</string>
@@ -203,7 +203,7 @@
     <string name="mods_import_partial">Imported: %1$d. Skipped: %2$d, because %3$s.</string>
     <string name="mods_exported">Exported %1$s</string>
     <string name="mods_remove_title">Remove from workspace?</string>
-    <string name="mods_remove_file">%1$s will be deleted from the Pekostrap workspace. Exported copies are not affected.</string>
+    <string name="mods_remove_file">%1$s will be deleted from the Octifine workspace. Exported copies are not affected.</string>
     <string name="mods_removed">Removed %1$s</string>
     <string name="mods_remove_failed">Some files could not be removed.</string>
     <string name="mods_error_name">Use a name without slashes or special characters.</string>
@@ -254,7 +254,7 @@
     <string name="flags_error_read">The file could not be read.</string>
     <string name="flags_error_profile_name">Enter a name up to 64 characters.</string>
     <string name="flags_export_profile">Export profile</string>
-    <string name="flags_remove_root">Remove from Pekora</string>
+    <string name="flags_remove_root">Remove from Octane</string>
     <string name="flags_exported">Exported</string>
     <string name="flags_clear_title">Remove all flags?</string>
     <string name="flags_clear_body">This removes every flag from %1$s (total: %2$d). Export first if you want a copy.</string>
@@ -266,7 +266,7 @@
     <string name="flags_import_replace">Replace %1$s</string>
     <string name="flags_import_done">Flags imported: %1$d</string>
     <string name="flags_profiles">FastFlag profiles</string>
-    <string name="flags_profiles_body">Each profile is a separate set of flags. Switching profiles never changes Pekora.</string>
+    <string name="flags_profiles_body">Each profile is a separate set of flags. Switching profiles never changes Octane.</string>
     <string name="flags_profile_new">New profile</string>
     <string name="flags_profile_duplicate">Duplicate profile</string>
     <string name="flags_profile_delete">Delete profile</string>
@@ -296,9 +296,9 @@
     <string name="settings_theme_light">Light</string>
     <string name="settings_accent">Accent color</string>
     <string name="settings_accent_system">Device accent color</string>
-    <string name="settings_accent_brand">Pekostrap purple</string>
+    <string name="settings_accent_brand">Octifine purple</string>
     <string name="settings_accent_note">Device accent colors need Android 12 or newer.</string>
-    <string name="settings_roblox">Pekora</string>
+    <string name="settings_roblox">Octane</string>
     <string name="settings_clear_history">Clear launch history</string>
     <string name="settings_clear_history_body">Remove the list of recent launches</string>
     <string name="settings_backup">Backup</string>
@@ -310,29 +310,29 @@
     <string name="settings_diagnostics_body">A report you can copy or share for support</string>
     <string name="settings_licenses">Licenses</string>
     <string name="settings_licenses_body">Open source notices</string>
-    <string name="settings_website">Pekostrap website</string>
+    <string name="settings_website">Octifine website</string>
     <string name="settings_website_body">voidstrapp.pages.dev</string>
     <string name="settings_updates">Check for updates</string>
-    <string name="settings_updates_body">Open the Pekostrap releases page</string>
+    <string name="settings_updates_body">Open the Octifine releases page</string>
     <string name="update_section">Updates</string>
     <string name="update_auto">Check automatically</string>
-    <string name="update_auto_body">Looks for a new Pekostrap a few times a day</string>
+    <string name="update_auto_body">Looks for a new Octifine a few times a day</string>
     <string name="update_auto_direct">Update automatically</string>
     <string name="update_auto_direct_body">Downloads new releases and opens any Android approval needed to install them</string>
-    <string name="update_channel_releases">Pekostrap releases</string>
+    <string name="update_channel_releases">Octifine releases</string>
     <string name="update_channel_play">Google Play</string>
     <string name="update_check">Check now</string>
     <string name="update_local">Install from APK</string>
-    <string name="update_local_body">Choose a newer Pekostrap APK saved on this device</string>
+    <string name="update_local_body">Choose a newer Octifine APK saved on this device</string>
     <string name="update_local_reading">Checking the selected APK</string>
     <string name="update_local_missing">No APK file was provided</string>
     <string name="update_local_too_large">The selected APK is too large</string>
     <string name="update_local_ready">APK checked, installing</string>
     <string name="update_checking">Checking for a new version</string>
-    <string name="update_current">Pekostrap %1$s, the newest build</string>
-    <string name="update_never_checked">Pekostrap %1$s, not checked yet</string>
-    <string name="update_checked_ago">Pekostrap %1$s, checked %2$s</string>
-    <string name="update_ready_title">Pekostrap %1$s is available</string>
+    <string name="update_current">Octifine %1$s, the newest build</string>
+    <string name="update_never_checked">Octifine %1$s, not checked yet</string>
+    <string name="update_checked_ago">Octifine %1$s, checked %2$s</string>
+    <string name="update_ready_title">Octifine %1$s is available</string>
     <string name="update_ready_body">%1$s from %2$s</string>
     <string name="update_install">Update</string>
     <string name="update_install_play">Open Google Play</string>
@@ -342,26 +342,26 @@
     <string name="update_ready_to_install">Update ready to install</string>
     <string name="update_skip">Skip this version</string>
     <string name="update_notes">What changed</string>
-    <string name="update_available_toast">Pekostrap %1$s is available</string>
+    <string name="update_available_toast">Octifine %1$s is available</string>
     <string name="update_failed_toast">The update failed, %1$s</string>
     <string name="update_failed">The update could not be completed, %1$s</string>
-    <string name="update_needs_permission">Pekostrap needs permission to install app updates</string>
+    <string name="update_needs_permission">Octifine needs permission to install app updates</string>
     <string name="update_permission_title">Allow app updates</string>
-    <string name="update_permission_body">The update is downloaded. Android needs your approval to let Pekostrap install APK updates. You can allow it in system settings or cancel and install later.</string>
+    <string name="update_permission_body">The update is downloaded. Android needs your approval to let Octifine install APK updates. You can allow it in system settings or cancel and install later.</string>
     <string name="update_open_permission">Open settings</string>
     <string name="update_channel_notification">App updates</string>
-    <string name="update_confirm_title">Finish installing Pekostrap</string>
+    <string name="update_confirm_title">Finish installing Octifine</string>
     <string name="update_confirm_body">Tap to approve the Android install</string>
-    <string name="update_open_to_install">Open Pekostrap to approve the install</string>
+    <string name="update_open_to_install">Open Octifine to approve the install</string>
     <string name="update_permission_failed">This device has no screen for installing unknown apps</string>
     <string name="update_error_size">The download did not match the published size</string>
     <string name="update_error_not_apk">The APK is not a readable Android package</string>
-    <string name="update_error_other_app">The APK belongs to %1$s, not to Pekostrap</string>
+    <string name="update_error_other_app">The APK belongs to %1$s, not to Octifine</string>
     <string name="update_error_version">The APK is version %1$s but the release said %2$s</string>
     <string name="update_error_older">The APK is not newer than the installed build</string>
     <string name="update_error_cancelled">The install was cancelled</string>
     <string name="update_error_blocked">The device blocked the install</string>
-    <string name="update_error_conflict">The installed Pekostrap was signed with a different key, so uninstall it first</string>
+    <string name="update_error_conflict">The installed Octifine was signed with a different key, so uninstall it first</string>
     <string name="update_error_incompatible">The update does not support this device</string>
     <string name="update_error_invalid">The update package is damaged</string>
     <string name="update_error_storage">There is not enough storage for the update</string>
@@ -369,19 +369,19 @@
     <string name="update_error_no_prompt">The device did not offer the install screen</string>
     <string name="update_error_check">Could not check for updates. Check your connection and try again</string>
     <string name="update_error_play">Google Play could not be reached for updates</string>
-    <string name="settings_version">Pekostrap for Android %1$s · %2$s</string>
+    <string name="settings_version">Octifine for Android %1$s · %2$s</string>
     <string name="edition_play">Play edition</string>
     <string name="edition_direct">Direct edition</string>
 
     <string name="backup_exported">Backup saved</string>
-    <string name="backup_invalid_title">Not a Pekostrap backup</string>
-    <string name="backup_invalid_body">Choose a file created with Export backup in Pekostrap for Android.</string>
+    <string name="backup_invalid_title">Not a Octifine backup</string>
+    <string name="backup_invalid_body">Choose a file created with Export backup in Octifine for Android.</string>
     <string name="backup_import_title">Import backup?</string>
-    <string name="backup_import_body">This adds pinned games (%1$d) and FastFlag profiles (%2$d) and restores your theme, accent and Pekora app choice. Nothing you already have is deleted.</string>
+    <string name="backup_import_body">This adds pinned games (%1$d) and FastFlag profiles (%2$d) and restores your theme, accent and Octane app choice. Nothing you already have is deleted.</string>
     <string name="backup_imported">Backup imported</string>
 
     <string name="diagnostics_intro">Share this when asking for help. It has no account details, private server codes or file contents.</string>
-    <string name="diagnostics_note">Pekostrap cannot see what happens inside Pekora after it opens, so game errors are not included.</string>
+    <string name="diagnostics_note">Octifine cannot see what happens inside Octane after it opens, so game errors are not included.</string>
     <string name="diagnostics_copied">Report copied</string>
 
     <string name="compat_setup">Set up</string>
@@ -417,8 +417,8 @@
         <item quantity="other">%1$d items</item>
     </plurals>
     <plurals name="mods_remove_folder">
-        <item quantity="one">%1$s and the %2$d file inside it will be deleted from the Pekostrap workspace.</item>
-        <item quantity="other">%1$s and the %2$d files inside it will be deleted from the Pekostrap workspace.</item>
+        <item quantity="one">%1$s and the %2$d file inside it will be deleted from the Octifine workspace.</item>
+        <item quantity="other">%1$s and the %2$d files inside it will be deleted from the Octifine workspace.</item>
     </plurals>
     <string name="presets_mesh">Mesh detail</string>
     <string name="presets_msaa">Anti aliasing</string>
@@ -430,7 +430,7 @@
     <string name="presets_apply_profile">Apply</string>
     <string name="presets_profile_applied">%1$s profile applied</string>
     <string name="presets_allowlist">Supported flags</string>
-    <string name="presets_allowlist_body">The flags confirmed to exist in Pekora. Pekostrap applies every flag in your profile. Tap one to copy its name.</string>
+    <string name="presets_allowlist_body">The flags confirmed to exist in Octane. Octifine applies every flag in your profile. Tap one to copy its name.</string>
     <string name="presets_copied">Copied %1$s</string>
     <string-array name="presets_msaa">
         <item>Automatic</item>
@@ -449,27 +449,27 @@
         <item>Performance</item>
         <item>Quality</item>
     </string-array>
-    <string name="flags_sync_removed">FastFlags removed from Pekora</string>
-    <string name="flags_sync_denied">Pekostrap could not get access. Start the Pekostrap helper again, or allow Pekostrap in your root manager, and try again.</string>
+    <string name="flags_sync_removed">FastFlags removed from Octane</string>
+    <string name="flags_sync_denied">Octifine could not get access. Start the Octifine helper again, or allow Octifine in your root manager, and try again.</string>
     <string name="flags_sync_failed">Could not write the FastFlags file.</string>
     <plurals name="flags_sync_applied">
-        <item quantity="one">%1$d flag applied to Pekora. It loads the next time Pekora starts.</item>
-        <item quantity="other">%1$d flags applied to Pekora. They load the next time Pekora starts.</item>
+        <item quantity="one">%1$d flag applied to Octane. It loads the next time Octane starts.</item>
+        <item quantity="other">%1$d flags applied to Octane. They load the next time Octane starts.</item>
     </plurals>
     <plurals name="flags_sync_saved">
-        <item quantity="one">Saved, %1$d flag applied to Pekora</item>
-        <item quantity="other">Saved, %1$d flags applied to Pekora</item>
+        <item quantity="one">Saved, %1$d flag applied to Octane</item>
+        <item quantity="other">Saved, %1$d flags applied to Octane</item>
     </plurals>
     <string name="flags_status_root">Root access is available.</string>
-    <string name="flags_status_stopped">The Pekostrap helper is not running, so changes are not applied. The last applied flags stay active. Run the start command again after your device restarts.</string>
-    <string name="flags_status_none">Start the Pekostrap helper once from a computer, or use a rooted device, to apply flags to Pekora.</string>
+    <string name="flags_status_stopped">The Octifine helper is not running, so changes are not applied. The last applied flags stay active. Run the start command again after your device restarts.</string>
+    <string name="flags_status_none">Start the Octifine helper once from a computer, or use a rooted device, to apply flags to Octane.</string>
     <string name="presets_performance">Performance</string>
     <string name="presets_show_fps">FPS counter</string>
-    <string name="flags_sync_unreadable">The flags were written, but this device blocks apps from reading them, so Pekora cannot load them.</string>
-    <string name="flags_status_helper">The Pekostrap helper is running with adb access.</string>
-    <string name="flags_status_helper_root">The Pekostrap helper is running with root access.</string>
-    <string name="flags_short_helper">Applies automatically when you launch Pekora</string>
-    <string name="settings_helper">Pekostrap helper</string>
+    <string name="flags_sync_unreadable">The flags were written, but this device blocks apps from reading them, so Octane cannot load them.</string>
+    <string name="flags_status_helper">The Octifine helper is running with adb access.</string>
+    <string name="flags_status_helper_root">The Octifine helper is running with root access.</string>
+    <string name="flags_short_helper">Applies automatically when you launch Octane</string>
+    <string name="settings_helper">Octifine helper</string>
     <string name="setup_debugging">Turn on USB debugging</string>
     <string name="setup_debugging_body">In Developer options, turn on USB debugging and connect this device to a computer that has adb. Tap to open Developer options.</string>
     <string name="setup_usb">Check the cable connection</string>
@@ -482,7 +482,7 @@
     <string name="setup_get_adb_body">No adb yet? Tap to open Google\'s SDK Platform Tools page, download it for your computer and unzip it. Open a terminal in the unzipped platform-tools folder and run the start command there. In PowerShell, type .\\adb instead of adb.</string>
     <string name="setup_run">Run the start command</string>
     <string name="setup_run_body">Run this on the computer. Tap to copy it. If it says no devices or unauthorized, the cable check above shows what to fix.\n%1$s</string>
-    <string name="setup_run_done">The helper is running. FastFlags apply every time Pekostrap launches Pekora.</string>
+    <string name="setup_run_done">The helper is running. FastFlags apply every time Octifine launches Octane.</string>
     <string name="setup_run_unavailable">Shared storage is not available, so the start script could not be created.</string>
     <string name="setup_copied">Start command copied</string>
     <string name="setup_device">Run on this device</string>
@@ -490,18 +490,18 @@
 %1$s</string>
     <string name="setup_shizuku">Start with Shizuku</string>
     <string name="setup_shizuku_ready">No computer needed. Tap to start the helper through Shizuku.</string>
-    <string name="setup_shizuku_permission">No computer needed. Tap, then allow Pekostrap in the Shizuku prompt.</string>
+    <string name="setup_shizuku_permission">No computer needed. Tap, then allow Octifine in the Shizuku prompt.</string>
     <string name="setup_shizuku_not_running">Shizuku is installed but not running. Tap to open Shizuku and start it, then come back and tap again.</string>
     <string name="setup_shizuku_install">No computer needed with Shizuku. Tap to get Shizuku, start it, then come back and tap again.</string>
     <string name="shizuku_starting">Starting the helper through Shizuku</string>
-    <string name="shizuku_started">The helper started through Shizuku. After a restart, start Shizuku and Pekostrap starts the helper again by itself.</string>
+    <string name="shizuku_started">The helper started through Shizuku. After a restart, start Shizuku and Octifine starts the helper again by itself.</string>
     <string name="shizuku_failed">Shizuku could not start the helper. Open Shizuku, make sure it is running, and try again.</string>
-    <string name="shizuku_denied">Pekostrap was not allowed in Shizuku, so the helper was not started.</string>
+    <string name="shizuku_denied">Octifine was not allowed in Shizuku, so the helper was not started.</string>
     <string name="shizuku_not_running">Start Shizuku, then come back and tap Start with Shizuku again.</string>
     <string name="shizuku_not_installed">Install Shizuku and start it, then come back and tap Start with Shizuku again.</string>
     <string name="shizuku_too_old">This Shizuku version is too old. Update Shizuku and try again.</string>
     <string name="settings_root">Use root</string>
-    <string name="settings_void_rpc">Pekostrap RPC</string>
+    <string name="settings_void_rpc">Octifine RPC</string>
     <string name="settings_background">Background</string>
     <string name="settings_background_body">Shows your own image behind every page.</string>
     <string name="settings_background_none">None</string>
@@ -511,32 +511,32 @@
     <string name="settings_background_dim">Background dim</string>
     <string name="settings_background_dim_body">Fades the image so text stays easy to read.</string>
     <string name="settings_background_invalid">That image could not be used. Pick a JPG, PNG or WEBP photo.</string>
-    <string name="settings_void_rpc_body">Displays Pekostrap\'s Discord RPC.</string>
+    <string name="settings_void_rpc_body">Displays Octifine\'s Discord RPC.</string>
     <string name="settings_root_body">Apply FastFlags with root. Your root manager asks for permission when you turn this on.</string>
-    <string name="settings_root_missing">Pekostrap ran su and nothing answered, so this device has no root. An app that only grants adb or shell access is not root, and Pekostrap does not use one. Only mods need root. FastFlags and activity tracking do not, so set up the Pekostrap helper instead. If you really are rooted, open your root manager, make sure it is running, then try again.</string>
-    <string name="settings_root_missing_helper">Pekostrap ran su and nothing answered, so this device has no root. An app that only grants adb or shell access is not root, and Pekostrap does not use one. The Pekostrap helper is already running, so FastFlags and activity tracking work here. Only mods need root. If you really are rooted, open your root manager, make sure it is running, then try again.</string>
+    <string name="settings_root_missing">Octifine ran su and nothing answered, so this device has no root. An app that only grants adb or shell access is not root, and Octifine does not use one. Only mods need root. FastFlags and activity tracking do not, so set up the Octifine helper instead. If you really are rooted, open your root manager, make sure it is running, then try again.</string>
+    <string name="settings_root_missing_helper">Octifine ran su and nothing answered, so this device has no root. An app that only grants adb or shell access is not root, and Octifine does not use one. The Octifine helper is already running, so FastFlags and activity tracking work here. Only mods need root. If you really are rooted, open your root manager, make sure it is running, then try again.</string>
     <string name="settings_root_untested">Apply FastFlags and mods with root. Turn this on to ask your root manager for permission.</string>
     <string name="settings_root_on">Root access is in use. Turn this off to stop using root.</string>
-    <string name="settings_root_helper">Root access is provided by the Pekostrap helper.</string>
-    <string name="settings_root_waiting">Waiting for your root manager. Approve the Pekostrap prompt.</string>
+    <string name="settings_root_helper">Root access is provided by the Octifine helper.</string>
+    <string name="settings_root_waiting">Waiting for your root manager. Approve the Octifine prompt.</string>
     <string name="settings_root_denied_title">Root was not granted</string>
-    <string name="settings_root_ready">Root access is ready. FastFlags apply every time Pekostrap launches Pekora.</string>
-    <string name="settings_root_denied">Your root manager did not grant Pekostrap access. Open it, allow Pekostrap, then try again.</string>
+    <string name="settings_root_ready">Root access is ready. FastFlags apply every time Octifine launches Octane.</string>
+    <string name="settings_root_denied">Your root manager did not grant Octifine access. Open it, allow Octifine, then try again.</string>
     <string name="setup_title">Set up FastFlags</string>
-    <string name="setup_body">Pekora reads FastFlags from a system folder that apps cannot write to by themselves. The Pekostrap helper runs with adb access and writes them for Pekostrap. Start it with Shizuku, or once from a computer, and your flags apply every time you launch Pekora. With Shizuku, Pekostrap starts it again by itself whenever Shizuku is running.</string>
+    <string name="setup_body">Octane reads FastFlags from a system folder that apps cannot write to by themselves. The Octifine helper runs with adb access and writes them for Octifine. Start it with Shizuku, or once from a computer, and your flags apply every time you launch Octane. With Shizuku, Octifine starts it again by itself whenever Shizuku is running.</string>
     <string name="flags_short_root">Applies automatically with root</string>
-    <string name="flags_short_stopped">Start the Pekostrap helper to apply changes</string>
-    <string name="flags_short_none">Set up the Pekostrap helper to apply flags</string>
-    <string name="flags_apply_now">Apply to Pekora now</string>
+    <string name="flags_short_stopped">Start the Octifine helper to apply changes</string>
+    <string name="flags_short_none">Set up the Octifine helper to apply flags</string>
+    <string name="flags_apply_now">Apply to Octane now</string>
     <string name="flags_export_json">Export as ClientAppSettings.json</string>
     <string name="presets_section_graphics">Graphics</string>
     <string name="presets_section_detail">World detail</string>
     <string name="presets_section_quick">Quick setup</string>
     <string name="presets_msaa_short">Smooths jagged edges</string>
-    <string name="presets_render_mode_short">Graphics engine Pekora uses</string>
+    <string name="presets_render_mode_short">Graphics engine Octane uses</string>
     <string name="presets_dpi_title">Full resolution</string>
     <string name="presets_dpi_short">Ignore display scaling for a sharper picture</string>
-    <string name="flags_launch_not_applied">FastFlags were not applied. Open Pekostrap and start the Pekostrap helper.</string>
+    <string name="flags_launch_not_applied">FastFlags were not applied. Open Octifine and start the Octifine helper.</string>
     <string name="presets_show_fps_short">Shows frame rate in the corner</string>
     <string name="presets_mesh_short">How detailed distant objects look</string>
     <string name="presets_grass_distance_short">Set both to 0 to hide grass</string>
@@ -545,7 +545,7 @@
     <string name="presets_high">High</string>
     <string name="presets_recommended_title">Recommended</string>
     <string name="presets_recommended_short">Sets anti aliasing, shadows and mesh detail</string>
-    <string name="presets_allowlist_short">Flags that work with Pekora</string>
+    <string name="presets_allowlist_short">Flags that work with Octane</string>
     <string name="presets_section_interface">Interface</string>
     <string name="presets_section_debug">Debug</string>
     <string name="presets_section_quality">Quality</string>
@@ -561,6 +561,10 @@
     <string name="presets_death_sounds_short">Varies the sound played on death</string>
     <string name="presets_bones">Show bones as constraints</string>
     <string name="presets_bones_short">Draws rig bones as physics constraints</string>
+    <string name="presets_body_outline">Body part outline</string>
+    <string name="presets_body_outline_short">Draws an outline around each body part</string>
+    <string name="presets_humanoid_debug">Humanoid debug view</string>
+    <string name="presets_humanoid_debug_short">Shows a debug ring under characters</string>
     <string name="presets_mtu">MTU size</string>
     <string name="presets_mtu_short">Bytes sent per network packet</string>
     <string name="presets_hide_gui">Hide GUIs</string>
@@ -577,13 +581,13 @@
     <string name="presets_indoor_specular">Indoor specular fix</string>
     <string name="presets_indoor_specular_short">Corrects reflections inside buildings</string>
     <string name="presets_shadows">Disable shadows</string>
-    <string name="presets_shadows_short">Turns off Pekora shadows</string>
+    <string name="presets_shadows_short">Turns off Octane shadows</string>
     <string name="presets_remove_grass">Remove grass</string>
     <string name="presets_remove_grass_short">Hides the built in terrain grass</string>
     <string name="presets_blur">Remove blur</string>
-    <string name="presets_blur_short">No blur behind Pekora menus</string>
+    <string name="presets_blur_short">No blur behind Octane menus</string>
     <string name="presets_font_size">Font size</string>
-    <string name="presets_font_size_short">Changes the Pekora menu font size</string>
+    <string name="presets_font_size_short">Changes the Octane menu font size</string>
     <string name="presets_flag_state">Flag state</string>
     <string name="presets_flag_state_short">Shows these flag values in game, comma separated</string>
     <string name="presets_off">Off</string>
@@ -591,7 +595,7 @@
         <item>@string/settings_theme_system</item>
         <item>@string/settings_theme_dark</item>
         <item>@string/settings_theme_light</item>
-        <item>Pekostrap</item>
+        <item>Octifine</item>
         <item>Ultra Gray</item>
         <item>Berry</item>
         <item>Blue</item>
@@ -608,27 +612,27 @@
     <string name="mods_tab_packs">Mod Packs</string>
     <string name="mods_tab_library">My Mods</string>
     <string name="mods_tab_files">Files</string>
-    <string name="mods_apply_title">Apply mods to Pekora</string>
+    <string name="mods_apply_title">Apply mods to Octane</string>
     <string name="mods_apply_now">Apply now</string>
     <string name="mods_use_root">Use root</string>
-    <string name="mods_restore">Restore Pekora</string>
+    <string name="mods_restore">Restore Octane</string>
     <string name="mods_find_more">Find mods</string>
     <string name="mods_apply_preparing">Getting your mods ready</string>
-    <string name="mods_apply_building">Building the modded Pekora package</string>
-    <string name="mods_apply_mounting">Loading mods into Pekora with root</string>
+    <string name="mods_apply_building">Building the modded Octane package</string>
+    <string name="mods_apply_mounting">Loading mods into Octane with root</string>
     <string name="mods_state_not_installed">%1$s is not installed.</string>
-    <string name="mods_state_root_off">Mods are loaded into Pekora with root. Turn on root to use them.</string>
-    <string name="mods_state_no_root">This device is not rooted. Pekora for Android only reads game files from its own app package, which only root can change.</string>
-    <string name="mods_state_off">Mods are off, so Pekora runs without them.</string>
+    <string name="mods_state_root_off">Mods are loaded into Octane with root. Turn on root to use them.</string>
+    <string name="mods_state_no_root">This device is not rooted. Octane for Android only reads game files from its own app package, which only root can change.</string>
+    <string name="mods_state_off">Mods are off, so Octane runs without them.</string>
     <string name="mods_state_empty">No mods are active yet. Turn on a preset, install a mod pack or add your own files.</string>
-    <string name="mods_state_pending_remove">Pekora still has mods loaded. Apply now to put the original files back.</string>
-    <string name="mods_result_applied">Mods are loaded. Close and reopen Pekora to see them.</string>
-    <string name="mods_result_unchanged">Pekora already has these mods.</string>
-    <string name="mods_result_removed">Pekora is back to its original files.</string>
+    <string name="mods_state_pending_remove">Octane still has mods loaded. Apply now to put the original files back.</string>
+    <string name="mods_result_applied">Mods are loaded. Close and reopen Octane to see them.</string>
+    <string name="mods_result_unchanged">Octane already has these mods.</string>
+    <string name="mods_result_removed">Octane is back to its original files.</string>
     <string name="mods_result_no_root">Root access was denied, so mods could not be loaded.</string>
-    <string name="mods_result_failed">Mods could not be loaded into Pekora. Try again.</string>
+    <string name="mods_result_failed">Mods could not be loaded into Octane. Try again.</string>
     <string name="mods_launch_not_applied">Mods were not loaded. Check the Mods page.</string>
-    <string name="mods_saved_no_root">%1$s Saved in Pekostrap, but mods need root to reach Pekora.</string>
+    <string name="mods_saved_no_root">%1$s Saved in Octifine, but mods need root to reach Octane.</string>
     <string name="mods_working">Working</string>
     <string name="mods_downloading">Downloading</string>
     <string name="mods_refresh">Refresh</string>
@@ -636,17 +640,17 @@
     <string name="mods_error_generic">Something went wrong. Try again.</string>
     <string name="mods_error_network">The download could not be reached. Check your connection and try again.</string>
     <string name="mods_error_package_size">The package is larger than the 256 MB limit.</string>
-    <string name="mods_error_space_full">There is not enough free storage to build the modded Pekora package.</string>
-    <string name="mods_info_managed">Files in this mod use the Pekora layout, like content/sounds or PlatformContent/pc/textures/sky.</string>
-    <string name="mods_file_applies">Loaded into Pekora as %1$s.</string>
-    <string name="mods_file_ignored">Pekora cannot load this file from a mod, so it is skipped.</string>
-    <string name="mods_file_unplaced">Not in a Pekora folder, so it is not loaded. Put it under content, ExtraContent or PlatformContent/pc.</string>
+    <string name="mods_error_space_full">There is not enough free storage to build the modded Octane package.</string>
+    <string name="mods_info_managed">Files in this mod use the Octane layout, like content/sounds or PlatformContent/pc/textures/sky.</string>
+    <string name="mods_file_applies">Loaded into Octane as %1$s.</string>
+    <string name="mods_file_ignored">Octane cannot load this file from a mod, so it is skipped.</string>
+    <string name="mods_file_unplaced">Not in a Octane folder, so it is not loaded. Put it under content, ExtraContent or PlatformContent/pc.</string>
     <string name="mods_section_cursor">Cursor</string>
     <string name="mods_section_interface">Interface</string>
     <string name="mods_section_appearance">Appearance</string>
     <string name="mods_section_help">Help and fixes</string>
     <string name="mods_value_none">None</string>
-    <string name="mods_value_default">Pekora default</string>
+    <string name="mods_value_default">Octane default</string>
     <string name="mods_value_custom">Custom</string>
     <string name="mods_value_local_font">Local font</string>
     <string name="mods_font_short">Font</string>
@@ -655,7 +659,7 @@
         <item quantity="other">%d sets</item>
     </plurals>
     <string name="mods_cursor_style">Cursor style</string>
-    <string name="mods_cursor_style_body">Use the Pekora cursor, a built in style, or your own images. Shows when a mouse is connected.</string>
+    <string name="mods_cursor_style_body">Use the Octane cursor, a built in style, or your own images. Shows when a mouse is connected.</string>
     <string name="mods_cursor_style_set">Cursor style set to %1$s.</string>
     <string name="mods_cursor_custom">Custom cursor</string>
     <string name="mods_cursor_set">Custom cursor saved.</string>
@@ -695,7 +699,7 @@
     <string name="mods_old_avatar">Old avatar editor background</string>
     <string name="mods_emoji">Emoji style</string>
     <string name="mods_emoji_set">Emoji style set to %1$s.</string>
-    <string name="mods_sky_body">Choose a skybox once. Pekostrap downloads it and loads it into Pekora.</string>
+    <string name="mods_sky_body">Choose a skybox once. Octifine downloads it and loads it into Octane.</string>
     <string name="mods_sky_pack">Skybox</string>
     <string name="mods_sky_loading">Loading skyboxes</string>
     <string name="mods_sky_set">Skybox set to %1$s.</string>
@@ -708,7 +712,7 @@
     <string name="mods_sky_save">Save and use</string>
     <string name="mods_sky_remove_custom">Remove custom</string>
     <string name="mods_sky_custom_removed">Custom skybox removed.</string>
-    <string name="mods_font_body">Use a local font or a Google font for Pekora text.</string>
+    <string name="mods_font_body">Use a local font or a Google font for Octane text.</string>
     <string name="mods_font_local">a local font</string>
     <string name="mods_font_google">Google font</string>
     <string name="mods_font_pick">Choose a font</string>
@@ -719,8 +723,8 @@
     <string name="mods_font_use">Use font</string>
     <string name="mods_font_local_choose">Choose local font</string>
     <string name="mods_font_remove">Remove font</string>
-    <string name="mods_font_removed">Pekora default font restored.</string>
-    <string name="mods_font_set">Pekora text now uses %1$s.</string>
+    <string name="mods_font_removed">Octane default font restored.</string>
+    <string name="mods_font_set">Octane text now uses %1$s.</string>
     <string name="mods_font_sample">Aa Bb Cc 123   The quick brown fox.</string>
     <string name="mods_font_size">Font size</string>
     <string name="mods_font_size_set">Font size set to %1$s.</string>
@@ -745,25 +749,25 @@
     <string name="mods_library_copy_id">Copy mod ID</string>
     <string name="mods_library_id_copied">Mod ID copied.</string>
     <string name="mods_library_remove_title">Remove this mod?</string>
-    <string name="mods_library_remove_body">%1$s and all its files will be deleted from Pekostrap.</string>
+    <string name="mods_library_remove_body">%1$s and all its files will be deleted from Octifine.</string>
     <string name="mods_library_toggle">Use %1$s</string>
     <string name="mods_library_by">by %1$s</string>
     <string name="mods_library_conflicts">Shares files with another mod</string>
     <string name="mods_options_intro">Pick which file this mod uses for each slot.</string>
-    <string name="mods_options_off">Off, use the Pekora default</string>
+    <string name="mods_options_off">Off, use the Octane default</string>
     <string name="mods_options_installed">Installed file</string>
     <string name="mods_options_none">This mod has no files to choose between.</string>
     <string name="mods_options_save">Save options</string>
     <string name="mods_packs_gamebanana">GameBanana</string>
     <string name="mods_packs_marketplace">Kliko Mods</string>
-    <string name="mods_packs_search">Search Pekora mods</string>
+    <string name="mods_packs_search">Search Octane mods</string>
     <plurals name="mods_state_applied">
-        <item quantity="one">%1$d file is loaded into Pekora. Applied %2$s.</item>
-        <item quantity="other">%1$d files are loaded into Pekora. Applied %2$s.</item>
+        <item quantity="one">%1$d file is loaded into Octane. Applied %2$s.</item>
+        <item quantity="other">%1$d files are loaded into Octane. Applied %2$s.</item>
     </plurals>
     <plurals name="mods_state_pending">
-        <item quantity="one">%1$d file is ready. It loads the next time Pekostrap starts Pekora, or apply it now.</item>
-        <item quantity="other">%1$d files are ready. They load the next time Pekostrap starts Pekora, or apply them now.</item>
+        <item quantity="one">%1$d file is ready. It loads the next time Octifine starts Octane, or apply it now.</item>
+        <item quantity="other">%1$d files are ready. They load the next time Octifine starts Octane, or apply them now.</item>
     </plurals>
     <plurals name="mods_library_summary">
         <item quantity="one">%1$d mod, %2$d on</item>
@@ -783,7 +787,7 @@
     </plurals>
     <string-array name="mods_cursor_styles">
         <item>Default cursor</item>
-        <item>Pekostrap default</item>
+        <item>Octifine default</item>
         <item>Stoofs cursor</item>
         <item>Dot cursor</item>
         <item>Clean cursor</item>
@@ -829,7 +833,7 @@
     <string name="mods_packs_category">%1$s (%2$d)</string>
     <string name="mods_packs_loading">Loading mods from %1$s</string>
     <string name="mods_packs_offline">The catalog could not be reached. Check your connection and try again.</string>
-    <string name="mods_packs_none">No Pekora mods matched. Anything that fails the safety checks is hidden.</string>
+    <string name="mods_packs_none">No Octane mods matched. Anything that fails the safety checks is hidden.</string>
     <string name="mods_packs_likes">%1$s likes</string>
     <string name="mods_packs_downloads">%1$s downloads</string>
     <string name="mods_packs_views">%1$s views</string>
@@ -841,7 +845,7 @@
     <string name="mods_packs_detail_meta">%1$s by %2$s</string>
     <string name="mods_packs_no_files">No scanned package is available for this mod.</string>
     <string name="mods_packs_install_hint">Installs into My Mods, where you can turn it on or off.</string>
-    <string name="mods_packs_cache_hint">Replaces cached Pekora assets. Works best with assets Pekora has already downloaded.</string>
+    <string name="mods_packs_cache_hint">Replaces cached Octane assets. Works best with assets Octane has already downloaded.</string>
     <string name="mods_packs_file">File</string>
     <string name="mods_packs_no_description">No description was published.</string>
     <string name="mods_packs_comments">Comments (%1$d)</string>
@@ -857,13 +861,13 @@
     <string name="mods_packs_replying_to">Replying to %1$s</string>
     <string name="mods_packs_no_updates">No updates have been published.</string>
     <string name="mods_packs_no_issues">No issues are currently listed.</string>
-    <string name="mods_packs_installing">Placing the files into the Pekora layout</string>
+    <string name="mods_packs_installing">Placing the files into the Octane layout</string>
     <string name="mods_packs_downloading">Downloading %1$s</string>
     <string name="mods_packs_image">Mod screenshot</string>
     <string name="mods_packs_more">Load more</string>
     <plurals name="mods_packs_shown">
-        <item quantity="one">%1$d Pekora mod shown</item>
-        <item quantity="other">%1$d Pekora mods shown</item>
+        <item quantity="one">%1$d Octane mod shown</item>
+        <item quantity="other">%1$d Octane mods shown</item>
     </plurals>
     <string-array name="mods_packs_sorts">
         <item>Featured</item>
@@ -876,21 +880,21 @@
     </string-array>
     <string name="nav_integrations">Integrations</string>
     <string name="integrations_title">Integrations</string>
-    <string name="integrations_subtitle">Configure additional functionality to go alongside Pekora.</string>
+    <string name="integrations_subtitle">Configure additional functionality to go alongside Octane.</string>
     <string name="integrations_open_body">Activity tracking and Discord Rich Presence</string>
     <string name="integrations_activity">Activity tracking</string>
     <string name="integrations_tracking">Enable activity tracking</string>
-    <string name="integrations_tracking_body">Allows for Pekostrap to detect what Pekora game you\'re playing. Certain features may require this.</string>
+    <string name="integrations_tracking_body">Allows for Octifine to detect what Octane game you\'re playing. Certain features may require this.</string>
     <string name="integrations_location">Server location</string>
     <string name="integrations_location_body">When in game, you\'ll be able to see where your server is located via ipinfo.io.</string>
     <string name="integrations_notify">Join game notification</string>
     <string name="integrations_notify_body">Shows the game you have joined and its server location in a notification.</string>
-    <string name="integrations_notify_blocked">Notifications are off for Pekostrap. Allow them in system settings to see join notifications.</string>
+    <string name="integrations_notify_blocked">Notifications are off for Octifine. Allow them in system settings to see join notifications.</string>
     <string name="integrations_player_logs">Player and Message logs</string>
     <string name="integrations_player_logs_body">Shows you players joining and leaving and messages being sent. Saved to your active FastFlag profile.</string>
     <string name="integrations_log">Session log</string>
     <string name="integrations_log_body">Games, players and messages from this session</string>
-    <string name="integrations_log_empty">Nothing yet. Launch a game from Pekostrap with activity tracking on.</string>
+    <string name="integrations_log_empty">Nothing yet. Launch a game from Octifine with activity tracking on.</string>
     <string name="integrations_log_clear">Clear log</string>
     <string name="integrations_log_join">Joined</string>
     <string name="integrations_log_leave">Left</string>
@@ -899,21 +903,21 @@
     <string name="integrations_discord_status_line">%1$s\n%2$s</string>
     <string name="integrations_discord_note">Requires activity tracking and the Discord app on this device.</string>
     <string name="integrations_discord_rpc">Show game activity</string>
-    <string name="integrations_discord_rpc_body">The Pekora game you\'re playing will be shown on your Discord profile.</string>
-    <string name="integrations_discord_account">Show Pekora account</string>
-    <string name="integrations_discord_account_body">Shows the Pekora account you\'re playing with on your Discord profile.</string>
+    <string name="integrations_discord_rpc_body">The Octane game you\'re playing will be shown on your Discord profile.</string>
+    <string name="integrations_discord_account">Show Octane account</string>
+    <string name="integrations_discord_account_body">Shows the Octane account you\'re playing with on your Discord profile.</string>
     <string name="integrations_discord_join">Allow activity joining</string>
     <string name="integrations_discord_join_body">Allows for anybody to join the game you\'re currently in through your Discord profile.</string>
     <string name="integrations_discord_status">Discord</string>
     <string name="integrations_discord_missing_app">Install the Discord app to show your game on your profile.</string>
-    <string name="integrations_discord_ready">Ready. Shows while Pekora is open.</string>
+    <string name="integrations_discord_ready">Ready. Shows while Octane is open.</string>
     <string name="integrations_discord_live">Connected</string>
     <string name="integrations_discord_error">Discord said: %1$s</string>
     <string name="integrations_custom_rpc">Custom RPC</string>
     <string name="integrations_custom_rpc_body">Make or edit a custom RPC for Discord.</string>
-    <string name="integrations_preview_playing">Playing Pekora</string>
+    <string name="integrations_preview_playing">Playing Octane</string>
     <string name="integrations_preview">Preview</string>
-    <string name="integrations_preview_app">Pekora</string>
+    <string name="integrations_preview_app">Octane</string>
     <string name="integrations_preview_game">Your game</string>
     <string name="integrations_preview_creator">Creator</string>
     <string name="integrations_preview_location">City, Country</string>
@@ -937,12 +941,12 @@
     <string name="integrations_idle_icon">Idle icon</string>
     <string name="integrations_idle_icon_body">Shown when you are not in a game</string>
     <string-array name="integrations_idle_icons">
-        <item>Pekora X</item>
+        <item>Octane X</item>
     </string-array>
     <string name="activity_channel">Activity tracking</string>
     <string name="activity_join_channel">Game joined</string>
     <string name="activity_notification_title">Activity tracking</string>
-    <string name="activity_waiting">Watching Pekora</string>
+    <string name="activity_waiting">Watching Octane</string>
     <string name="activity_playing">Playing %1$s</string>
     <string name="activity_join_title">Joined %1$s</string>
     <string name="activity_join_body">Connected to the server</string>
@@ -956,13 +960,13 @@
     <string name="notify_allowed">On. Tap to open Android notification settings.</string>
     <string name="notify_blocked">Off. Tap to allow.</string>
     <string name="notify_channels">Sound, vibration and lock screen</string>
-    <string name="notify_channels_body">Opens Android notification settings for Pekostrap</string>
+    <string name="notify_channels_body">Opens Android notification settings for Octifine</string>
     <string name="notify_open">Settings</string>
     <string name="notify_tracking_off">Game notifications need activity tracking, which is turned off in Integrations.</string>
     <string name="notify_location">Show server location</string>
     <string name="notify_location_body">Adds where the server is to the join notification.</string>
     <string name="notify_popup">Pop up on screen</string>
-    <string name="notify_popup_body">Shows join notifications on top of Pekora with sound. Off keeps them quietly in the notification shade.</string>
+    <string name="notify_popup_body">Shows join notifications on top of Octane with sound. Off keeps them quietly in the notification shade.</string>
     <string name="notify_join_time">Dismiss after</string>
     <string-array name="notify_join_times">
         <item>Automatic</item>
@@ -983,7 +987,7 @@
         <item>Very long</item>
     </string-array>
     <string name="notify_launch">Launch messages</string>
-    <string name="notify_launch_body">Warns when FastFlags or mods were not applied as Pekora opens, and when the store opens to install it.</string>
+    <string name="notify_launch_body">Warns when FastFlags or mods were not applied as Octane opens, and when the store opens to install it.</string>
     <string name="notify_smart">%1$s messages</string>
     <string name="notify_smart_body">Shows progress while a server is picked for you.</string>
     <string name="notify_flags">FastFlag messages</string>
@@ -999,42 +1003,42 @@
     <string name="notify_general">Other messages</string>
     <string name="notify_general_body">Confirms saves, backups, sign in and other actions.</string>
     <string name="testing_notice_title">Android support is in testing</string>
-    <string name="testing_notice_body">Pekostrap for Android is still being tested. Expect errors, and some features may not work, or may not work as well as they do on Windows. If something breaks, please report it.</string>
+    <string name="testing_notice_body">Octifine for Android is still being tested. Expect errors, and some features may not work, or may not work as well as they do on Windows. If something breaks, please report it.</string>
     <string name="testing_notice_ok">Got it</string>
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_back">Back</string>
     <string name="onboarding_next">Next</string>
     <string name="onboarding_start">Get started</string>
-    <string name="onboarding_finish">Start using Pekostrap</string>
+    <string name="onboarding_finish">Start using Octifine</string>
     <string name="onboarding_step">Step %1$d of %2$d</string>
-    <string name="onboarding_welcome">Welcome to Pekostrap</string>
+    <string name="onboarding_welcome">Welcome to Octifine</string>
     <string name="onboarding_welcome_body">A few quick choices and you are ready to play. Every step is optional, and you can change all of it later in Settings.</string>
-    <string name="onboarding_appearance_body">Pick how Pekostrap looks and which language it uses.</string>
-    <string name="onboarding_roblox">Set up Pekora</string>
-    <string name="onboarding_roblox_body">Choose the Pekora app Pekostrap opens. Giving Pekostrap access lets your FastFlags and mods apply to Pekora, and you can do it later too.</string>
-    <string name="onboarding_alerts_body">Pekostrap can tell you which game and server you joined. There are more options in Settings, Notifications.</string>
+    <string name="onboarding_appearance_body">Pick how Octifine looks and which language it uses.</string>
+    <string name="onboarding_roblox">Set up Octane</string>
+    <string name="onboarding_roblox_body">Choose the Octane app Octifine opens. Giving Octifine access lets your FastFlags and mods apply to Octane, and you can do it later too.</string>
+    <string name="onboarding_alerts_body">Octifine can tell you which game and server you joined. There are more options in Settings, Notifications.</string>
     <string name="onboarding_done">You\'re all set</string>
-    <string name="onboarding_done_body">Pekostrap is ready. Everything you picked here can be changed in Settings at any time.</string>
+    <string name="onboarding_done_body">Octifine is ready. Everything you picked here can be changed in Settings at any time.</string>
     <string name="onboarding_launch">Launch %1$s</string>
-    <string name="onboarding_launch_body">Jump straight into Pekora now</string>
+    <string name="onboarding_launch_body">Jump straight into Octane now</string>
     <string name="onboarding_root">Root access</string>
-    <string name="onboarding_root_body">Pekostrap for Android is built around root. Android locks Pekora\'s files away from every other app, and root is what lets Pekostrap write to them, so most features depend on it.</string>
+    <string name="onboarding_root_body">Octifine for Android is built around root. Android locks Octane\'s files away from every other app, and root is what lets Octifine write to them, so most features depend on it.</string>
     <string name="onboarding_root_mods">Mods</string>
-    <string name="onboarding_root_mods_body">Swaps Pekora\'s own files for your mods. This only works with root.</string>
+    <string name="onboarding_root_mods_body">Swaps Octane\'s own files for your mods. This only works with root.</string>
     <string name="onboarding_root_flags">FastFlags</string>
-    <string name="onboarding_root_flags_body">Writes your flags to the file Pekora reads every time it starts.</string>
+    <string name="onboarding_root_flags_body">Writes your flags to the file Octane reads every time it starts.</string>
     <string name="onboarding_root_activity">Activity and Discord</string>
     <string name="onboarding_root_activity_body">Sees which game you join, for your Discord status, join notifications and your library.</string>
-    <string name="onboarding_root_note">No root? The Pekostrap helper can be started once from a computer on the next step. It runs FastFlags and activity tracking until the phone restarts, but mods always need root. Pekostrap only uses root for these things and never reads other apps\' data.</string>
+    <string name="onboarding_root_note">No root? The Octifine helper can be started once from a computer on the next step. It runs FastFlags and activity tracking until the phone restarts, but mods always need root. Octifine only uses root for these things and never reads other apps\' data.</string>
     <string name="launch_version">Version %1$s</string>
-    <string name="launch_about">About Pekostrap</string>
+    <string name="launch_about">About Octifine</string>
     <string name="launch_donate">Donate</string>
     <string name="launch_github" translatable="false">GitHub</string>
     <string name="launch_github_body">Releases, source and issues.</string>
-    <string name="launch_open">Open Pekostrap</string>
+    <string name="launch_open">Open Octifine</string>
     <string name="launch_settings_body">Theme, notifications, root and more</string>
     <string name="launch_about_body">Version, licenses and diagnostics</string>
-    <string name="launch_donate_body">Support Pekostrap on GitHub Sponsors</string>
+    <string name="launch_donate_body">Support Octifine on GitHub Sponsors</string>
     <string name="settings_font">App font</string>
     <string name="settings_font_body">Changes the font across the whole app.</string>
     <string name="settings_font_invalid">That file is not a font Android can use. Pick a .ttf or .otf file.</string>
@@ -1051,16 +1055,16 @@
     </string-array>
     <string name="pekora_sign_in">Sign in</string>
     <string name="pekora_sign_out">Sign out</string>
-    <string name="pekora_login_title">Sign in to Pekora</string>
-    <string name="pekora_account_title">Pekora account</string>
+    <string name="pekora_login_title">Sign in to Octane</string>
+    <string name="pekora_account_title">Octane account</string>
     <string name="pekora_account_signed_in">Signed in as %1$s</string>
     <string name="pekora_account_signed_out">Not signed in</string>
-    <string name="pekora_signed_in_toast">Signed in to Pekora.</string>
-    <string name="pekora_signed_out_toast">Signed out of Pekora.</string>
+    <string name="pekora_signed_in_toast">Signed in to Octane.</string>
+    <string name="pekora_signed_out_toast">Signed out of Octane.</string>
     <string name="pekora_session_failed">Could not store your session securely. Please try signing in again.</string>
-    <string name="pekora_sign_out_title">Sign out of Pekora?</string>
-    <string name="pekora_sign_out_body">This removes your saved Pekora session from this device.</string>
-    <string name="home_github_title">Pekostrap on GitHub</string>
+    <string name="pekora_sign_out_title">Sign out of Octane?</string>
+    <string name="pekora_sign_out_body">This removes your saved Octane session from this device.</string>
+    <string name="home_github_title">Octifine on GitHub</string>
     <string name="home_github_open">Open repo</string>
     <string name="home_github_stars">Stars</string>
     <string name="home_github_commits">Commits</string>
@@ -1092,11 +1096,11 @@
     <string name="home_legend_more">More</string>
     <string name="home_github_less">Less</string>
     <string name="home_github_more">More</string>
-    <string name="pekora_login_instructions">Enter your Pekora username or user ID and generate a phrase. Put the phrase in your Pekora bio, save it, then tap Verify.</string>
+    <string name="pekora_login_instructions">Enter your Octane username or user ID and generate a phrase. Put the phrase in your Octane bio, save it, then tap Verify.</string>
     <string name="pekora_login_user_id">Username or user ID</string>
     <string name="pekora_login_generate">Generate phrase</string>
     <string name="pekora_login_verify">Verify</string>
-    <string name="pekora_login_hint">Put this phrase in your Pekora bio, save it, then tap Verify.</string>
+    <string name="pekora_login_hint">Put this phrase in your Octane bio, save it, then tap Verify.</string>
     <string name="pekora_login_need_id">Enter a valid username or user ID first.</string>
     <string name="pekora_login_need_phrase">Generate a phrase for this user ID first.</string>
     <string name="pekora_login_checking">Checking your profile…</string>
@@ -1114,7 +1118,7 @@
     <string name="limiteds_serial">Serial #%1$s of %2$s</string>
     <string name="account_limiteds">View limiteds</string>
     <string name="settings_use_device_colors">Use device colors</string>
-    <string name="settings_use_device_colors_body">Match Pekostrap to your device\'s wallpaper colors. Needs Android 12 or newer.</string>
+    <string name="settings_use_device_colors_body">Match Octifine to your device\'s wallpaper colors. Needs Android 12 or newer.</string>
     <string name="limiteds_view_list">List</string>
     <string name="limiteds_view_grid">Grid</string>
     <string-array name="limiteds_sort_options">
@@ -1124,8 +1128,8 @@
         <item>Lowest serial</item>
         <item>Highest serial</item>
     </string-array>
-    <string name="apk_download_failed">Could not download the Pekora APK. Check your connection and try again.</string>
-    <string name="apk_wrong_package">The downloaded file is not the expected Pekora app.</string>
+    <string name="apk_download_failed">Could not download the Octane APK. Check your connection and try again.</string>
+    <string name="apk_wrong_package">The downloaded file is not the expected Octane app.</string>
     <string name="presets_request_flag">Request a flag</string>
     <string name="presets_request_title">Request a flag</string>
     <string name="presets_request_body">Describe the flag. Submitting opens a GitHub issue with these details for you to review and submit.</string>
@@ -1155,12 +1159,34 @@
         <item>Other</item>
     </string-array>
     <string name="flag_env_heading">Setup (sent with your request)</string>
-    <string name="flag_env_pekostrap">Pekostrap %1$s</string>
+    <string name="flag_env_pekostrap">Octifine %1$s</string>
     <string name="flag_env_android">Android %1$s (API %2$d)</string>
     <string name="flag_env_device">Device: %1$s</string>
-    <string name="flag_env_pekora">Pekora app: %1$s</string>
+    <string name="flag_env_pekora">Octane app: %1$s</string>
     <string name="flag_env_patch">Patch method: %1$s</string>
     <string name="setup_btn_developer">Open developer options</string>
     <string name="setup_btn_shizuku">Install Shizuku</string>
     <string name="home_github_caption_year">%1$s commits in %2$d · %3$s stars</string>
+    <string name="flag_info_copy">Copy FFlag</string>
+    <string name="flag_info_edit">Edit value</string>
+    <string name="flag_info_type_flag">Boolean</string>
+    <string name="flag_info_type_int">Integer</string>
+    <string name="flag_info_type_string">Text</string>
+    <string name="flag_info_type_log">Log level</string>
+    <string name="flag_info_type_unknown">Unknown</string>
+    <string name="flag_info_load_fast">Set once at startup</string>
+    <string name="flag_info_load_dynamic">Can change while running, refreshed about every 5 minutes</string>
+    <string name="flag_info_load_sync">Sent by the server</string>
+    <string name="flag_info_load_unknown">Unknown</string>
+    <string name="flag_info_no_category">Not in the allowlist</string>
+    <string name="flag_info_unset">Not set</string>
+    <string name="flag_info_body">%1$s
+
+Type: %2$s
+Loaded: %3$s
+Category: %4$s
+Current value: %5$s</string>
+    <string name="flag_search_hint">Search flags</string>
+    <string name="bar_launch_description">Launch Octane</string>
+    <string name="presets_scroll_top">Scroll to top</string>
 </resources>

@@ -273,7 +273,7 @@ public final class LimitedsActivity extends AppCompatActivity {
         text.addView(details(o));
         content.addView(text, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        return card(content, d, 8);
+        return openable(card(content, d, 8), o);
     }
 
     private View cell(JSONObject o) {
@@ -295,7 +295,14 @@ public final class LimitedsActivity extends AppCompatActivity {
         name.setTextColor(Ui.attr(this, com.google.android.material.R.attr.colorOnSurface));
         content.addView(name);
         content.addView(details(o));
-        return card(content, d, 0);
+        return openable(card(content, d, 0), o);
+    }
+
+    /** Opens the item's page on Octane when the card is tapped. */
+    private View openable(MaterialCardView card, JSONObject o) {
+        long id = o.optLong("assetId", 0);
+        if (id > 0) card.setOnClickListener(x -> Ui.openWeb(this, "https://octane.wtf/catalog/" + id));
+        return card;
     }
 
     private TextView details(JSONObject o) {

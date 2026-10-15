@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
     private NavigationBarView nav;
     private LinearLayout sidebarItems;
     private static long lastJoinImport;
-    private com.google.android.material.button.MaterialButton barTarget;
     private View barSave;
-    private View barSaveLaunch;
+    private View barLaunch;
+    private long savedAt;
+    private final Runnable storeListener = this::onStoreChanged;
     private boolean saving;
     private String styled;
-    private final Runnable barRefresh = this::updateBar;
     private final androidx.activity.result.ActivityResultLauncher<Intent> launchPage = registerForActivityResult(
             new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(), r -> onLaunchPage(r.getResultCode()));
     private final Runnable presenceRefresh = AppPresence::update;
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (store != null) store.unobserve(storeListener);
         if (isFinishing()) AppPresence.hidden();
         super.onDestroy();
     }
@@ -166,70 +168,47 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        store.observe(barRefresh);
         store.observe(presenceRefresh);
-        updateBar();
         AppPresence.shown(this, current);
     }
 
     @Override
     protected void onStop() {
-        store.unobserve(barRefresh);
         store.unobserve(presenceRefresh);
         super.onStop();
         if (!isChangingConfigurations() && !isFinishing()) release();
     }
 
     private void setupBar() {
-        View bar = findViewById(R.id.action_bar);
-        if (bar != null) bar.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> Crash.run("action bar layout", () -> fitBar((ViewGroup) v)));
-        barTarget = findViewById(R.id.bar_target);
         barSave = findViewById(R.id.bar_save);
-        barSaveLaunch = findViewById(R.id.bar_save_launch);
-        if (barTarget != null) barTarget.setOnClickListener(v -> Actions.targetSheet(this));
+        barLaunch = findViewById(R.id.bar_launch);
         if (barSave != null) barSave.setOnClickListener(v -> save(false));
-        if (barSaveLaunch != null) barSaveLaunch.setOnClickListener(v -> save(true));
+        if (barLaunch != null) barLaunch.setOnClickListener(v -> Actions.launch(this, null, getString(Targets.nameRes(Targets.selected(this)))));
+        store.observe(storeListener);
     }
 
-    private void fitBar(ViewGroup bar) {
-        if (bar == null || barSaveLaunch == null) return;
-        View last = null;
-        for (int i = 0; i < bar.getChildCount(); i++) if (bar.getChildAt(i).getVisibility() == View.VISIBLE) last = bar.getChildAt(i);
-        if (last == null || last.getRight() <= bar.getWidth() - bar.getPaddingEnd()) return;
-        if (!(barSaveLaunch.getLayoutParams() instanceof LinearLayout.LayoutParams)) return;
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) barSaveLaunch.getLayoutParams();
-        if (lp.weight > 0) return;
-        lp.width = 0;
-        lp.weight = 1;
-        lp.setMarginStart(Ui.dp(this, 8));
-        barSaveLaunch.setLayoutParams(lp);
-        View space = findViewById(R.id.bar_space);
-        if (space != null) space.setVisibility(View.GONE);
-        barSaveLaunch.post(() -> Crash.run("action bar compact", this::compactSaveLaunch));
+    /** Edits made after a save hide the launch button again. Saving itself also fires this, so ignore it briefly. */
+    private void onStoreChanged() {
+        if (saving || barLaunch == null || barLaunch.getVisibility() != View.VISIBLE) return;
+        if (SystemClock.uptimeMillis() - savedAt < 1500) return;
+        hideLaunch();
     }
 
-    private void compactSaveLaunch() {
-        if (!(barSaveLaunch instanceof com.google.android.material.button.MaterialButton)) return;
-        com.google.android.material.button.MaterialButton button = (com.google.android.material.button.MaterialButton) barSaveLaunch;
-        CharSequence label = button.getText();
-        if (label == null || label.length() == 0) return;
-        int room = button.getWidth() - button.getPaddingLeft() - button.getPaddingRight();
-        if (room <= 0 || button.getPaint().measureText(label.toString()) <= room) return;
-        button.setText(null);
-        button.setContentDescription(label);
-        androidx.appcompat.widget.TooltipCompat.setTooltipText(button, label);
-        button.setIconResource(R.drawable.ic_play);
-        button.setIconGravity(com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEXT_START);
-        button.setIconPadding(0);
-        button.setPaddingRelative(Ui.dp(this, 12), button.getPaddingTop(), Ui.dp(this, 12), button.getPaddingBottom());
+    private void showLaunch() {
+        if (barLaunch == null) return;
+        savedAt = SystemClock.uptimeMillis();
+        barLaunch.animate().cancel();
+        barLaunch.setScaleX(0f);
+        barLaunch.setScaleY(0f);
+        barLaunch.setVisibility(View.VISIBLE);
+        barLaunch.animate().scaleX(1f).scaleY(1f).setDuration(180).start();
     }
 
-    private void updateBar() {
-        if (barTarget == null) return;
-        String pkg = Targets.selected(this);
-        String name = getString(Targets.nameRes(pkg));
-        barTarget.setText(name);
-        barTarget.setContentDescription(getString(R.string.bar_target_description, name, Actions.status(this, Targets.resolve(this, pkg))));
+    private void hideLaunch() {
+        if (barLaunch == null) return;
+        barLaunch.animate().cancel();
+        barLaunch.animate().scaleX(0f).scaleY(0f).setDuration(150)
+                .withEndAction(() -> barLaunch.setVisibility(View.GONE)).start();
     }
 
     private void save(boolean launch) {
@@ -247,7 +226,10 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             if (launch) Actions.launch(this, null, getString(Targets.nameRes(Targets.selected(this))));
-            else applySavedMods();
+            else {
+                showLaunch();
+                applySavedMods();
+            }
         });
     }
 
@@ -295,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        applyRootGate();
         Updater.resumed(this);
         store.changed();
         Crash.run("update resume", () -> Updater.resume(this));
@@ -401,6 +384,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void show(int id) {
+        if (id == R.id.nav_mods && RootGate.hideRootFeatures(this)) id = R.id.nav_home;
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction t = fm.beginTransaction().setReorderingAllowed(true);
         for (int tab : TABS) {
@@ -457,6 +441,20 @@ public class MainActivity extends AppCompatActivity {
             if (smart != null) return smart;
         }
         return new HomeFragment();
+    }
+
+    /** Hides root-only tabs while Shizuku or USB debugging is active and no real root is available. */
+    private void applyRootGate() {
+        boolean hide = RootGate.hideRootFeatures(this);
+        if (nav != null) {
+            MenuItem mods = nav.getMenu().findItem(R.id.nav_mods);
+            if (mods != null) mods.setVisible(!hide);
+        }
+        if (sidebarItems != null) {
+            View row = sidebarItems.findViewById(R.id.nav_mods);
+            if (row != null) row.setVisibility(hide ? View.GONE : View.VISIBLE);
+        }
+        if (hide && current == R.id.nav_mods) select(R.id.nav_home);
     }
 
     private void buildSidebar() {
