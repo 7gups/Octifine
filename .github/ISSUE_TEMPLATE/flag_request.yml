@@ -1,0 +1,23 @@
+name: Flag request
+description: Ask for a flag to be added to the supported list
+title: "Flag request: "
+labels: ["flag-request"]
+body:
+  - type: input
+    id: flag
+    attributes:
+      label: Flag name
+      placeholder: FFlagExample
+    validations:
+      required: true
+  - type: input
+    id: value
+    attributes:
+      label: Value
+      description: Optional. Leave empty if the flag needs no value.
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why it helps
+    validations:
+      required: true
