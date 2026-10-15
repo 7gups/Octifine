@@ -1189,4 +1189,6 @@ Current value: %5$s</string>
     <string name="flag_search_hint">Search flags</string>
     <string name="bar_launch_description">Launch Octane</string>
     <string name="presets_scroll_top">Scroll to top</string>
+    <string name="home_login_octane">Log in to Octane</string>
+    <string name="flag_info_community">Community description, not verified on the 2021 build.</string>
 </resources>

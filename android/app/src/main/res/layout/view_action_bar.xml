@@ -3,39 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/action_bar"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:ignore="Overdraw"
-    android:gravity="end"
-    android:orientation="horizontal"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="8dp">
+    android:orientation="vertical"
+    tools:ignore="Overdraw">
 
-    <FrameLayout
-        android:layout_width="72dp"
-        android:layout_height="72dp">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bar_launch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:contentDescription="@string/bar_launch_description"
+        android:visibility="gone"
+        app:backgroundTint="?attr/colorSecondaryContainer"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_play"
+        app:tint="?attr/colorOnSecondaryContainer" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/bar_launch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|start"
-            android:contentDescription="@string/bar_launch_description"
-            android:visibility="gone"
-            app:backgroundTint="?attr/colorSecondaryContainer"
-            app:fabSize="mini"
-            app:srcCompat="@drawable/ic_play"
-            app:tint="?attr/colorOnSecondaryContainer" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/bar_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:contentDescription="@string/bar_save"
-            app:backgroundTint="?attr/colorPrimary"
-            app:srcCompat="@drawable/ic_save"
-            app:tint="?attr/colorOnPrimary" />
-    </FrameLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bar_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/bar_save"
+        app:backgroundTint="?attr/colorPrimary"
+        app:srcCompat="@drawable/ic_save"
+        app:tint="?attr/colorOnPrimary" />
 </LinearLayout>

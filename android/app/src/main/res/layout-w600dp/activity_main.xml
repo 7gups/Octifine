@@ -19,7 +19,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:importantForAccessibility="no"
-            android:src="@drawable/pekostrap_logo"
+            android:src="@drawable/octifine_logo"
                 app:tint="?attr/colorPrimary" />
 
         <TextView
@@ -90,14 +90,15 @@
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            <include
+                layout="@layout/view_action_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:id="@+id/bar_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/vs_divider" />
 
-    <include layout="@layout/view_action_bar" />
 </LinearLayout>

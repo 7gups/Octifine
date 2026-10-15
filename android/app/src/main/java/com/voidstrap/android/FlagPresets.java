@@ -205,15 +205,13 @@ public final class FlagPresets {
         defaultOff(quality, R.string.presets_ambient_occlusion, R.string.presets_ambient_occlusion_short, AO);
         defaultOff(quality, R.string.presets_indoor_specular, R.string.presets_indoor_specular_short, INDOOR_SPEC);
 
-        if (ok(CLOUDS) || ok(DROP_HAT) || ok(GOTHAM) || ok(DEATH_SOUNDS) || ok(BONES) || ok(BODY_OUTLINE) || ok(HUMANOID_DEBUG)) {
+        if (ok(CLOUDS) || ok(DROP_HAT) || ok(GOTHAM) || ok(DEATH_SOUNDS) || ok(BONES)) {
             LinearLayout fun = section(R.string.presets_section_fun);
             defaultOff(fun, R.string.presets_clouds, R.string.presets_clouds_short, CLOUDS);
             defaultOff(fun, R.string.presets_drop_hat, R.string.presets_drop_hat_short, DROP_HAT);
             defaultOff(fun, R.string.presets_gotham_font, R.string.presets_gotham_font_short, GOTHAM);
             defaultOn(fun, R.string.presets_death_sounds, R.string.presets_death_sounds_short, DEATH_SOUNDS);
             defaultOn(fun, R.string.presets_bones, R.string.presets_bones_short, BONES);
-            defaultOff(fun, R.string.presets_body_outline, R.string.presets_body_outline_short, BODY_OUTLINE);
-            defaultOff(fun, R.string.presets_humanoid_debug, R.string.presets_humanoid_debug_short, HUMANOID_DEBUG);
         }
 
         boolean detailAny = ok(LOD[0]) || ok(GRASS_MIN);
@@ -252,6 +250,8 @@ public final class FlagPresets {
         }
 
         LinearLayout debug = section(R.string.presets_section_debug);
+        defaultOff(debug, R.string.presets_body_outline, R.string.presets_body_outline_short, BODY_OUTLINE);
+        defaultOff(debug, R.string.presets_humanoid_debug, R.string.presets_humanoid_debug_short, HUMANOID_DEBUG);
         input(debug, R.string.presets_flag_state, R.string.presets_flag_state_short, FLAG_STATE, false, v -> put(FLAG_STATE, v));
 
         LinearLayout quick = section(R.string.presets_section_quick);
@@ -553,14 +553,51 @@ public final class FlagPresets {
 
             android.widget.FrameLayout box = new android.widget.FrameLayout(a);
             box.addView(rv, new android.widget.FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    (int) (a.getResources().getDisplayMetrics().heightPixels * 0.55f)));
+                    ViewGroup.LayoutParams.MATCH_PARENT));
             android.widget.FrameLayout.LayoutParams tp = new android.widget.FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, android.view.Gravity.BOTTOM | android.view.Gravity.END);
             int m = Ui.dp(a, 12);
             tp.setMargins(m, m, m, m);
             box.addView(top, tp);
-            list.addView(box);
-            Ui.surface(a, R.string.presets_allowlist, R.string.presets_allowlist_body, list).show();
+            list.addView(box, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+
+            LinearLayout root = new LinearLayout(a);
+            root.setOrientation(LinearLayout.VERTICAL);
+            root.setBackgroundColor(Ui.attr(a, com.google.android.material.R.attr.colorSurface));
+            root.setFitsSystemWindows(true);
+            int pad = Ui.dp(a, 16);
+
+            LinearLayout header = new LinearLayout(a);
+            header.setOrientation(LinearLayout.HORIZONTAL);
+            header.setGravity(android.view.Gravity.CENTER_VERTICAL);
+            header.setPadding(pad, Ui.dp(a, 8), Ui.dp(a, 8), 0);
+            TextView title = new TextView(a);
+            title.setText(R.string.presets_allowlist);
+            title.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_TitleLarge);
+            title.setTextColor(Ui.attr(a, com.google.android.material.R.attr.colorOnSurface));
+            header.addView(title, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            com.google.android.material.button.MaterialButton close = new com.google.android.material.button.MaterialButton(
+                    new android.view.ContextThemeWrapper(a, R.style.Widget_Voidstrap_IconButton));
+            close.setIcon(a.getDrawable(R.drawable.ic_dismiss));
+            close.setContentDescription(a.getString(R.string.common_close));
+            header.addView(close);
+            root.addView(header);
+
+            TextView body = new TextView(a);
+            body.setText(R.string.presets_allowlist_body);
+            body.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
+            body.setTextColor(Ui.attr(a, com.google.android.material.R.attr.colorOnSurfaceVariant));
+            body.setPadding(pad, Ui.dp(a, 4), pad, Ui.dp(a, 8));
+            root.addView(body);
+
+            list.setPadding(pad, 0, pad, pad);
+            root.addView(list, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+
+            android.app.Dialog full = new android.app.Dialog(a, R.style.Theme_Voidstrap);
+            full.setContentView(root);
+            close.setOnClickListener(x -> full.dismiss());
+            full.show();
+            if (full.getWindow() != null) full.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         });
     }
 

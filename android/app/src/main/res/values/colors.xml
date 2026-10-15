@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="vs_launcher_background">#FF110D1C</color>
+    <color name="vs_launcher_background">#FF321A5C</color>
 
-    <color name="vs_p_primary">#FF625690</color>
+    <color name="vs_p_primary">#FF5B3D9E</color>
     <color name="vs_p_on_primary">#FFFFFFFF</color>
-    <color name="vs_p_window">#FFFDF7FF</color>
-    <color name="vs_p_sidebar">#FFF1ECF4</color>
-    <color name="vs_p_card">#FFF7F2FA</color>
-    <color name="vs_p_menu">#FFECE6EE</color>
-    <color name="vs_p_input">#FFE6E1E9</color>
-    <color name="vs_p_text_primary">#FF1C1B20</color>
-    <color name="vs_p_text_secondary">#FF48454E</color>
-    <color name="vs_p_text_tertiary">#FF79757F</color>
+    <color name="vs_p_window">#FFFBF8FF</color>
+    <color name="vs_p_sidebar">#FFF0EAF8</color>
+    <color name="vs_p_card">#FFF7F2FC</color>
+    <color name="vs_p_menu">#FFEBE3F5</color>
+    <color name="vs_p_input">#FFE6DDF2</color>
+    <color name="vs_p_text_primary">#FF1E1433</color>
+    <color name="vs_p_text_secondary">#FF4C4066</color>
+    <color name="vs_p_text_tertiary">#FF7A6E92</color>
 
     <color name="vs_accent">@color/vs_p_primary</color>
     <color name="vs_accent_text">@color/vs_p_primary</color>
@@ -26,12 +26,12 @@
     <color name="vs_text_secondary">@color/vs_p_text_secondary</color>
     <color name="vs_text_tertiary">@color/vs_p_text_tertiary</color>
 
-    <color name="vs_card_stroke">#FFCAC4CF</color>
-    <color name="vs_control_stroke">#FF79757F</color>
-    <color name="vs_news_surface">#FF0E1015</color>
+    <color name="vs_card_stroke">#FFC9BDDD</color>
+    <color name="vs_control_stroke">#FF7A6E92</color>
+    <color name="vs_news_surface">#FF2A1A4D</color>
     <color name="vs_subtle">#141C1B20</color>
     <color name="vs_subtle_pressed">#1F1C1B20</color>
-    <color name="vs_divider">#FFCAC4CF</color>
+    <color name="vs_divider">#FFC9BDDD</color>
     <color name="vs_success">#FF1E7B34</color>
     <color name="vs_caution">#FF9D5D00</color>
     <color name="vs_critical">#FFBA1A1A</color>

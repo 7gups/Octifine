@@ -499,7 +499,6 @@ public class MainActivity extends AppCompatActivity {
         View root = findViewById(R.id.root);
         View content = findViewById(R.id.column);
         View bar = findViewById(R.id.action_bar);
-        View divider = findViewById(R.id.bar_divider);
         boolean wide = sidebarItems != null;
         if (wide) getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Ui.attr(this, R.attr.vsSidebar)));
         ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
@@ -508,7 +507,6 @@ public class MainActivity extends AppCompatActivity {
             boolean imeVisible = ime.bottom > bars.bottom;
             int visibility = imeVisible ? View.GONE : View.VISIBLE;
             bar.setVisibility(visibility);
-            divider.setVisibility(visibility);
             if (wide) {
                 root.setPadding(bars.left, bars.top, bars.right, imeVisible ? ime.bottom : bars.bottom);
             } else {

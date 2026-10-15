@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 const DOWNLOAD: &str = "https://github.com/7gups/Octifine/releases";
 const DISCORD: &str = "https://discord.gg/bzdbHHytFR";
 const GITHUB: &str = "https://github.com/7gups/Octifine";
-const LOGO: &str = "https://raw.githubusercontent.com/7gups/Octifine/main/branding/pekostrap-logo.png";
+const LOGO: &str = "https://raw.githubusercontent.com/7gups/Octifine/main/branding/octifine-logo.png";
 const LOADING: &str = "https://raw.githubusercontent.com/KloBraticc/Voidstrap/main/assets/Images/rpc-loading.gif";
 
 const IDLE: [(&str, &str); 1] = [

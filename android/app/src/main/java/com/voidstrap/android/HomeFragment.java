@@ -67,6 +67,7 @@ public final class HomeFragment extends Page {
     private TextView accountTickets;
     private ImageView accountAvatar;
     private View accountCard;
+    private View accountSignIn;
     private long accountDueAt;
     private View alertBanner;
     private TextView alertText;
@@ -161,6 +162,8 @@ public final class HomeFragment extends Page {
         v.findViewById(R.id.catalog_header).setVisibility(View.GONE);
         v.findViewById(R.id.account_limiteds).setOnClickListener(x -> startActivity(new Intent(requireContext(), LimitedsActivity.class)));
         accountCard = v.findViewById(R.id.account_card);
+        accountSignIn = v.findViewById(R.id.account_signin);
+        accountSignIn.setOnClickListener(x -> PekoraSession.toggle(requireActivity()));
         alertBanner = v.findViewById(R.id.alert_banner);
         alertText = v.findViewById(R.id.alert_text);
         alertLink = v.findViewById(R.id.alert_link);
@@ -189,6 +192,7 @@ public final class HomeFragment extends Page {
         bindWelcome();
         boolean in = PekoraSession.signedIn(requireContext());
         if (accountCard != null) accountCard.setVisibility(in ? View.VISIBLE : View.GONE);
+        if (accountSignIn != null) accountSignIn.setVisibility(in ? View.GONE : View.VISIBLE);
         if (in && now >= accountDueAt) loadAccount();
         if (now >= alertDueAt) loadAlert();
     }

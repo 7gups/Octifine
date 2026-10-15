@@ -44,7 +44,10 @@ final class FlagInfo {
             content.addView(editButton, fullWidth(a, 0));
         }
 
-        holder[0] = Ui.surface(a, key, describe(a, key, value), content, null);
+        String curated = FlagDescriptions.get(key);
+        String body = describe(a, key, value);
+        if (curated != null) body = curated + "\n\n" + a.getString(R.string.flag_info_community) + "\n\n" + body;
+        holder[0] = Ui.surface(a, key, body, content, null);
         holder[0].show();
         return holder[0];
     }

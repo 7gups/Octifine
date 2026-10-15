@@ -50,6 +50,23 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+                <com.google.android.material.button.MaterialButton
+
+                    android:id="@+id/account_signin"
+
+                    style="@style/Widget.Material3.Button"
+
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="16dp"
+
+                    android:text="@string/home_login_octane"
+
+                    android:visibility="gone" />
+
+
                 <com.google.android.material.card.MaterialCardView
             android:id="@+id/account_card"
             style="@style/Widget.Material3.CardView.Filled"

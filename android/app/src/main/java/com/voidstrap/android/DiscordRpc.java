@@ -20,12 +20,12 @@ import java.util.UUID;
 
 final class DiscordRpc {
     static final String PACKAGE = "com.discord";
-    static final DiscordRpc ROBLOX = new DiscordRpc(1559526807596830742L, "Octane");
-    static final DiscordRpc VOIDSTRAP = new DiscordRpc(1559522162019274795L, "Octifine");
+    static final DiscordRpc ROBLOX = new DiscordRpc(1560425682151145563L, "Octane");
+    static final DiscordRpc VOIDSTRAP = new DiscordRpc(1560423906614055052L, "Octifine");
     /** Art asset key for the Pekostrap logo, uploaded under Rich Presence assets in the Discord developer portal. */
-    static final String LOGO_ASSET = "pekostrap";
+    static final String LOGO_ASSET = "octifine";
     /** Art asset key for the Pekora X, used by in-game presence. */
-    static final String PEKORA_ASSET = "pekora";
+    static final String PEKORA_ASSET = "octane";
 
     private static final String SERVICE = "com.discord.socialsdk.rpc.IDiscordRpcService";
     private static final String CONNECTION = "com.discord.socialsdk.rpc.IDiscordRpcConnection";
