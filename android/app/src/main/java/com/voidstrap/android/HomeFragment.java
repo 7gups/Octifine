@@ -68,6 +68,8 @@ public final class HomeFragment extends Page {
     private ImageView accountAvatar;
     private View accountCard;
     private View accountSignIn;
+    private TextView libraryHeader;
+    private LinearLayout libraryGrid;
     private long accountDueAt;
     private View alertBanner;
     private TextView alertText;
@@ -162,6 +164,8 @@ public final class HomeFragment extends Page {
         v.findViewById(R.id.account_limiteds).setOnClickListener(x -> startActivity(new Intent(requireContext(), LimitedsActivity.class)));
         accountCard = v.findViewById(R.id.account_card);
         accountSignIn = v.findViewById(R.id.account_signin);
+        libraryHeader = v.findViewById(R.id.library_header);
+        libraryGrid = v.findViewById(R.id.library_grid);
         accountSignIn.setOnClickListener(x -> PekoraSession.toggle(requireActivity()));
         alertBanner = v.findViewById(R.id.alert_banner);
         alertText = v.findViewById(R.id.alert_text);
@@ -189,6 +193,7 @@ public final class HomeFragment extends Page {
         if (now >= newsDueAt) loadNews();
         if (now >= githubDueAt) loadGithub();
         if (now >= catalogDueAt) loadCatalog();
+        loadLibrary();
         bindWelcome();
         boolean in = PekoraSession.signedIn(requireContext());
         if (accountCard != null) accountCard.setVisibility(in ? View.VISIBLE : View.GONE);
@@ -281,6 +286,49 @@ public final class HomeFragment extends Page {
             cells.add(card);
         }
         fill(newsGrid, cells, contentDp() >= 560 ? 2 : 1, 14);
+    }
+
+    /** Shows games from the user's library, pinned first. Uses the local library and the place-details lookup. */
+    private void loadLibrary() {
+        Context app = requireContext().getApplicationContext();
+        store.work.execute(() -> {
+            List<LibraryData.Game> games = LibraryData.base(store);
+            try {
+                LibraryData.enrich(app, games);
+            } catch (RuntimeException ignored) {
+            }
+            List<LibraryData.Game> out = new ArrayList<>(games);
+            store.main.post(() -> bindLibrary(out));
+        });
+    }
+
+    private void bindLibrary(List<LibraryData.Game> games) {
+        if (getView() == null || libraryGrid == null) return;
+        boolean has = games != null && !games.isEmpty();
+        libraryHeader.setVisibility(has ? View.VISIBLE : View.GONE);
+        libraryGrid.setVisibility(has ? View.VISIBLE : View.GONE);
+        if (!has) return;
+        List<LibraryData.Game> shown = new ArrayList<>();
+        for (LibraryData.Game g : games) {
+            if (g.pinned && shown.size() < 6) shown.add(g);
+        }
+        for (LibraryData.Game g : games) {
+            if (!g.pinned && shown.size() < 6) shown.add(g);
+        }
+        List<View> cells = new ArrayList<>();
+        LayoutInflater inf = LayoutInflater.from(requireContext());
+        for (LibraryData.Game g : shown) {
+            View card = inf.inflate(R.layout.item_catalog_card, libraryGrid, false);
+            ((TextView) card.findViewById(R.id.catalog_name)).setText(g.name.isEmpty() ? String.valueOf(g.placeId) : g.name);
+            ((TextView) card.findViewById(R.id.catalog_creator)).setText(g.creator);
+            ((TextView) card.findViewById(R.id.catalog_type)).setText(g.pinned ? getString(R.string.home_library_pinned) : "");
+            ((TextView) card.findViewById(R.id.catalog_price)).setText("");
+            card.findViewById(R.id.catalog_limited).setVisibility(View.GONE);
+            Net.image((ImageView) card.findViewById(R.id.catalog_image), g.iconUrl, R.color.vs_news_surface, Ui.dp(requireContext(), 150));
+            card.setOnClickListener(x -> Ui.openWeb(requireContext(), "https://octane.wtf/games/" + g.placeId));
+            cells.add(card);
+        }
+        fill(libraryGrid, cells, contentDp() >= 560 ? 3 : 2, 12);
     }
 
     private void loadCatalog() {

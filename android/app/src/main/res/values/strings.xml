@@ -1193,7 +1193,7 @@ Current value: %5$s</string>
     <string name="flag_info_community">Community description, not verified on the 2021 build.</string>
     <string name="crashtest_button">Run crash test</string>
     <string name="crashtest_title">Crash test</string>
-    <string name="crashtest_body">Octifine turns on batches of flags, launches the client each time, and asks whether it crashed. It narrows down which flags crash the client. Each step needs one launch. Your normal flags are restored on your next normal launch.</string>
+    <string name="crashtest_body">Octifine turns on batches of flags and launches the client for each one. With root or the Octifine helper it checks for crashes by itself. Otherwise it asks you after each launch. Your normal flags are restored when it finishes.</string>
     <string name="crashtest_start">Start</string>
     <string name="crashtest_ask_title">Did the client crash?</string>
     <string name="crashtest_ask_body">That batch had %1$d flags.</string>
@@ -1208,4 +1208,7 @@ Current value: %5$s</string>
 
 Crashed only with others: %2$s</string>
     <string name="crashtest_none">None</string>
+    <string name="crashtest_error">The crash test could not run. Your flags were restored.</string>
+    <string name="home_library_title">Your library</string>
+    <string name="home_library_pinned">Pinned</string>
 </resources>

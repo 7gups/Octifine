@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Typed calls for the octane.wtf apisite endpoints seen in the sampled responses. Account calls take the
@@ -30,15 +32,9 @@ final class PekoraApi {
      */
     static String get(String path, String session) {
         String token = "";
+        String csrf = null;
         for (int attempt = 0; attempt < 2; attempt++) {
-            String[] base = session == null
-                    ? new String[]{"Accept", "application/json", "User-Agent", "Voidstrap Android"}
-                    : new String[]{"Cookie", COOKIE + "=" + session, "Accept", "application/json", "User-Agent", "Voidstrap Android"};
-            String[] headers = new String[base.length + 2];
-            System.arraycopy(base, 0, headers, 0, base.length);
-            headers[base.length] = "x-csrf-token";
-            headers[base.length + 1] = token;
-            Object[] res = Http.request("GET", BASE + path, headers, null, TIMEOUT_MS, LIMIT, session == null);
+            Object[] res = Http.request("GET", BASE + path, headers(session, csrf, token, false), null, TIMEOUT_MS, LIMIT, session == null);
             if (res == null) return null;
             int code = ((int[]) res[0])[0];
             if (code == 200) return new String((byte[]) res[2], StandardCharsets.UTF_8);
@@ -46,26 +42,21 @@ final class PekoraApi {
             String next = responseHeader(res, "x-csrf-token");
             if (next == null || next.isEmpty() || next.equals(token)) return null;
             token = next;
+            csrf = csrfCookie(res);
         }
         return null;
     }
 
     /**
-     * POST a JSON body. The site uses a CSRF token on POST requests: the browser sends x-csrf-token, and a
-     * 403 response carries the token to retry with. Returns the response body, or null on failure.
+     * POST a JSON body. The site uses a CSRF token on POST requests: a 403 carries the token in a header and
+     * the matching rbxcsrf cookie in Set-Cookie, and the retry must send both. Returns the body, or null.
      */
     static String post(String path, String json, String session) {
         byte[] body = json.getBytes(StandardCharsets.UTF_8);
         String token = "";
+        String csrf = null;
         for (int attempt = 0; attempt < 2; attempt++) {
-            String[] base = session == null
-                    ? new String[]{"Content-Type", "application/json", "Accept", "application/json", "User-Agent", "Voidstrap Android"}
-                    : new String[]{"Cookie", COOKIE + "=" + session, "Content-Type", "application/json", "Accept", "application/json", "User-Agent", "Voidstrap Android"};
-            String[] headers = new String[base.length + 2];
-            System.arraycopy(base, 0, headers, 0, base.length);
-            headers[base.length] = "x-csrf-token";
-            headers[base.length + 1] = token;
-            Object[] res = Http.request("POST", BASE + path, headers, body, TIMEOUT_MS, LIMIT, session == null);
+            Object[] res = Http.request("POST", BASE + path, headers(session, csrf, token, true), body, TIMEOUT_MS, LIMIT, session == null);
             if (res == null) return null;
             int code = ((int[]) res[0])[0];
             if (code == 200) return new String((byte[]) res[2], StandardCharsets.UTF_8);
@@ -73,6 +64,40 @@ final class PekoraApi {
             String next = responseHeader(res, "x-csrf-token");
             if (next == null || next.isEmpty() || next.equals(token)) return null;
             token = next;
+            csrf = csrfCookie(res);
+        }
+        return null;
+    }
+
+    /** Request headers. Session and CSRF cookies share one Cookie header, since a repeated header would replace the first. */
+    private static String[] headers(String session, String csrf, String token, boolean json) {
+        List<String> h = new ArrayList<>();
+        if (json) {
+            h.add("Content-Type");
+            h.add("application/json");
+        }
+        h.add("Accept");
+        h.add("application/json");
+        h.add("User-Agent");
+        h.add("Voidstrap Android");
+        String cookie = session == null ? null : COOKIE + "=" + session;
+        if (csrf != null) cookie = cookie == null ? csrf : cookie + "; " + csrf;
+        if (cookie != null) {
+            h.add("Cookie");
+            h.add(cookie);
+        }
+        h.add("x-csrf-token");
+        h.add(token);
+        return h.toArray(new String[0]);
+    }
+
+    /** The rbxcsrf cookie from a 403's Set-Cookie header, as name=value, or null. */
+    private static String csrfCookie(Object[] res) {
+        String[] pairs = (String[]) res[1];
+        for (int i = 0; i + 1 < pairs.length; i += 2) {
+            if ("set-cookie".equalsIgnoreCase(pairs[i]) && pairs[i + 1].trim().startsWith("rbxcsrf")) {
+                return pairs[i + 1].trim().split(";", 2)[0];
+            }
         }
         return null;
     }

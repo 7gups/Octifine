@@ -2,13 +2,12 @@ use crate::java::{self, opt_bool, opt_long, opt_str, regex_space, trim, utf16_le
 use serde_json::{Value, json};
 
 const DOWNLOAD: &str = "https://github.com/7gups/Octifine/releases";
-const DISCORD: &str = "https://discord.gg/bzdbHHytFR";
 const GITHUB: &str = "https://github.com/7gups/Octifine";
 const LOGO: &str = "https://raw.githubusercontent.com/7gups/Octifine/main/branding/octifine-logo.png";
-const LOADING: &str = "https://raw.githubusercontent.com/KloBraticc/Voidstrap/main/assets/Images/rpc-loading.gif";
+const LOADING: &str = "https://raw.githubusercontent.com/7gups/Octifine/main/branding/rpc-loading.gif";
 
 const IDLE: [(&str, &str); 1] = [
-    ("octane", "https://raw.githubusercontent.com/7gups/Octifine/main/branding/octifine-logo.png"),
+    ("octane", "https://raw.githubusercontent.com/7gups/Octifine/main/branding/octane-logo.png"),
 ];
 
 #[derive(Clone, Copy)]
@@ -417,7 +416,7 @@ pub fn app(a: &Value) -> Value {
             let label = if label.is_empty() { "Open".to_string() } else { utf16_prefix(&label, 32).to_string() };
             vec![[label, url], ["Get Octifine".to_string(), DOWNLOAD.to_string()]]
         }
-        None => vec![["Discord".to_string(), DISCORD.to_string()], ["Github".to_string(), GITHUB.to_string()]],
+        None => vec![["Github".to_string(), GITHUB.to_string()]],
     };
     presence(details, state, image, text, small, opt_long(a, "start", 0), true, buttons)
 }

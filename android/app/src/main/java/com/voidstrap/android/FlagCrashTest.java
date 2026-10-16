@@ -26,6 +26,7 @@ final class FlagCrashTest {
     private static final String FILE = "flag-crash-test.json";
     private static final Pattern BOOL_FLAG = Pattern.compile("^D?FFlag[A-Za-z0-9_]+$");
     private static final String CHECK = "check", SEARCH = "search", VERIFY = "verify", DONE = "done";
+    private static final int WAIT_SECONDS = 90;
 
     private String phase = DONE;
     private List<String> pending = new ArrayList<>();
@@ -56,6 +57,10 @@ final class FlagCrashTest {
                     t.pending = new ArrayList<>(names);
                     t.phase = CHECK;
                     t.advance();
+                    if (automatic(a)) {
+                        runAutomatic(a, t);
+                        return;
+                    }
                     t.save(a);
                     showNext(a, t);
                 })
@@ -70,13 +75,73 @@ final class FlagCrashTest {
         if (t == null || DONE.equals(t.phase)) return null;
         t.awaiting = true;
         t.save(c);
+        return t.testJson();
+    }
+
+    private String testJson() {
         try {
             JSONObject o = new JSONObject();
-            for (String name : t.test) o.put(name, true);
+            for (String name : test) o.put(name, true);
             return o.toString();
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /** Automatic mode needs root or the Octifine helper, since it has to force-stop and relaunch the client. */
+    static boolean automatic(Context c) {
+        FlagWriter.Mode m = FlagWriter.mode(c);
+        return m == FlagWriter.Mode.HELPER || m == FlagWriter.Mode.ROOT;
+    }
+
+    /** Shell that relaunches the client, waits, and exits 10 on a crash or 0 if the client is still running. */
+    private static String script(String pkg) {
+        return "logcat -b crash -c 2>/dev/null; am force-stop " + pkg + "; "
+                + "monkey -p " + pkg + " -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1; "
+                + "sleep " + WAIT_SECONDS + "; "
+                + "if logcat -b crash -d 2>/dev/null | grep -q " + pkg + "; then am force-stop " + pkg + "; exit 10; fi; "
+                + "if pidof " + pkg + " >/dev/null 2>&1; then am force-stop " + pkg + "; exit 0; fi; "
+                + "exit 10";
+    }
+
+    /** Runs the whole search in the background without prompts. The flags are restored at the end. */
+    static void runAutomatic(AppCompatActivity a, FlagCrashTest first) {
+        Context app = a.getApplicationContext();
+        String pkg = Targets.selected(a);
+        if (!pkg.matches("[A-Za-z0-9_.]+")) return;
+        first.save(app);
+        new Thread(() -> {
+            FlagWriter.Mode mode = FlagWriter.mode(app);
+            String error = null;
+            while (true) {
+                FlagCrashTest t = load(app);
+                if (t == null) break;
+                if (DONE.equals(t.phase)) {
+                    a.runOnUiThread(() -> showSummary(a, t));
+                    delete(app);
+                    break;
+                }
+                String json = t.testJson();
+                if (json == null || FlagWriter.syncForLaunch(app, pkg, json, false) != 0) {
+                    error = "write";
+                    break;
+                }
+                int code = FlagWriter.raw(mode, script(pkg), WAIT_SECONDS + 60);
+                if (code != 0 && code != 10) {
+                    error = "run";
+                    break;
+                }
+                t.apply(code == 10);
+                t.advance();
+                t.save(app);
+            }
+            Store store = Store.get(app);
+            FlagWriter.syncForLaunch(app, pkg, store.flags.active().valuesJson().toString(), false);
+            if (error != null) {
+                a.runOnUiThread(() -> Ui.say(a, R.string.crashtest_error));
+                delete(app);
+            }
+        }).start();
     }
 
     /** Called when Octifine comes back to the foreground. Asks about the last step if one is waiting. */
@@ -104,17 +169,22 @@ final class FlagCrashTest {
         showNext(a, t);
     }
 
-    private static void showNext(AppCompatActivity a, FlagCrashTest t) {
+    private static void showSummary(AppCompatActivity a, FlagCrashTest t) {
         if (a.isFinishing()) return;
-        if (DONE.equals(t.phase)) {
-            delete(a);
-            Ui.alert(a)
+        Ui.alert(a)
                     .setTitle(R.string.crashtest_done_title)
                     .setMessage(a.getString(R.string.crashtest_done_body,
                             t.found.isEmpty() ? a.getString(R.string.crashtest_none) : joined(t.found),
                             t.inconclusive.isEmpty() ? a.getString(R.string.crashtest_none) : joined(t.inconclusive)))
                     .setPositiveButton(R.string.common_ok, null)
                     .show();
+    }
+
+    private static void showNext(AppCompatActivity a, FlagCrashTest t) {
+        if (a.isFinishing()) return;
+        if (DONE.equals(t.phase)) {
+            delete(a);
+            showSummary(a, t);
             return;
         }
         Ui.alert(a)

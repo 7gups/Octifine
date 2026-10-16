@@ -35,7 +35,7 @@ final class PekoraSession {
     }
 
     static String newPhrase() {
-        StringBuilder sb = new StringBuilder("pekostrap-");
+        StringBuilder sb = new StringBuilder("octifine-");
         for (int i = 0; i < 10; i++) sb.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
         return sb.toString();
     }
