@@ -31,7 +31,7 @@
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 android:importantForAccessibility="no"
-                android:src="@drawable/octifine_logo" />
+                android:src="@drawable/octifine_mark" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,6 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textAppearance="@style/TextAppearance.Voidstrap.Tertiary" />
+
+
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"

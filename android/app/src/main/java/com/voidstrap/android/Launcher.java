@@ -37,7 +37,8 @@ public final class Launcher {
             return;
         }
         busy = true;
-        String flags = store.flags.active().valuesJson().toString();
+        String test = FlagCrashTest.beginStep(app);
+        String flags = test != null ? test : store.flags.active().valuesJson().toString();
         boolean unlocked = FlagPresets.targetFps(store.flags.active().values) > 60;
         store.work.execute(() -> {
             try {

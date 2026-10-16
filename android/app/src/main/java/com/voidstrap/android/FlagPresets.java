@@ -489,6 +489,13 @@ public final class FlagPresets {
             LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             rp.setMargins(0, 0, 0, Math.round(12 * a.getResources().getDisplayMetrics().density));
             list.addView(request, rp);
+            if (BuildConfig.DEBUG) {
+                com.google.android.material.button.MaterialButton crash = new com.google.android.material.button.MaterialButton(a, null,
+                        com.google.android.material.R.attr.materialButtonOutlinedStyle);
+                crash.setText(R.string.crashtest_button);
+                crash.setOnClickListener(x -> FlagCrashTest.confirmStart(a, FlagCrashTest.candidates()));
+                list.addView(crash, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
 
             com.google.android.material.textfield.TextInputLayout search =
                     new com.google.android.material.textfield.TextInputLayout(new android.view.ContextThemeWrapper(a,
@@ -501,6 +508,7 @@ public final class FlagPresets {
             LinearLayout.LayoutParams sp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             sp.setMargins(0, 0, 0, Math.round(8 * a.getResources().getDisplayMetrics().density));
             list.addView(search, sp);
+            if (BuildConfig.DEBUG) loadDebugFlags(a);
             // Categories come from the data so new ones show up without touching this code.
             java.util.Set<String> found = new java.util.TreeSet<>();
             List<Map.Entry<String, String>> all = new ArrayList<>();
@@ -603,6 +611,23 @@ public final class FlagPresets {
 
     private static final String[] CATEGORY_ORDER = {
             "Rendering", "Geometry", "Physics", "Performance", "Network", "Audio", "User Interface", "Scripting", "Debug", "Other"};
+
+    private static boolean debugFlagsLoaded;
+
+    /** Debug builds only: adds every flag from the extra dumps to the allowlist under the Debug category. */
+    private static void loadDebugFlags(android.content.Context c) {
+        if (debugFlagsLoaded) return;
+        debugFlagsLoaded = true;
+        try (java.io.BufferedReader r = new java.io.BufferedReader(new java.io.InputStreamReader(
+                c.getAssets().open("debug_fflags.txt"), java.nio.charset.StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = r.readLine()) != null) {
+                String name = line.trim();
+                if (!name.isEmpty()) FlagWriter.ALLOWLIST.putIfAbsent(name, "Debug");
+            }
+        } catch (java.io.IOException ignored) {
+        }
+    }
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FLAG = 1;

@@ -30,13 +30,13 @@ public final class LaunchMenuActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         super.onCreate(saved);
         setContentView(R.layout.activity_launch_menu);
+        ((TextView) findViewById(R.id.launch_version)).setText(getString(R.string.launch_version, BuildConfig.VERSION_NAME));
         VoidstrapApp.bars(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.launch_page), (v, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             return insets;
         });
-        ((TextView) findViewById(R.id.launch_version)).setText(getString(R.string.launch_version, BuildConfig.VERSION_NAME));
         MaterialButton launch = findViewById(R.id.launch_roblox);
         launch.setText(getString(R.string.onboarding_launch, getString(Targets.nameRes(Targets.selected(this)))));
         launch.setOnClickListener(v -> done(LAUNCH));

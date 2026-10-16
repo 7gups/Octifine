@@ -278,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         applyRootGate();
+        FlagCrashTest.resumed(this);
         Updater.resumed(this);
         store.changed();
         Crash.run("update resume", () -> Updater.resume(this));
