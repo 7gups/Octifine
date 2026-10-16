@@ -159,7 +159,6 @@ public final class HomeFragment extends Page {
         accountTickets = v.findViewById(R.id.account_tickets);
         ((View) accountRobux.getParent()).setVisibility(View.GONE);
         ((View) accountTickets.getParent()).setVisibility(View.GONE);
-        v.findViewById(R.id.catalog_header).setVisibility(View.GONE);
         v.findViewById(R.id.account_limiteds).setOnClickListener(x -> startActivity(new Intent(requireContext(), LimitedsActivity.class)));
         accountCard = v.findViewById(R.id.account_card);
         accountSignIn = v.findViewById(R.id.account_signin);
@@ -189,6 +188,7 @@ public final class HomeFragment extends Page {
         long now = System.currentTimeMillis();
         if (now >= newsDueAt) loadNews();
         if (now >= githubDueAt) loadGithub();
+        if (now >= catalogDueAt) loadCatalog();
         bindWelcome();
         boolean in = PekoraSession.signedIn(requireContext());
         if (accountCard != null) accountCard.setVisibility(in ? View.VISIBLE : View.GONE);

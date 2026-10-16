@@ -168,55 +168,17 @@ public final class HomeFeed {
      * (POST) and thumbnails for those ids. Bundles are skipped here.
      */
     public static List<Item> catalog(Context c) throws IOException {
-        String session = null; // anonymous; the site currently answers 401 without a session
         List<Item> out = new ArrayList<>();
-        JSONObject search = PekoraApi.catalogSearch("category=0&limit=30&sortType=0&creatorType=1&minPrice=0&maxPrice=0&currency=3", session);
-        if (search == null) throw new IOException("catalog search failed");
-        JSONArray data = search.optJSONArray("data");
-        if (data == null) throw new IOException("catalog search had no data");
-        List<Long> ids = new ArrayList<>();
-        for (int i = 0; i < data.length() && ids.size() < CATALOG_LIMIT; i++) {
-            JSONObject o = data.optJSONObject(i);
-            if (o == null || !"Asset".equalsIgnoreCase(o.optString("itemType", "Asset"))) continue;
-            long id = o.optLong("id", 0);
-            if (id > 0) ids.add(id);
-        }
-        if (ids.isEmpty()) return out;
-
-        long[] arr = new long[ids.size()];
-        StringBuilder idList = new StringBuilder();
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = ids.get(i);
-            if (i > 0) idList.append(',');
-            idList.append(arr[i]);
-        }
-        JSONArray details = PekoraApi.catalogItemDetails(arr, session);
-        if (details == null) throw new IOException("catalog details failed");
-
-        Map<Long, String> images = new HashMap<>();
-        JSONObject thumbs = PekoraApi.assetThumbs(idList.toString(), "150x150");
-        JSONArray thumbData = thumbs == null ? null : thumbs.optJSONArray("data");
-        for (int i = 0; thumbData != null && i < thumbData.length(); i++) {
-            JSONObject t = thumbData.optJSONObject(i);
-            if (t == null) continue;
-            String url = t.optString("imageUrl", "");
-            if ("Completed".equals(t.optString("state", "")) && url.startsWith("https://")) {
-                images.put(t.optLong("targetId", 0), url);
-            }
-        }
-
-        for (int i = 0; i < details.length(); i++) {
-            JSONObject o = details.optJSONObject(i);
-            if (o == null || o.optLong("id", 0) <= 0) continue;
+        for (JSONObject o : Core.objects(Core.value("feed.catalog", Core.feed(c)))) {
             Item it = new Item();
             it.id = o.optLong("id");
-            it.name = o.optString("name", "");
-            it.creator = o.optString("creatorName", "");
-            it.type = ASSET_TYPES.getOrDefault(o.optInt("assetType", 0), "Asset");
-            it.image = images.getOrDefault(it.id, "");
-            it.price = o.isNull("price") ? o.optInt("lowestPrice", 0) : o.optInt("price", 0);
-            it.limited = hasLimitedRestriction(o.optJSONArray("itemRestrictions"));
-            it.bundle = false;
+            it.name = o.optString("name");
+            it.creator = o.optString("creator");
+            it.type = o.optString("type");
+            it.image = o.optString("image");
+            it.price = o.optInt("price");
+            it.limited = o.optBoolean("limited");
+            it.bundle = o.optBoolean("bundle");
             out.add(it);
         }
         return out;
