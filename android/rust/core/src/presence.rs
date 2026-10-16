@@ -8,7 +8,7 @@ const LOGO: &str = "https://raw.githubusercontent.com/7gups/Octifine/main/brandi
 const LOADING: &str = "https://raw.githubusercontent.com/KloBraticc/Voidstrap/main/assets/Images/rpc-loading.gif";
 
 const IDLE: [(&str, &str); 1] = [
-    ("pekora", "https://raw.githubusercontent.com/7gups/Octifine/main/branding/pekora-x.png"),
+    ("octane", "https://raw.githubusercontent.com/7gups/Octifine/main/branding/octifine-logo.png"),
 ];
 
 #[derive(Clone, Copy)]
@@ -234,7 +234,7 @@ fn small(settings: &Value, account: &Value) -> (String, String) {
         return (LOADING.to_string(), String::new());
     }
     if !on(settings, "account") || image.is_empty() {
-        return (LOGO.to_string(), "Pekostrap".to_string());
+        return (LOGO.to_string(), "Octifine".to_string());
     }
     (image, opt_str(account, "text", ""))
 }
@@ -333,7 +333,7 @@ pub fn game(settings: &Value, data: &Value, game: &Value, account: &Value, flag_
 
 pub fn idle(icon: &str, start: i64, settings: &Value, account: &Value) -> Value {
     let url = IDLE.iter().find(|(k, _)| *k == icon).unwrap_or(&IDLE[0]).1;
-    presence("Inside Pekostrap".into(), "Browsing Pekora".into(), url.into(), "Pekora".into(), small(settings, account), start, true, Vec::new())
+    presence("Inside Octifine".into(), "Browsing Octane".into(), url.into(), "Octane".into(), small(settings, account), start, true, Vec::new())
 }
 
 fn field(current: &str, value: &str, original: &str) -> String {
@@ -391,13 +391,13 @@ pub fn app(a: &Value) -> Value {
     let mut details = clip(&opt_str(a, "details", ""));
     let mut state = clip(&opt_str(a, "state", ""));
     if utf16_len(&details) < 2 {
-        details = "Pekostrap".into();
+        details = "Octifine".into();
     }
     if utf16_len(&state) < 2 {
-        state = "Exploring Pekostrap".into();
+        state = "Exploring Octifine".into();
     }
     let https = |k: &str| Some(opt_str(a, k, "")).filter(|v| scene && v.starts_with("https://"));
-    let version = format!("Pekostrap Android v{}", opt_str(a, "version", ""));
+    let version = format!("Octifine Android v{}", opt_str(a, "version", ""));
     let avatar = a.get("avatar").cloned().unwrap_or(Value::Null);
     let (image, text, small) = match https("image") {
         Some(image) => {
@@ -415,7 +415,7 @@ pub fn app(a: &Value) -> Value {
         Some(url) => {
             let label = opt_str(a, "buttonLabel", "");
             let label = if label.is_empty() { "Open".to_string() } else { utf16_prefix(&label, 32).to_string() };
-            vec![[label, url], ["Get Pekostrap".to_string(), DOWNLOAD.to_string()]]
+            vec![[label, url], ["Get Octifine".to_string(), DOWNLOAD.to_string()]]
         }
         None => vec![["Discord".to_string(), DISCORD.to_string()], ["Github".to_string(), GITHUB.to_string()]],
     };

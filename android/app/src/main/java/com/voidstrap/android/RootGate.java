@@ -5,13 +5,15 @@ import android.provider.Settings;
 
 /**
  * Decides whether root-only features should be hidden. Shizuku or USB/wireless debugging gives shell
- * access, which cannot mount mods, so those features stay hidden unless real root is available.
+ * access, which cannot mount mods, so those features stay hidden unless the phone is rooted.
  */
 final class RootGate {
     private RootGate() {}
 
     static boolean hideRootFeatures(Context c) {
         if (FlagWriter.rootMode(c) != FlagWriter.Mode.NONE) return false;
+        // A rooted phone keeps its root features even when the in-app root setting is still off.
+        if (FlagWriter.rootAvailable()) return false;
         return adbEnabled(c) || Helper.running() || ShizukuHelper.state(c) == ShizukuHelper.State.READY;
     }
 

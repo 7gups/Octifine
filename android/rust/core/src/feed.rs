@@ -569,9 +569,18 @@ fn catalog_details(c: &Client, cache: &Path) -> Option<Value> {
         return None;
     }
     let body = json!({ "items": items }).to_string();
+    // Roblox-style CSRF: the 403 gives a token in a header and the matching rbxcsrf cookie in Set-Cookie.
+    // The retry must send both, or the server answers "Token Validation Failed" again.
     let mut token = String::new();
+    let mut cookie = String::new();
     for _ in 0..2 {
-        let headers = [("Content-Type", "application/json"), ("Accept", "application/json"), ("User-Agent", c.agent.as_str()), ("x-csrf-token", token.as_str())];
+        let mut headers: Vec<(&str, &str)> = vec![("Content-Type", "application/json"), ("Accept", "application/json"), ("User-Agent", c.agent.as_str())];
+        if !token.is_empty() {
+            headers.push(("x-csrf-token", token.as_str()));
+        }
+        if !cookie.is_empty() {
+            headers.push(("Cookie", cookie.as_str()));
+        }
         let r = crate::http::request("POST", CATALOG_DETAILS, &headers, Some(body.as_bytes()), 8000, 1024 * 1024, false)?;
         if r.code == 200 {
             return serde_json::from_slice::<Value>(&r.body).ok().filter(Value::is_object);
@@ -583,6 +592,14 @@ fn catalog_details(c: &Client, cache: &Path) -> Option<Value> {
         if next.is_empty() || next == token {
             return None;
         }
+        cookie = r
+            .headers
+            .iter()
+            .filter(|(k, _)| k.eq_ignore_ascii_case("set-cookie"))
+            .filter_map(|(_, v)| v.split(';').next())
+            .find(|c| c.trim_start().starts_with("rbxcsrf"))
+            .map(|c| c.trim().to_string())
+            .unwrap_or_default();
         token = next;
     }
     None
