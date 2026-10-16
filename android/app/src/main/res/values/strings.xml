@@ -1211,4 +1211,5 @@ Crashed only with others: %2$s</string>
     <string name="crashtest_error">The crash test could not run. Your flags were restored.</string>
     <string name="home_library_title">Your library</string>
     <string name="home_library_pinned">Pinned</string>
+    <string name="nav_library">Library</string>
 </resources>
