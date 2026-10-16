@@ -109,6 +109,29 @@ public final class Mods {
         return BLOCKED.contains(extension(name));
     }
 
+    /**
+     * Lua is only accepted inside ExtraContent/scripts, which holds the client's own scripts.
+     * Every other folder still refuses code files.
+     */
+    static boolean blockedAt(Context c, File dir, String name) {
+        String ext = extension(name);
+        if (!BLOCKED.contains(ext)) return false;
+        if ((ext.equals("lua") || ext.equals("luau")) && inLuaScripts(c, dir)) return false;
+        return true;
+    }
+
+    static boolean inLuaScripts(Context c, File dir) {
+        try {
+            String root = root(c).getCanonicalPath().replace('\\', '/');
+            String d = dir.getCanonicalPath().replace('\\', '/');
+            if (!d.startsWith(root + "/")) return false;
+            String rel = d.substring(root.length() + 1).toLowerCase(Locale.ROOT);
+            return rel.equals("extracontent/scripts") || rel.startsWith("extracontent/scripts/");
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
     public static boolean isImage(File f) {
         String e = extension(f.getName());
         return e.equals("png") || e.equals("jpg") || e.equals("jpeg") || e.equals("webp") || e.equals("gif") || e.equals("bmp");
@@ -148,7 +171,7 @@ public final class Mods {
         ContentResolver cr = c.getContentResolver();
         String name = cleanName(displayName(cr, uri));
         if (name == null) throw new ImportException(R.string.mods_error_name);
-        if (blocked(name)) throw new ImportException(R.string.mods_error_blocked);
+        if (blockedAt(c, dir, name)) throw new ImportException(R.string.mods_error_blocked);
         File staging = new File(stagingDir(c), "import_" + System.nanoTime());
         try (InputStream in = cr.openInputStream(uri); OutputStream out = new FileOutputStream(staging)) {
             if (in == null) throw new IOException("stream");

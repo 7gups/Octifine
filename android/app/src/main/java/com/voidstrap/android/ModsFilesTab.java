@@ -325,7 +325,7 @@ final class ModsFilesTab {
                 layout.setError(c.getString(R.string.mods_error_name));
                 return;
             }
-            if (!f.isDirectory() && Mods.blocked(name)) {
+            if (!f.isDirectory() && Mods.blockedAt(c, f.getParentFile(), name)) {
                 layout.setError(c.getString(R.string.mods_error_blocked_name));
                 return;
             }

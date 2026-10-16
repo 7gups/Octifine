@@ -94,7 +94,8 @@ pub fn dangerous(ext: &str) -> bool {
 pub fn ignored(relative: &str) -> bool {
     let n = relative.replace('\\', "/");
     let lower = java::lower(&n);
-    if lower.ends_with(".lua") || lower.ends_with(".luau") || lower.ends_with(".lock") {
+    let lua = lower.ends_with(".lua") || lower.ends_with(".luau");
+    if (lua && !lower.starts_with("extracontent/scripts/")) || lower.ends_with(".lock") {
         return true;
     }
     if lower.starts_with("extracontent/luapackages/") {

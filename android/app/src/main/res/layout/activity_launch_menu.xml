@@ -31,8 +31,7 @@
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 android:importantForAccessibility="no"
-                android:src="@drawable/octifine_logo"
-                app:tint="?attr/colorPrimary" />
+                android:src="@drawable/octifine_logo" />
 
             <TextView
                 android:layout_width="wrap_content"
