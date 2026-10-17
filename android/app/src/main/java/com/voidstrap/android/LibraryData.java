@@ -102,12 +102,29 @@ final class LibraryData {
                 found.universeId = p.optLong("universeId", 0);
                 found.name = "";
                 found.live = true;
+                saveCurrent(c, found);
             }
         }
         long before = nowPlaying == null ? 0 : nowPlaying.placeId;
         long after = found == null ? 0 : found.placeId;
         nowPlaying = found;
         return before != after;
+    }
+
+    /** Pins the current game so it stays in the library after you leave it. Name and icon come from the meta lookup. */
+    private static void saveCurrent(Context c, Game g) {
+        Store store = Store.get(c);
+        if (store.game(g.placeId) != null) return;
+        JSONObject m = null;
+        try {
+            Object v = Core.value("feed.meta", Core.feed(c, "place", g.placeId));
+            if (v instanceof JSONObject) m = (JSONObject) v;
+        } catch (IOException ignored) {
+        }
+        String name = m == null ? "" : Core.opt(m, "name");
+        String icon = m == null ? "" : Core.opt(m, "iconUrl");
+        long universe = m == null ? g.universeId : m.optLong("universeId", g.universeId);
+        store.pin(new Store.Game(g.placeId, universe, name == null ? "" : Store.clip(name, 200), icon == null ? "" : icon, System.currentTimeMillis()));
     }
 
     static List<Game> base(Store store) {

@@ -63,7 +63,33 @@ public final class Launcher {
         });
     }
 
+    private static java.util.List<android.net.Uri> placeUris(Deeplink d) {
+        java.util.List<android.net.Uri> out = new java.util.ArrayList<>();
+        out.add(d.toUri());
+        out.add(android.net.Uri.parse("roblox://placeId=" + d.placeId));
+        out.add(android.net.Uri.parse("robloxmobile://placeID=" + d.placeId));
+        return out;
+    }
+
     private static Result start(Context app, Deeplink destination, String pkg) {
+        if (destination != null && destination.placeId > 0) {
+            // Octane registers several place link forms. Try each one; the first that the client accepts wins.
+            for (android.net.Uri uri : placeUris(destination)) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri).setPackage(pkg)
+                        .addCategory(Intent.CATEGORY_BROWSABLE).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    app.startActivity(intent);
+                    lastHandoff = SystemClock.elapsedRealtime();
+                    return Result.HANDED_OFF;
+                } catch (ActivityNotFoundException e) {
+                    // not this form, try the next one
+                } catch (RuntimeException e) {
+                    Crash.report("launch", e);
+                    return Result.FAILED;
+                }
+            }
+            return Result.DESTINATION_UNSUPPORTED;
+        }
         Intent intent = Crash.call("launch intent", () -> destination == null
                 ? app.getPackageManager().getLaunchIntentForPackage(pkg)
                 : new Intent(Intent.ACTION_VIEW, destination.toUri()).setPackage(pkg).addCategory(Intent.CATEGORY_BROWSABLE), null);
