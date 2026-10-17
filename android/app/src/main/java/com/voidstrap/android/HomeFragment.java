@@ -48,11 +48,7 @@ public final class HomeFragment extends Page {
     private static final String GITHUB_URL = "https://github.com/7gups/Octifine";
     private static final String[] GITHUB_HEADERS = {"User-Agent", "Voidstrap Android", "Accept", "application/vnd.github+json"};
 
-    private View newsHeader;
-    private TextView newsCount;
-    private LinearLayout newsGrid;
 
-    private long newsDueAt;
     private ContributionGraphView githubGraph;
     private TextView githubCaption;
     private long githubStars = -1;
@@ -145,16 +141,11 @@ public final class HomeFragment extends Page {
     private void reconnected() {
         if (!isAdded() || getView() == null || isHidden()) return;
         if (android.os.SystemClock.elapsedRealtime() - watchingSince < 3000) return;
-        if (newsGrid.getChildCount() > 0) return;
-        newsDueAt = 0;
         refresh();
     }
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle saved) {
-        newsHeader = v.findViewById(R.id.news_header);
-        newsCount = v.findViewById(R.id.news_count);
-        newsGrid = v.findViewById(R.id.news_grid);
         accountGreeting = v.findViewById(R.id.account_greeting);
         accountAvatar = v.findViewById(R.id.account_avatar);
         accountRobux = v.findViewById(R.id.account_robux);
@@ -179,18 +170,15 @@ public final class HomeFragment extends Page {
         githubReleaseMeta = v.findViewById(R.id.release_meta);
         githubReleaseNotes = v.findViewById(R.id.release_notes);
         githubReleaseOpen = v.findViewById(R.id.release_open);
-        v.findViewById(R.id.news_explore).setOnClickListener(x -> exploreNews());
         catalogGrid = v.findViewById(R.id.catalog_grid);
         catalogStatus = v.findViewById(R.id.catalog_status);
         v.findViewById(R.id.catalog_refresh).setOnClickListener(x -> forceRefresh());
         catalogDueAt = 0;
-        newsDueAt = 0;
     }
 
     @Override
     protected void refresh() {
         long now = System.currentTimeMillis();
-        if (now >= newsDueAt) loadNews();
         if (now >= githubDueAt) loadGithub();
         if (now >= catalogDueAt) loadCatalog();
         loadLibrary();
@@ -235,58 +223,7 @@ public final class HomeFragment extends Page {
         }
     }
 
-    private void loadNews() {
-        newsDueAt = System.currentTimeMillis() + FEED_REFRESH_MS;
-        Context app = requireContext().getApplicationContext();
-        store.work.execute(() -> {
-            List<HomeFeed.News> news = null;
-            try {
-                news = HomeFeed.latestNews(app, 2);
-            } catch (IOException | RuntimeException e) {
-                android.util.Log.w("Voidstrap", "News feed failed", e);
-            }
-            List<HomeFeed.News> n = news;
-            store.main.post(() -> bindNews(n));
-        });
-    }
 
-    private void bindNews(List<HomeFeed.News> news) {
-        if (getView() == null) return;
-        if (news == null) newsDueAt = System.currentTimeMillis() + FEED_RETRY_MS;
-        if (news == null && newsGrid.getChildCount() > 0) return;
-        boolean has = news != null && !news.isEmpty();
-        newsHeader.setVisibility(has ? View.VISIBLE : View.GONE);
-        newsGrid.setVisibility(has ? View.VISIBLE : View.GONE);
-        if (!has) return;
-        int recent = 0;
-        for (HomeFeed.News n : news) if (n.created > 0 && System.currentTimeMillis() - n.created < 7 * DateUtils.DAY_IN_MILLIS) recent++;
-        android.text.SpannableStringBuilder title = new android.text.SpannableStringBuilder(getString(R.string.home_news_title));
-        if (recent > 0) {
-            int start = title.length();
-            title.append("  ").append(getResources().getQuantityString(R.plurals.home_news_count, recent, recent));
-            title.setSpan(new android.text.style.AbsoluteSizeSpan(13, true), start, title.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            title.setSpan(new android.text.style.ForegroundColorSpan(Ui.attr(requireContext(), R.attr.vsTextTertiary)), start, title.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            title.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.NORMAL), start, title.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        newsCount.setText(title);
-        List<View> cells = new ArrayList<>();
-        LayoutInflater inf = LayoutInflater.from(requireContext());
-        for (HomeFeed.News n : news) {
-            View card = inf.inflate(R.layout.item_news_card, newsGrid, false);
-            ((TextView) card.findViewById(R.id.news_title)).setText(HomeFeed.cardTitle(n.title));
-            String date = newsDate(n.created);
-            ((TextView) card.findViewById(R.id.news_date)).setText(date);
-            View pill = card.findViewById(R.id.news_tag_pill);
-            pill.setVisibility(n.tag.isEmpty() ? View.GONE : View.VISIBLE);
-            ((TextView) card.findViewById(R.id.news_tag)).setText(n.tag);
-            ImageView image = card.findViewById(R.id.news_image);
-            Net.image(image, HomeFeed.thumbnail(n.image, 760), R.color.vs_news_surface, Ui.dp(requireContext(), 380));
-            card.setContentDescription(getString(R.string.home_news_description, n.title, date));
-            card.setOnClickListener(x -> Ui.openWeb(requireContext(), n.url));
-            cells.add(card);
-        }
-        fill(newsGrid, cells, contentDp() >= 560 ? 2 : 1, 14);
-    }
 
     /** Shows games from the user's library, pinned first. Uses the local library and the place-details lookup. */
     private void loadLibrary() {
@@ -418,7 +355,6 @@ public final class HomeFragment extends Page {
     /** Marks every feed as due and reloads them now. Used by the 15-minute timer and the refresh buttons. */
     private void forceRefresh() {
         if (!isAdded() || getView() == null) return;
-        newsDueAt = 0;
         githubDueAt = 0;
         catalogDueAt = 0;
         accountDueAt = 0;
@@ -531,7 +467,8 @@ public final class HomeFragment extends Page {
         Object[] res = Http.request("GET", GITHUB_API + "/stats/commit_activity", GITHUB_HEADERS, null, 15_000, 400_000, true);
         if (res == null) throw new java.io.IOException("GitHub request failed");
         int code = ((int[]) res[0])[0];
-        if (code == 202) return null;
+        // Still computing: build the graph from the commit list instead of waiting for GitHub.
+        if (code == 202) return githubActivityFromCommits();
         if (code != 200) throw new java.io.IOException("HTTP " + code);
         JSONArray weeks = new JSONArray(new String((byte[]) res[2], StandardCharsets.UTF_8));
         // Calendar year, January to December: each week goes in the column for its Wednesday's day of the year.
@@ -566,6 +503,57 @@ public final class HomeFragment extends Page {
             }
         }
         return out;
+    }
+
+    /**
+     * The same calendar-year graph built from the recent commit list, used while GitHub is still
+     * computing commit_activity. Covers the latest 300 commits.
+     */
+    private static CommitActivity githubActivityFromCommits() throws Exception {
+        int year = Calendar.getInstance(TimeZone.getTimeZone("UTC")).get(Calendar.YEAR);
+        CommitActivity out = new CommitActivity();
+        out.year = year;
+        out.counts = new int[ContributionGraphView.WEEKS][7];
+        out.months = new String[ContributionGraphView.WEEKS];
+        SimpleDateFormat fmt = new SimpleDateFormat("MMM", Locale.getDefault());
+        fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String[] monthOfColumn = new String[ContributionGraphView.WEEKS];
+        for (int page = 1; page <= 3; page++) {
+            Object[] res = Http.request("GET", GITHUB_API + "/commits?per_page=100&page=" + page, GITHUB_HEADERS, null, 15_000, 400_000, true);
+            if (res == null || ((int[]) res[0])[0] != 200) break;
+            JSONArray commits = new JSONArray(new String((byte[]) res[2], StandardCharsets.UTF_8));
+            if (commits.length() == 0) break;
+            for (int i = 0; i < commits.length(); i++) {
+                JSONObject c = commits.optJSONObject(i);
+                String date = commitDate(c);
+                if (date.length() < 10) continue;
+                Calendar day = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                day.clear();
+                day.set(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)) - 1, Integer.parseInt(date.substring(8, 10)));
+                if (day.get(Calendar.YEAR) != year) continue;
+                int col = (day.get(Calendar.DAY_OF_YEAR) - 1) / 7;
+                int row = day.get(Calendar.DAY_OF_WEEK) - 1;
+                if (col < 0 || col >= ContributionGraphView.WEEKS) continue;
+                out.counts[col][row]++;
+                out.total++;
+                monthOfColumn[col] = fmt.format(day.getTime());
+            }
+        }
+        String last = "";
+        for (int col = 0; col < ContributionGraphView.WEEKS; col++) {
+            if (monthOfColumn[col] != null && !monthOfColumn[col].equals(last)) {
+                out.months[col] = monthOfColumn[col];
+                last = monthOfColumn[col];
+            }
+        }
+        return out;
+    }
+
+    private static String commitDate(JSONObject c) {
+        if (c == null) return "";
+        JSONObject commit = c.optJSONObject("commit");
+        JSONObject author = commit == null ? null : commit.optJSONObject("author");
+        return author == null ? "" : author.optString("date", "");
     }
 
     /** Latest published release, or null when the repo has none yet (GitHub answers 404). */
@@ -627,47 +615,4 @@ public final class HomeFragment extends Page {
         githubReleaseOpen.setOnClickListener(x -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(r.url))));
     }
 
-    private void exploreNews() {
-        LinearLayout list = new LinearLayout(requireContext());
-        list.setOrientation(LinearLayout.VERTICAL);
-        TextView loading = new TextView(requireContext());
-        loading.setText(R.string.home_news_loading);
-        loading.setTextAppearance(R.style.TextAppearance_Voidstrap_Caption);
-        list.addView(loading);
-        MaterialButton all = new MaterialButton(requireContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle);
-        all.setText(R.string.home_news_open_forum);
-        all.setIconResource(R.drawable.ic_globe);
-        all.setOnClickListener(x -> Ui.openWeb(requireContext(), HomeFeed.NEWS_PAGE));
-        Ui.surface(host(), R.string.home_news_all_title, R.string.home_news_all_body, list).show();
-        Context app = requireContext().getApplicationContext();
-        store.work.execute(() -> {
-            List<HomeFeed.News> news = null;
-            try {
-                news = HomeFeed.allNews(app);
-            } catch (IOException | RuntimeException ignored) {
-            }
-            List<HomeFeed.News> n = news;
-            store.main.post(() -> {
-                if (!isAdded()) return;
-                list.removeAllViews();
-                if (n == null || n.isEmpty()) {
-                    loading.setText(R.string.home_news_failed);
-                    list.addView(loading);
-                }
-                if (n != null) for (HomeFeed.News item : n) {
-                    Row row = Row.inflate(list);
-                    String detail = item.tag.isEmpty() ? newsDate(item.created) : getString(R.string.pair, item.tag, newsDate(item.created));
-                    row.set(R.drawable.ic_megaphone, item.title, detail);
-                    if (!item.image.isEmpty()) row.showImage(HomeFeed.thumbnail(item.image, 160), R.drawable.ic_megaphone);
-                    row.title.setMaxLines(2);
-                    row.chevron.setVisibility(View.VISIBLE);
-                    row.view.setOnClickListener(x -> Ui.openWeb(requireContext(), item.url));
-                    list.addView(row.view);
-                }
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                lp.topMargin = Ui.dp(requireContext(), 12);
-                list.addView(all, lp);
-            });
-        });
-    }
 }
