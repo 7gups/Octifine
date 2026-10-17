@@ -66,8 +66,12 @@ public final class Launcher {
     private static java.util.List<android.net.Uri> placeUris(Deeplink d) {
         java.util.List<android.net.Uri> out = new java.util.ArrayList<>();
         out.add(d.toUri());
-        out.add(android.net.Uri.parse("roblox://placeId=" + d.placeId));
-        out.add(android.net.Uri.parse("robloxmobile://placeID=" + d.placeId));
+        // Every form carries the server instance and link code when there are some, so a join keeps its server.
+        String extra = "";
+        if (d.instanceId != null && !d.instanceId.isEmpty()) extra += "&gameInstanceId=" + android.net.Uri.encode(d.instanceId);
+        if (d.linkCode != null && !d.linkCode.isEmpty()) extra += "&linkCode=" + android.net.Uri.encode(d.linkCode);
+        out.add(android.net.Uri.parse("roblox://placeId=" + d.placeId + extra));
+        out.add(android.net.Uri.parse("robloxmobile://placeID=" + d.placeId + extra));
         return out;
     }
 
@@ -114,6 +118,7 @@ public final class Launcher {
             store.putSetting("pendingName", name == null ? "" : name);
         }
         store.record(new Store.Launch(System.currentTimeMillis(), destination == null ? 0 : destination.placeId, name == null ? "" : name, pkg, result.name()));
+        if (result == Result.HANDED_OFF) LibraryData.watchPresence(app);
         return result;
     }
 

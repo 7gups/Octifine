@@ -292,6 +292,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         applyRootGate();
+        Context presenceApp = getApplicationContext();
+        new Thread(() -> LibraryData.refreshPlaying(presenceApp), "presence-resume").start();
         FlagCrashTest.resumed(this);
         Updater.resumed(this);
         store.changed();

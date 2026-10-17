@@ -111,6 +111,32 @@ final class LibraryData {
         return before != after;
     }
 
+    private static volatile long watchToken;
+
+    /**
+     * After a launch hands off to the client, check presence every 30 seconds for 10 minutes, so the game you
+     * join gets saved while Octifine is still running. Android may pause the check if Octifine is backgrounded.
+     */
+    static void watchPresence(Context c) {
+        Context app = c.getApplicationContext();
+        long token = System.nanoTime();
+        watchToken = token;
+        new Thread(() -> {
+            long until = android.os.SystemClock.elapsedRealtime() + 10 * 60_000L;
+            while (android.os.SystemClock.elapsedRealtime() < until && watchToken == token) {
+                try {
+                    refreshPlaying(app);
+                } catch (RuntimeException ignored) {
+                }
+                try {
+                    Thread.sleep(30_000L);
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        }, "presence-watch").start();
+    }
+
     /** Pins the current game so it stays in the library after you leave it. Name and icon come from the meta lookup. */
     private static void saveCurrent(Context c, Game g) {
         Store store = Store.get(c);
