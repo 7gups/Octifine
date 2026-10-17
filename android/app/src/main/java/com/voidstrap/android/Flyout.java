@@ -175,12 +175,14 @@ final class Flyout {
         close[0] = () -> {
             if (closing[0]) return;
             closing[0] = true;
+            // Run the chosen action now, not after the exit animation: if that animation is cancelled its
+            // end callback never runs, and the action (for example Join server) would be lost.
+            Runnable action = pending[0];
+            pending[0] = null;
             animateOut(surface, anchor, placedLeft, placedTop, surfaceWidth, surfaceHeight, () -> {
                 if (window.isShowing()) window.dismiss();
-                Runnable action = pending[0];
-                pending[0] = null;
-                if (action != null) action.run();
             });
+            if (action != null) action.run();
         };
         window.setTouchInterceptor((v, event) -> {
             if (event.getAction() != MotionEvent.ACTION_OUTSIDE) return false;
