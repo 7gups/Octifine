@@ -71,13 +71,14 @@ public final class Launcher {
 
     private static java.util.List<android.net.Uri> placeUris(Deeplink d) {
         java.util.List<android.net.Uri> out = new java.util.ArrayList<>();
-        out.add(d.toUri());
-        // Every form carries the server instance and link code when there are some, so a join keeps its server.
+        // Octane takes these into the game (tested on device). The experiences link only reaches its home screen,
+        // so it is kept last as a fallback.
         String extra = "";
         if (d.instanceId != null && !d.instanceId.isEmpty()) extra += "&gameInstanceId=" + android.net.Uri.encode(d.instanceId);
         if (d.linkCode != null && !d.linkCode.isEmpty()) extra += "&linkCode=" + android.net.Uri.encode(d.linkCode);
         out.add(android.net.Uri.parse("roblox://placeId=" + d.placeId + extra));
         out.add(android.net.Uri.parse("robloxmobile://placeID=" + d.placeId + extra));
+        out.add(d.toUri());
         return out;
     }
 
