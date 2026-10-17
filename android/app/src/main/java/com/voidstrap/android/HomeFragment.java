@@ -292,6 +292,8 @@ public final class HomeFragment extends Page {
     private void loadLibrary() {
         Context app = requireContext().getApplicationContext();
         store.work.execute(() -> {
+            boolean playingChanged = LibraryData.refreshPlaying(app);
+            if (playingChanged) store.main.post(this::loadLibrary);
             List<LibraryData.Game> games = LibraryData.base(store);
             try {
                 LibraryData.enrich(app, games);
@@ -321,7 +323,8 @@ public final class HomeFragment extends Page {
             View card = inf.inflate(R.layout.item_catalog_card, libraryGrid, false);
             ((TextView) card.findViewById(R.id.catalog_name)).setText(g.name.isEmpty() ? String.valueOf(g.placeId) : g.name);
             ((TextView) card.findViewById(R.id.catalog_creator)).setText(g.creator);
-            ((TextView) card.findViewById(R.id.catalog_type)).setText(g.pinned ? getString(R.string.home_library_pinned) : "");
+            String tag = g.live ? getString(R.string.home_library_playing) : g.pinned ? getString(R.string.home_library_pinned) : "";
+            ((TextView) card.findViewById(R.id.catalog_type)).setText(tag);
             ((TextView) card.findViewById(R.id.catalog_price)).setText("");
             card.findViewById(R.id.catalog_limited).setVisibility(View.GONE);
             Net.image((ImageView) card.findViewById(R.id.catalog_image), g.iconUrl, R.color.vs_news_surface, Ui.dp(requireContext(), 150));

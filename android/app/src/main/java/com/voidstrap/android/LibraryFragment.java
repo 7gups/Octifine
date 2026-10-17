@@ -179,6 +179,8 @@ public final class LibraryFragment extends Page {
             copy.add(c);
         }
         store.work.execute(() -> {
+            boolean playingChanged = LibraryData.refreshPlaying(app);
+            if (playingChanged) store.main.post(() -> load(true));
             LibraryData.enrich(app, copy);
             List<LibraryData.Game> order = new ArrayList<>(copy);
             order.sort((x, y) -> x.pinned != y.pinned ? (x.pinned ? -1 : 1) : Long.compare(y.lastPlayed, x.lastPlayed));

@@ -1212,4 +1212,7 @@ Crashed only with others: %2$s</string>
     <string name="home_library_title">Your library</string>
     <string name="home_library_pinned">Pinned</string>
     <string name="nav_library">Library</string>
+    <string name="home_library_playing">Playing now</string>
+    <string name="onboarding_signin">Sign in</string>
+    <string name="onboarding_signin_body">Sign in to Octane to show your account and library. You can skip this and sign in later from Settings.</string>
 </resources>

@@ -15,6 +15,7 @@ final class LibraryData {
     static final String JOINS = "/data/local/tmp/voidstrap_joins.txt";
 
     static final class Game {
+        boolean live;
         long placeId;
         long universeId;
         String name = "";
@@ -80,8 +81,38 @@ final class LibraryData {
     private LibraryData() {
     }
 
+    /** The game the signed-in account is in right now, or null. Set by refreshPlaying on a background thread. */
+    private static volatile Game nowPlaying;
+
+    /**
+     * Asks presence for the signed-in account and stores the current game. Network call: run it off the main thread.
+     * Returns true when the current game changed, so the caller can reload its list.
+     */
+    static boolean refreshPlaying(Context c) {
+        Game found = null;
+        long user = PekoraSession.userId(c);
+        if (user > 0) {
+            org.json.JSONObject o = PekoraApi.presence(new long[] {user});
+            org.json.JSONArray arr = o == null ? null : o.optJSONArray("userPresences");
+            org.json.JSONObject p = arr == null || arr.length() == 0 ? null : arr.optJSONObject(0);
+            long place = p == null ? 0 : p.optLong("placeId", 0);
+            if (p != null && p.optInt("userPresenceType", 0) == 2 && place > 0) {
+                found = new Game();
+                found.placeId = place;
+                found.universeId = p.optLong("universeId", 0);
+                found.name = "";
+                found.live = true;
+            }
+        }
+        long before = nowPlaying == null ? 0 : nowPlaying.placeId;
+        long after = found == null ? 0 : found.placeId;
+        nowPlaying = found;
+        return before != after;
+    }
+
     static List<Game> base(Store store) {
         LinkedHashMap<Long, Game> games = new LinkedHashMap<>();
+        if (nowPlaying != null) games.put(nowPlaying.placeId, nowPlaying);
         for (Store.Game p : store.library) {
             Game g = new Game();
             g.placeId = p.placeId;
@@ -89,6 +120,7 @@ final class LibraryData {
             g.name = p.name == null ? "" : p.name;
             g.iconUrl = p.iconUrl == null || p.iconUrl.isEmpty() ? null : p.iconUrl;
             g.pinned = true;
+            if (nowPlaying != null && nowPlaying.placeId == g.placeId) g.live = true;
             games.put(g.placeId, g);
         }
         for (Store.Launch l : store.history) {

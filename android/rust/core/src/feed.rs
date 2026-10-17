@@ -313,11 +313,12 @@ pub fn events(c: &Client, cache: &Path, games: &[Game], now: i64) -> Vec<Value> 
 }
 
 pub fn passes(c: &Client, cache: &Path, universe: i64) -> Vec<Value> {
-    let d = c.cached_json(cache, &format!("https://octane.wtf/apisite/game-passes/v1/universes/{universe}/game-passes?passView=Full&pageSize=100"), 10 * MINUTE);
+    // Octane lists a game's passes under games/v1. The pass id doubles as its icon asset id.
+    let d = c.cached_json(cache, &format!("https://octane.wtf/apisite/games/v1/games/{universe}/game-passes"), 10 * MINUTE);
     let mut out: Vec<(i64, String, bool, i64, i64)> = Vec::new();
-    for o in strict(&d, "gamePasses") {
+    for o in strict(&d, "data") {
         let id = opt_long(o, "id", 0);
-        let p = (id, opt_str(o, "displayName", &opt_str(o, "name", "")), opt_bool(o, "isForSale", false), opt_long(o, "price", 0), opt_long(o, "displayIconImageAssetId", 0));
+        let p = (id, opt_str(o, "displayName", &opt_str(o, "name", "")), opt_bool(o, "isForSale", false), opt_long(o, "price", 0), opt_long(o, "displayIconImageAssetId", id));
         if id > 0 {
             out.push(p);
         }

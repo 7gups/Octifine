@@ -36,11 +36,12 @@ public final class OnboardingActivity extends AppCompatActivity {
     private static final int APPEARANCE = 1;
     private static final int ROOT = 2;
     private static final int ROBLOX = 3;
-    private static final int ALERTS = 4;
-    private static final int DONE = 5;
-    private static final int[] ICONS = {0, R.drawable.ic_options, R.drawable.ic_shield_checkmark, R.drawable.ic_games, R.drawable.ic_alert, R.drawable.ic_checkmark_circle};
-    private static final int[] TITLES = {R.string.onboarding_welcome, R.string.settings_appearance, R.string.onboarding_root, R.string.onboarding_roblox, R.string.settings_notifications, R.string.onboarding_done};
-    private static final int[] BODIES = {R.string.onboarding_welcome_body, R.string.onboarding_appearance_body, R.string.onboarding_root_body, R.string.onboarding_roblox_body, R.string.onboarding_alerts_body, R.string.onboarding_done_body};
+    private static final int SIGNIN = 4;
+    private static final int ALERTS = 5;
+    private static final int DONE = 6;
+    private static final int[] ICONS = {0, R.drawable.ic_options, R.drawable.ic_shield_checkmark, R.drawable.ic_games, R.drawable.ic_games, R.drawable.ic_alert, R.drawable.ic_checkmark_circle};
+    private static final int[] TITLES = {R.string.onboarding_welcome, R.string.settings_appearance, R.string.onboarding_root, R.string.onboarding_roblox, R.string.onboarding_signin, R.string.settings_notifications, R.string.onboarding_done};
+    private static final int[] BODIES = {R.string.onboarding_welcome_body, R.string.onboarding_appearance_body, R.string.onboarding_root_body, R.string.onboarding_roblox_body, R.string.onboarding_signin_body, R.string.onboarding_alerts_body, R.string.onboarding_done_body};
 
     private Store store;
     private int step;
@@ -163,6 +164,7 @@ public final class OnboardingActivity extends AppCompatActivity {
         if (step == APPEARANCE) SettingRows.appearance(card(0), this, 0);
         else if (step == ROOT) root();
         else if (step == ROBLOX) roblox();
+        else if (step == SIGNIN) signin();
         else if (step == ALERTS) alerts();
         else if (step == DONE) done();
         back.setVisibility(step == WELCOME ? View.INVISIBLE : View.VISIBLE);
@@ -248,6 +250,40 @@ public final class OnboardingActivity extends AppCompatActivity {
         access.view.setOnClickListener(v -> FlagSync.setup(this));
         helper = access.detail;
         card.addView(access.view);
+    }
+
+    private TextView signinStatus;
+    private MaterialButton signinButton;
+
+    private final Runnable signinPoll = new Runnable() {
+        @Override
+        public void run() {
+            if (step != SIGNIN || signinButton == null) return;
+            refreshSignin();
+            signinButton.postDelayed(this, 1000);
+        }
+    };
+
+    /** Account step: shows the signed-in name, with a button that opens the same sign-in flow as Settings. */
+    private void signin() {
+        LinearLayout card = card(4);
+        Row account = Row.inflate(card);
+        account.set(R.drawable.ic_games, getString(R.string.pekora_account_title), PekoraSession.statusText(this));
+        account.detail.setMaxLines(3);
+        signinStatus = account.detail;
+        card.addView(account.view);
+        signinButton = new MaterialButton(this);
+        signinButton.setOnClickListener(v -> PekoraSession.toggle(this));
+        card.addView(signinButton);
+        refreshSignin();
+        signinButton.removeCallbacks(signinPoll);
+        signinButton.postDelayed(signinPoll, 1000);
+    }
+
+    private void refreshSignin() {
+        if (signinStatus == null || signinButton == null) return;
+        signinStatus.setText(PekoraSession.statusText(this));
+        signinButton.setText(PekoraSession.signedIn(this) ? R.string.pekora_sign_out : R.string.pekora_sign_in);
     }
 
     private void alerts() {
