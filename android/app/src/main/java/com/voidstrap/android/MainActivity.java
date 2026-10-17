@@ -203,9 +203,13 @@ public class MainActivity extends AppCompatActivity {
         hideLaunch();
     }
 
+    private final Runnable launchTimeout = this::hideLaunch;
+
     private void showLaunch() {
         if (barLaunch == null) return;
         savedAt = SystemClock.uptimeMillis();
+        barLaunch.removeCallbacks(launchTimeout);
+        barLaunch.postDelayed(launchTimeout, 10_000);
         barLaunch.animate().cancel();
         barLaunch.setScaleX(0f);
         barLaunch.setScaleY(0f);
@@ -215,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void hideLaunch() {
         if (barLaunch == null) return;
+        barLaunch.removeCallbacks(launchTimeout);
         barLaunch.animate().cancel();
         barLaunch.animate().scaleX(0f).scaleY(0f).setDuration(150)
                 .withEndAction(() -> barLaunch.setVisibility(View.GONE)).start();
@@ -376,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void select(int id) {
+        hideLaunch();
         if (nav != null && nav.getMenu().findItem(id) != null && nav.getSelectedItemId() != id) nav.setSelectedItemId(id);
         else show(id);
     }

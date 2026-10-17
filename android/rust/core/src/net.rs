@@ -48,14 +48,14 @@ impl Client {
     }
 
     pub fn json(&self, url: &str) -> Option<Value> {
-        serde_json::from_slice::<Value>(&self.get(url, 1024 * 1024)?).ok().filter(Value::is_object)
+        serde_json::from_slice::<Value>(&self.get(url, 1024 * 1024)?).ok()
     }
 
     pub fn cached_json(&self, cache: &Path, url: &str, max_age_ms: i64) -> Option<Value> {
         let dir = cache.join("feeds");
         let _ = std::fs::create_dir_all(&dir);
         let f: PathBuf = dir.join(format!("{}.json", sha1_hex(url.as_bytes())));
-        let read = |f: &Path| -> Option<Value> { serde_json::from_slice::<Value>(&std::fs::read(f).ok()?).ok().filter(Value::is_object) };
+        let read = |f: &Path| -> Option<Value> { serde_json::from_slice::<Value>(&std::fs::read(f).ok()?).ok() };
         let fresh = std::fs::metadata(&f)
             .ok()
             .filter(|m| m.is_file())
@@ -65,7 +65,7 @@ impl Client {
             return Some(v);
         }
         match self.get(url, 1024 * 1024) {
-            Some(data) => match serde_json::from_slice::<Value>(&data).ok().filter(Value::is_object) {
+            Some(data) => match serde_json::from_slice::<Value>(&data).ok() {
                 Some(v) => {
                     let tmp = dir.join(format!("{}.json.tmp", sha1_hex(url.as_bytes())));
                     if std::fs::write(&tmp, &data).is_ok() && std::fs::rename(&tmp, &f).is_err() {
