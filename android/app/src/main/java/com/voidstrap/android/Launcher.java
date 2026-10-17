@@ -18,12 +18,15 @@ public final class Launcher {
     private static final long REPEAT_GUARD_MS = 1500;
     private static long lastHandoff;
     private static boolean busy;
+    private static long busySince;
 
     private Launcher() {
     }
 
     public static void launch(Context c, Deeplink destination, String name, Done done) {
         if (c == null || done == null) return;
+        // A launch that never reports back must not block every later launch, so the busy flag times out.
+        if (busy && SystemClock.elapsedRealtime() - busySince > 15_000) busy = false;
         if (busy || SystemClock.elapsedRealtime() - lastHandoff < REPEAT_GUARD_MS) {
             done.run(Result.BUSY);
             return;
@@ -37,6 +40,7 @@ public final class Launcher {
             return;
         }
         busy = true;
+        busySince = SystemClock.elapsedRealtime();
         String test = FlagCrashTest.beginStep(app);
         String flags = test != null ? test : store.flags.active().valuesJson().toString();
         boolean unlocked = FlagPresets.targetFps(store.flags.active().values) > 60;

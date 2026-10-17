@@ -1215,4 +1215,5 @@ Crashed only with others: %2$s</string>
     <string name="home_library_playing">Playing now</string>
     <string name="onboarding_signin">Sign in</string>
     <string name="onboarding_signin_body">Sign in to Octane to show your account and library. You can skip this and sign in later from Settings.</string>
+    <string name="launch_opening">Opening %1$s in Octane.</string>
 </resources>

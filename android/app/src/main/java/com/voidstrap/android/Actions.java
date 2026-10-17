@@ -28,7 +28,10 @@ public final class Actions {
         String appName = a.getString(Targets.nameRes(pkg));
         switch (r) {
             case HANDED_OFF:
+                Ui.say(a, a.getString(R.string.launch_opening, d == null ? appName : name));
+                return;
             case BUSY:
+                Ui.say(a, Launcher.message(r));
                 return;
             case NOT_INSTALLED:
                 Notify.say(a, Notify.LAUNCH, a.getString(d == null ? R.string.install_opening_plain : R.string.install_opening_pending, appName));
