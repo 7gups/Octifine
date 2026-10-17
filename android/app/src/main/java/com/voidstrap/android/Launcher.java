@@ -25,6 +25,8 @@ public final class Launcher {
 
     public static void launch(Context c, Deeplink destination, String name, Done done) {
         if (c == null || done == null) return;
+        ModLog.add("launch requested: " + (destination == null ? "no game" : "place " + destination.placeId
+                + (destination.instanceId == null || destination.instanceId.isEmpty() ? "" : " instance " + destination.instanceId)) + " busy=" + busy);
         // A launch that never reports back must not block every later launch, so the busy flag times out.
         if (busy && SystemClock.elapsedRealtime() - busySince > 15_000) busy = false;
         if (busy || SystemClock.elapsedRealtime() - lastHandoff < REPEAT_GUARD_MS) {
@@ -83,15 +85,18 @@ public final class Launcher {
         if (destination != null && destination.placeId > 0) {
             // Octane registers several place link forms. Try each one; the first that the client accepts wins.
             for (android.net.Uri uri : placeUris(destination)) {
+                ModLog.add("trying link: " + uri);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri).setPackage(pkg)
                         .addCategory(Intent.CATEGORY_BROWSABLE).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     app.startActivity(intent);
+                    ModLog.add("handed off to " + pkg);
                     lastHandoff = SystemClock.elapsedRealtime();
                     return Result.HANDED_OFF;
                 } catch (ActivityNotFoundException e) {
-                    // not this form, try the next one
+                    ModLog.add("not accepted: " + e.getClass().getSimpleName());
                 } catch (RuntimeException e) {
+                    ModLog.add("launch failed: " + e);
                     Crash.report("launch", e);
                     return Result.FAILED;
                 }
@@ -117,6 +122,7 @@ public final class Launcher {
 
     private static Result finish(Context app, Deeplink destination, String name, String pkg, Result result) {
         Store store = Store.get(app);
+        ModLog.add("launch result: " + result.name() + (destination == null ? "" : " place " + destination.placeId));
         if (result == Result.NOT_INSTALLED && destination != null) {
             store.putSetting("pending", destination.toUri().toString());
             store.putSetting("pendingName", name == null ? "" : name);

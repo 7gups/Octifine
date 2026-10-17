@@ -501,7 +501,11 @@ public final class LibraryFragment extends Page {
         Net.image(detail.findViewById(R.id.det_thumb), g.thumbUrl != null ? g.thumbUrl : g.iconUrl, 0, Ui.dp(c, 640));
         ((TextView) detail.findViewById(R.id.det_name)).setText(g.title());
         ((TextView) detail.findViewById(R.id.det_creator)).setText(g.creator.isEmpty() ? "" : getString(R.string.library_by, g.creator));
-        detail.findViewById(R.id.det_play).setOnClickListener(x -> Actions.launch(host(), Deeplink.place(g.placeId, null, null), g.title()));
+        detail.findViewById(R.id.det_play).setOnClickListener(x -> {
+            ModLog.add("play tapped: place " + g.placeId + " " + g.title());
+            Ui.say(host(), getString(R.string.library_play_tapped, g.title()));
+            Actions.launch(host(), Deeplink.place(g.placeId, null, null), g.title());
+        });
         MaterialButton pin = detail.findViewById(R.id.det_pin);
         MaterialButton removeButton = detail.findViewById(R.id.det_remove);
         boolean compact = !Ui.wide(c);
@@ -692,7 +696,11 @@ public final class LibraryFragment extends Page {
 
     private Flyout gameMenu(LibraryData.Game g) {
         return new Flyout(requireContext())
-                .add(R.drawable.ic_play, R.string.library_play, () -> Actions.launch(host(), Deeplink.place(g.placeId, null, null), g.title()))
+                .add(R.drawable.ic_play, R.string.library_play, () -> {
+                    ModLog.add("play tapped (menu): place " + g.placeId + " " + g.title());
+                    Ui.say(host(), getString(R.string.library_play_tapped, g.title()));
+                    Actions.launch(host(), Deeplink.place(g.placeId, null, null), g.title());
+                })
                 .add(R.drawable.ic_pin, g.pinned ? R.string.library_unpin : R.string.library_pin, () -> togglePin(g))
                 .separator()
                 .add(R.drawable.ic_delete, R.string.library_remove_menu, () -> remove(g));
