@@ -825,7 +825,7 @@ internal sealed partial class Installer
 			if (!payload.DeleteDirectory)
 			{
 				string fileName = Path.GetFileName(fullTarget);
-				if (!string.Equals(fileName, "Voidstrap.exe", StringComparison.OrdinalIgnoreCase) && !string.Equals(fileName, "Voidstrap", StringComparison.OrdinalIgnoreCase))
+				if (!string.Equals(fileName, "Octifine.exe", StringComparison.OrdinalIgnoreCase) && !string.Equals(fileName, "Voidstrap", StringComparison.OrdinalIgnoreCase))
 					return;
 			}
 			markerPath = Path.Combine(root, payload.MarkerName);
@@ -897,7 +897,7 @@ internal sealed partial class Installer
 		string fullRoot = Path.GetFullPath(root).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 		if (string.Equals(fullRoot, Path.GetPathRoot(fullRoot)?.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar), StringComparison.OrdinalIgnoreCase))
 			return false;
-		return File.Exists(Path.Combine(fullRoot, "Voidstrap.exe")) || File.Exists(Path.Combine(fullRoot, "Voidstrap"));
+		return File.Exists(Path.Combine(fullRoot, "Octifine.exe")) || File.Exists(Path.Combine(fullRoot, "Voidstrap"));
 	}
 
 	private static string CleanupHelperRoot => Path.Combine(Path.GetTempPath(), "VoidstrapCleanup");

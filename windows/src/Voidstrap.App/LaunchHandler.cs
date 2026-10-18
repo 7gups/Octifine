@@ -374,7 +374,7 @@ public static class LaunchHandler
 		using InterProcessLock interProcessLock = new InterProcessLock("Settings");
 		if (interProcessLock.IsAcquired)
 		{
-			Voidstrap.UI.Elements.Settings.MainWindow window = new(Process.GetProcessesByName("Voidstrap").Length > 1);
+			Voidstrap.UI.Elements.Settings.MainWindow window = new(Process.GetProcessesByName("Octifine").Length > 1);
 			window.RequestStartupView(App.LaunchSettings.MenuFlag.Data);
 			Application? application = Application.Current;
 			Window? previousMainWindow = null;
@@ -1958,7 +1958,7 @@ public static class LaunchHandler
 		try
 		{
 			int processId = Environment.ProcessId;
-			Process[] processesByName = Process.GetProcessesByName("Voidstrap");
+			Process[] processesByName = Process.GetProcessesByName("Octifine");
 			foreach (Process process in processesByName)
 			{
 				try

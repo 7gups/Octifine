@@ -548,7 +548,7 @@ internal static class AssetProxyRouting
 	private static bool AnyOtherVoidstrapRunning()
 	{
 		int self = Environment.ProcessId;
-		Process[] found = Process.GetProcessesByName("Voidstrap");
+		Process[] found = Process.GetProcessesByName("Octifine");
 		try
 		{
 			return found.Any(process => process.Id != self);

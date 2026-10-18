@@ -16,7 +16,7 @@ public class InterProcessLock : IDisposable
 
 	public InterProcessLock(string name, TimeSpan timeout)
 	{
-		Mutex = new Mutex(initiallyOwned: false, "Voidstrap-" + name);
+		Mutex = new Mutex(initiallyOwned: false, "Octifine-" + name);
 		try
 		{
 			IsAcquired = Mutex.WaitOne(timeout);

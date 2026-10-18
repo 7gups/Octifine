@@ -10,17 +10,17 @@ namespace Voidstrap.Utility;
 
 internal static class InstallLocationResolver
 {
-	private const string UninstallKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Voidstrap";
+	private const string UninstallKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Octifine";
 
-	private const string ApiKey = "Software\\Voidstrap";
+	private const string ApiKey = "Software\\Octifine";
 
-	private static string DefaultLocation => Path.Combine(Paths.LocalAppData, "Voidstrap");
+	private static string DefaultLocation => Path.Combine(Paths.LocalAppData, Paths.DataFolderName);
 
-	private static string DesktopShortcut => Path.Combine(Paths.Desktop, "Voidstrap.lnk");
+	private static string DesktopShortcut => Path.Combine(Paths.Desktop, "Octifine.lnk");
 
-	private static string StartMenuShortcut => Path.Combine(Paths.WindowsStartMenu, "Voidstrap.lnk");
+	private static string StartMenuShortcut => Path.Combine(Paths.WindowsStartMenu, "Octifine.lnk");
 
-	private static string ApplicationFileName => Platform.IsWindows ? "Voidstrap.exe" : "Voidstrap";
+	private static string ApplicationFileName => Platform.IsWindows ? "Octifine.exe" : "Voidstrap";
 
 	public static string? Resolve()
 	{
