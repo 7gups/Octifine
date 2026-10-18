@@ -1,0 +1,3 @@
+[submodule "windows/external/wpfui"]
+	path = windows/external/wpfui
+	url = https://github.com/KloBraticc/wpfui
