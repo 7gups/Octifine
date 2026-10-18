@@ -15,7 +15,7 @@ namespace Voidstrap.Utility;
 
 internal static class SwiftTunnel
 {
-    public const string Icon = "pack://application:,,,/Voidstrap;component/Resources/AppImages/ext-swifttunnel.png";
+    public const string Icon = "pack://application:,,,/Octifine;component/Resources/AppImages/ext-swifttunnel.png";
 
     public static string Text(string key) => Strings.ResourceManager.GetString("SwiftTunnel." + key, Strings.Culture) ?? string.Empty;
 

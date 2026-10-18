@@ -14,9 +14,9 @@
 		<RootNamespace>Voidstrap</RootNamespace>
 		<IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
 
-		<AssemblyName>Voidstrap</AssemblyName>
-		<AssemblyTitle>Voidstrap</AssemblyTitle>
-		<Product>Voidstrap</Product>
+		<AssemblyName>Octifine</AssemblyName>
+		<AssemblyTitle>Octifine</AssemblyTitle>
+		<Product>Octifine</Product>
 		<Description>An alternative launcher for Roblox that provides advanced customization, performance tweaks, custom themes, mod management, and rich presence integration.</Description>
 		<Company>Voidstrap</Company>
 		<Authors>Voidstrap Contributors</Authors>

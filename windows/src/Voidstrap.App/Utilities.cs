@@ -225,7 +225,7 @@ public static class Utilities
 
 	public static void KillBackgroundUpdater()
 	{
-		using EventWaitHandle eventWaitHandle = new EventWaitHandle(initialState: false, EventResetMode.AutoReset, "Voidstrap-BackgroundUpdaterKillEvent");
+		using EventWaitHandle eventWaitHandle = new EventWaitHandle(initialState: false, EventResetMode.AutoReset, "Octifine-BackgroundUpdaterKillEvent");
 		eventWaitHandle.Set();
 	}
 

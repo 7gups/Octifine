@@ -39,16 +39,16 @@ public partial class App : Application
 
 	public const string ProjectOwner = "Voidstrap";
 
-	public const string ProjectRepository = "/KloBraticc/Voidstrap/";
+	public const string ProjectRepository = "/7gups/Octifine/";
 
-	public const string ProjectDownloadLink = "https://github.com/KloBraticc/Voidstrap/releases";
-	public const string ProjectFallbackRepository = "https://github.com/KloBraticc/Voidstrap";
+	public const string ProjectDownloadLink = "https://github.com/7gups/Octifine/releases";
+	public const string ProjectFallbackRepository = "https://github.com/7gups/Octifine";
 	public const string ProjectFallbackDownloadLink = ProjectFallbackRepository + "/releases";
 	private static string ReleaseFeed(string path)
 	{
 		string? repository = Environment.GetEnvironmentVariable("VOIDSTRAP_UPDATE_REPOSITORY");
-		if (string.IsNullOrWhiteSpace(repository) || !System.Text.RegularExpressions.Regex.IsMatch(repository, "^KloBraticc/[A-Za-z0-9._-]+$"))
-			repository = "KloBraticc/Voidstrap";
+		if (string.IsNullOrWhiteSpace(repository) || !System.Text.RegularExpressions.Regex.IsMatch(repository, "^7gups/[A-Za-z0-9._-]+$"))
+			repository = "7gups/Octifine";
 		return "https://api.github.com/repos/" + repository + "/" + path;
 	}
 
@@ -59,7 +59,7 @@ public partial class App : Application
 
 	public static readonly string ProjectFallbackReleaseListApi = ReleaseFeed("releases?per_page=20");
 
-	public const string ProjectHelpLink = "https://github.com/KloBraticc/Voidstrap";
+	public const string ProjectHelpLink = "https://github.com/7gups/Octifine";
 
 	public const string ProjectDonateLink = "https://github.com/sponsors/KloBraticc";
 
@@ -67,7 +67,7 @@ public partial class App : Application
 
 	public const string RpcLoadingImageUrl = "https://raw.githubusercontent.com/KloBraticc/Voidstrap/main/assets/Images/rpc-loading.gif";
 
-	public const string ProjectSupportLink = "https://github.com/KloBraticc/Voidstrap/issues/new";
+	public const string ProjectSupportLink = "https://github.com/7gups/Octifine/issues/new";
 	public const string ProjectFallbackSupportLink = ProjectFallbackRepository + "/issues/new";
 	public const string ProjectIssuesLink = "https://github.com/KloBraticc/Voidstrap/issues";
 	public const string ProjectFallbackIssuesLink = ProjectFallbackRepository + "/issues";
