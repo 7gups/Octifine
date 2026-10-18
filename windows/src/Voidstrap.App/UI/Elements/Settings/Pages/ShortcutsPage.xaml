@@ -3,7 +3,7 @@
     <ResourceDictionary>
       <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Voidstrap;component/UI/Elements/Controls/ShortcutAppearanceResources.xaml" />
+        <ResourceDictionary Source="/Octifine;component/UI/Elements/Controls/ShortcutAppearanceResources.xaml" />
       </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
   </FrameworkElement.Resources>

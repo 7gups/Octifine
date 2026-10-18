@@ -2188,9 +2188,9 @@ public class AppearanceViewModel : NotifyPropertyChangedViewModel
     private void PopulateCustomThemes()
     {
         string? selectedCustomTheme = App.Settings.Prop.SelectedCustomTheme;
-        Directory.CreateDirectory(Paths.CustomThemes);
         CustomThemes.Clear();
-        string[] directories = Directory.GetDirectories(Paths.CustomThemes);
+        // Paths is not initialized yet while the installer is open, so there is no folder to scan.
+        string[] directories = string.IsNullOrEmpty(Paths.CustomThemes) ? [] : Directory.GetDirectories(Paths.CustomThemes);
         foreach (string text in directories)
         {
             if (File.Exists(Path.Combine(text, "Theme.xml")))

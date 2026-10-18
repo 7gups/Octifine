@@ -2,7 +2,7 @@
   <ui:UiPage.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Voidstrap;component/UI/Elements/Controls/ShortcutAppearanceResources.xaml" />
+        <ResourceDictionary Source="/Octifine;component/UI/Elements/Controls/ShortcutAppearanceResources.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </ui:UiPage.Resources>
