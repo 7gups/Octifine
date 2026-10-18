@@ -198,7 +198,7 @@ public static class GithubUpdater
 
     private static GithubReleaseAsset? FindWindowsAsset(Voidstrap.Models.APIs.GitHub.GithubRelease release)
     {
-        return release.Assets?.FirstOrDefault(asset => asset != null && string.Equals(asset.Name, "Voidstrap.exe", StringComparison.OrdinalIgnoreCase) && IsInstallableAsset(asset));
+        return release.Assets?.FirstOrDefault(asset => asset != null && string.Equals(asset.Name, "Octifine.exe", StringComparison.OrdinalIgnoreCase) && IsInstallableAsset(asset));
     }
 
     private static GithubReleaseAsset? FindMacAsset(Voidstrap.Models.APIs.GitHub.GithubRelease release)

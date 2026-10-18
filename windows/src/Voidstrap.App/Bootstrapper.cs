@@ -660,7 +660,7 @@ public class Bootstrapper
         bool mutexExists = false;
         try
         {
-            using (Mutex.OpenExisting("Voidstrap-Bootstrapper"))
+            using (Mutex.OpenExisting("Octifine-Bootstrapper"))
             {
                 App.Logger.WriteLine("Bootstrapper::Run", "Voidstrap-Bootstrapper mutex exists, waiting...");
                 SetStatus(Strings.Bootstrapper_Status_WaitingOtherInstances);
@@ -674,7 +674,7 @@ public class Bootstrapper
         {
             App.Logger.WriteLine("Bootstrapper::Run", $"Unexpected error checking mutex: {value}");
         }
-        await using AsyncMutex mutex = new(initiallyOwned: false, "Voidstrap-Bootstrapper");
+        await using AsyncMutex mutex = new(initiallyOwned: false, "Octifine-Bootstrapper");
         await mutex.AcquireAsync(_cancelTokenSource.Token);
         _mutex = mutex;
         if (mutexExists)

@@ -14,7 +14,7 @@ internal static class InstallRecord
 			{
 				root = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 			}
-			return Path.Combine(root, "Voidstrap", "install.txt");
+			return Path.Combine(root, Paths.DataFolderName, "install.txt");
 		}
 	}
 

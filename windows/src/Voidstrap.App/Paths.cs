@@ -10,9 +10,12 @@ namespace Voidstrap;
 
 internal static class Paths
 {
+	// Folder name for all app data, kept separate from Voidstrap's.
+	public const string DataFolderName = "Octifine";
+
 	private static readonly StringComparison PathComparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 
-	public static string Temp => Path.Combine(Path.GetTempPath(), "Voidstrap");
+	public static string Temp => Path.Combine(Path.GetTempPath(), DataFolderName);
 
 	public static string UserProfile => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
@@ -41,13 +44,13 @@ internal static class Paths
 		get
 		{
 			string documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-			return string.IsNullOrWhiteSpace(documents) ? Path.Combine(UserData, "Account") : Path.Combine(documents, "Voidstrap");
+			return string.IsNullOrWhiteSpace(documents) ? Path.Combine(UserData, "Account") : Path.Combine(documents, DataFolderName);
 		}
 	}
 
 	private static string ResolveUserData()
 	{
-		string preferred = Path.Combine(LocalAppData, "Voidstrap");
+		string preferred = Path.Combine(LocalAppData, DataFolderName);
 		try
 		{
 			Directory.CreateDirectory(preferred);
@@ -79,7 +82,7 @@ internal static class Paths
 			string documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 			if (string.IsNullOrWhiteSpace(documents))
 				return;
-			string legacy = Path.Combine(documents, "Voidstrap");
+			string legacy = Path.Combine(documents, DataFolderName);
 			if (string.Equals(Path.TrimEndingDirectorySeparator(legacy), Path.TrimEndingDirectorySeparator(target), PathComparison))
 				return;
 			if (!Directory.Exists(legacy))
@@ -164,7 +167,7 @@ internal static class Paths
 
 	public static string Application { get; private set; } = "";
 
-	public static string RobloxBase { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Voidstrap");
+	public static string RobloxBase { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DataFolderName);
 
 	public static string Config { get; private set; } = "";
 
@@ -274,9 +277,9 @@ internal static class Paths
 		}
 		Base = baseDirectory;
 		CloudSynced = Voidstrap.Installer.IsCloudSyncedPath(baseDirectory);
-		string offloadRoot = (robloxBaseDirectory ?? (CloudSynced ? Path.Combine(LocalAppData, "Voidstrap") : baseDirectory));
+		string offloadRoot = (robloxBaseDirectory ?? (CloudSynced ? Path.Combine(LocalAppData, DataFolderName) : baseDirectory));
 		RobloxBase = offloadRoot;
-		Application = Path.Combine(Base, Voidstrap.Utility.Platform.IsWindows ? "Voidstrap.exe" : "Voidstrap");
+		Application = Path.Combine(Base, Voidstrap.Utility.Platform.IsWindows ? "Octifine.exe" : "Voidstrap");
 		Config = Path.Combine(Base, "Config");
 		Data = Path.Combine(Base, "Data");
 		Cache = Path.Combine(offloadRoot, "Cache");
@@ -291,7 +294,7 @@ internal static class Paths
 		Versions = Path.Combine(RobloxBase, "RblxVersions");
 		Mods = Path.Combine(Base, "VoidstrapMods");
 		RobloxClients = Path.Combine(offloadRoot, "RobloxClients");
-		WebViewData = Path.Combine(LocalAppData, "Voidstrap", "WebView2");
+		WebViewData = Path.Combine(LocalAppData, DataFolderName, "WebView2");
 		RobloxLogs = Path.Combine(LocalAppData, "Roblox", "logs");
 		InitializeDerivedPaths();
 	}
@@ -639,7 +642,7 @@ internal static class Paths
 		string userData;
 		try
 		{
-			userData = Path.GetFullPath(Path.Combine(LocalAppData, "Voidstrap")).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+			userData = Path.GetFullPath(Path.Combine(LocalAppData, DataFolderName)).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 		}
 		catch
 		{
@@ -676,7 +679,7 @@ internal static class Paths
 			}
 
 			string documentsRoot = Path.GetFullPath(documents).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-			string legacy = Path.GetFullPath(Path.Combine(documentsRoot, "Voidstrap")).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+			string legacy = Path.GetFullPath(Path.Combine(documentsRoot, DataFolderName)).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
 			if (!string.Equals(Path.GetDirectoryName(legacy), documentsRoot, PathComparison) || !Directory.Exists(legacy))
 			{
