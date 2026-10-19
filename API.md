@@ -36,8 +36,6 @@ Never commit cookie values. The names below are the only ones this document list
 | `.ROBLOSECURITY` | Login session. Needed for signed-in lists such as `games/v1/games/list`. |
 | `rbxcsrf4` | CSRF cookie. Set by a 403 response on POST requests. Must be sent with the token on the retry. |
 
-Octifine's `PekoraApi.COOKIE` is set to `.PEKORASECURITY`. That name is not used by Octane. The app never stores a session value, so it never sends a session cookie.
-
 ## CSRF on POST
 
 Every POST to Octane's API can return `403` with:
