@@ -59,6 +59,7 @@ public final class LibraryFragment extends Page {
     private final Map<Long, List<LibraryData.Pass>> passCache = new HashMap<>();
     private LibraryData.Game selected;
     private boolean storeTab;
+    private boolean serversTab;
     private boolean pinnedOpen = true;
     private boolean allOpen = true;
     private String query = "";
@@ -99,6 +100,7 @@ public final class LibraryFragment extends Page {
         v.findViewById(R.id.lib_home).setOnClickListener(x -> select(null));
         v.findViewById(R.id.lib_refresh).setOnClickListener(x -> load(true));
         v.findViewById(R.id.lib_add_button).setOnClickListener(x -> addFromText());
+        v.findViewById(R.id.lib_lucky).setOnClickListener(x -> feelingLucky());
         add.setOnEditorActionListener((tv, action, ev) -> {
             if (action != EditorInfo.IME_ACTION_DONE) return false;
             addFromText();
@@ -257,6 +259,7 @@ public final class LibraryFragment extends Page {
     private void select(LibraryData.Game g) {
         selected = g;
         storeTab = false;
+        serversTab = false;
         render();
         if (g != null) detailScroll.scrollTo(0, 0);
     }
@@ -498,6 +501,7 @@ public final class LibraryFragment extends Page {
 
     private void bindDetail(LibraryData.Game g) {
         Context c = requireContext();
+        loadServers(g);
         Net.image(detail.findViewById(R.id.det_thumb), g.thumbUrl != null ? g.thumbUrl : g.iconUrl, 0, Ui.dp(c, 640));
         ((TextView) detail.findViewById(R.id.det_name)).setText(g.title());
         ((TextView) detail.findViewById(R.id.det_creator)).setText(g.creator.isEmpty() ? "" : getString(R.string.library_by, g.creator));
@@ -597,16 +601,31 @@ public final class LibraryFragment extends Page {
         int off = Ui.attr(requireContext(), R.attr.vsTextSecondary);
         tab(R.id.det_tab_about_text, R.id.det_tab_about_line, R.drawable.ic_info, !storeTab, on, off);
         tab(R.id.det_tab_store_text, R.id.det_tab_store_line, R.drawable.ic_apps, storeTab, on, off);
+        tab(R.id.det_tab_servers_text, R.id.det_tab_servers_line, R.drawable.ic_server, serversTab, on, off);
         detail.findViewById(R.id.det_tab_about).setOnClickListener(x -> {
             storeTab = false;
+            serversTab = false;
             bindTabs();
         });
         detail.findViewById(R.id.det_tab_store).setOnClickListener(x -> {
             storeTab = true;
+            serversTab = false;
             bindTabs();
         });
-        detail.findViewById(R.id.det_about).setVisibility(storeTab ? View.GONE : View.VISIBLE);
+        com.google.android.material.button.MaterialButton refresh = detail.findViewById(R.id.det_servers_refresh);
+        if (refresh != null) refresh.setOnClickListener(x -> {
+            if (selected != null) loadServers(selected);
+        });
+        detail.findViewById(R.id.det_tab_servers).setOnClickListener(x -> {
+            storeTab = false;
+            serversTab = true;
+            bindTabs();
+            if (selected != null) loadServers(selected);
+        });
+        boolean about = !storeTab && !serversTab;
+        detail.findViewById(R.id.det_about).setVisibility(about ? View.VISIBLE : View.GONE);
         detail.findViewById(R.id.det_store).setVisibility(storeTab ? View.VISIBLE : View.GONE);
+        detail.findViewById(R.id.det_servers_card).setVisibility(serversTab ? View.VISIBLE : View.GONE);
         if (storeTab && selected != null) loadPasses(selected);
     }
 
@@ -721,6 +740,57 @@ public final class LibraryFragment extends Page {
                 .show(anchor);
     }
 
+    /** Loads open servers for the game and lists them under About, each with a Join button. */
+    private void loadServers(LibraryData.Game g) {
+        TextView status = detail.findViewById(R.id.det_servers_status);
+        LinearLayout list = detail.findViewById(R.id.det_server_list);
+        if (status == null || list == null) return;
+        list.removeAllViews();
+        status.setText(R.string.library_servers_loading);
+        store.work.execute(() -> {
+            List<LibraryData.Server> servers = LibraryData.servers(g.placeId);
+            store.main.post(() -> showServers(g, servers));
+        });
+    }
+
+    private void showServers(LibraryData.Game g, List<LibraryData.Server> servers) {
+        if (detail == null || getView() == null) return;
+        TextView status = detail.findViewById(R.id.det_servers_status);
+        LinearLayout list = detail.findViewById(R.id.det_server_list);
+        if (status == null || list == null) return;
+        list.removeAllViews();
+        if (servers == null) {
+            status.setText(R.string.library_servers_failed);
+            return;
+        }
+        if (servers.isEmpty()) {
+            status.setText(R.string.library_servers_none);
+            return;
+        }
+        status.setText("");
+        LayoutInflater inf = LayoutInflater.from(requireContext());
+        int shown = 0;
+        for (LibraryData.Server s : servers) {
+            if (shown++ >= 10) break;
+            LinearLayout row = new LinearLayout(requireContext());
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setGravity(android.view.Gravity.CENTER_VERTICAL);
+            TextView info = new TextView(requireContext());
+            info.setText(getString(R.string.library_server_info, s.playing, s.max, s.ping, Math.round(s.fps)));
+            info.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodySmall);
+            info.setTextColor(Ui.attr(requireContext(), com.google.android.material.R.attr.colorOnSurface));
+            row.addView(info, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            MaterialButton join = new MaterialButton(requireContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle);
+            join.setText(R.string.library_join_server);
+            join.setOnClickListener(x -> {
+                ModLog.add("join server: place " + g.placeId + " job " + s.jobId);
+                Actions.launch(host(), Deeplink.place(g.placeId, s.jobId, null), g.title());
+            });
+            row.addView(join);
+            list.addView(row, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+    }
+
     private void joinServer(LibraryData.Game g) {
         LinearLayout box = new LinearLayout(requireContext());
         box.setOrientation(LinearLayout.VERTICAL);
@@ -765,6 +835,28 @@ public final class LibraryFragment extends Page {
             Actions.launch(host(), dl, g.title());
         });
     }
+
+    /** Joins a random game from the ten most recently played games each time it is pressed. */
+    private void feelingLucky() {
+        List<LibraryData.Game> recent = new ArrayList<>();
+        for (LibraryData.Game game : games) {
+            if (game.plays > 0) recent.add(game);
+        }
+        recent.sort((a, b) -> Long.compare(b.lastPlayed, a.lastPlayed));
+        if (recent.size() > 10) recent = new ArrayList<>(recent.subList(0, 10));
+        pickLucky(recent);
+    }
+
+    private void pickLucky(List<LibraryData.Game> pool) {
+        if (pool.isEmpty()) {
+            showStatus(R.string.library_lucky_empty_pool);
+            return;
+        }
+        LibraryData.Game g = pool.get(new java.util.Random().nextInt(pool.size()));
+        ModLog.add("lucky pick: place " + g.placeId + " " + g.title());
+        Actions.launch(host(), Deeplink.place(g.placeId, null, null), g.title());
+    }
+
 
     private void addFromText() {
         String text = add.getText() == null ? "" : add.getText().toString().trim();

@@ -386,7 +386,7 @@
 
     <string name="compat_setup">Set up</string>
 
-    <string name="licenses_text">Voidstrap\nMIT License. Copyright © 2025 Bratic.\n\nBloxstrap\nMIT License. Copyright © 2022 pizzaboxer.\n\nChevstrap\nMIT License. Copyright © 2025 FrosSky. The Roblox and Roblox VN package list, launch approach and several FastFlag presets follow Chevstrap.\n\nFluent System Icons\nMIT License. Copyright © 2020 Microsoft Corporation.\n\nBibata Modern Ice cursor\nGNU General Public License 3.0. Copyright © ful1e5. Used by the Voidstrap default cursor style.\n\nAndroidX and Material Components for Android\nApache License 2.0. Copyright The Android Open Source Project and Google LLC.\n\nMIT License terms: Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files, to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, subject to including the copyright notice and this permission notice in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND.\n\nRoblox is a trademark of Roblox Corporation. Voidstrap is not affiliated with or endorsed by Roblox Corporation.</string>
+    <string name="licenses_text">Voidstrap\nMIT License. Copyright © 2025 Bratic.\n\nBloxstrap\nMIT License. Copyright © 2022 pizzaboxer.\n\nBibata Modern Ice cursor\nGNU General Public License 3.0. Copyright © ful1e5. Used by the Voidstrap default cursor style.\n\nAndroidX and Material Components for Android\nApache License 2.0. Copyright The Android Open Source Project and Google LLC.\n\nMIT License terms: Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files, to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, subject to including the copyright notice and this permission notice in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND.\n\nRoblox is a trademark of Roblox Corporation. Voidstrap is not affiliated with or endorsed by Roblox Corporation.</string>
 
     <plurals name="flags_import_duplicates">
         <item quantity="one">%1$d name appears twice in the file, so its first value was kept: %2$s</item>
@@ -1217,4 +1217,19 @@ Crashed only with others: %2$s</string>
     <string name="onboarding_signin_body">Sign in to Octane to show your account and library. You can skip this and sign in later from Settings.</string>
     <string name="launch_opening">Opening %1$s in Octane.</string>
     <string name="library_play_tapped">Play tapped: %1$s</string>
+    <string name="library_lucky">I'm Feeling Lucky</string>
+    <string name="library_lucky_empty">Your library is empty. Play a game or add one first.</string>
+    <string name="library_lucky_empty_pool">No recently played games yet. Play a game first.</string>
+    <string name="library_lucky_sign_in_title">Octane session needed</string>
+    <string name="library_lucky_sign_in_body">Paste your Octane login cookie (.ROBLOSECURITY). It is kept in memory only and cleared when Octifine closes.</string>
+    <string name="library_lucky_cookie_hint">Cookie value</string>
+    <string name="snake_title">Contribution snake</string>
+    <string name="snake_stars">★ %1$s stars</string>
+    <string name="library_servers">Servers</string>
+    <string name="library_servers_loading">Loading servers…</string>
+    <string name="library_servers_none">No open servers right now.</string>
+    <string name="library_servers_failed">Could not load servers.</string>
+    <string name="library_server_info">%1$d of %2$d players · %3$d ms ping · %4$d FPS</string>
+    <string name="library_servers_refresh">Refresh</string>
+    <string name="star_title">Star history</string>
 </resources>

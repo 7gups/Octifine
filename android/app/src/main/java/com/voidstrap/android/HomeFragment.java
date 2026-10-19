@@ -49,9 +49,17 @@ public final class HomeFragment extends Page {
     private static final String[] GITHUB_HEADERS = {"User-Agent", "Voidstrap Android", "Accept", "application/vnd.github+json"};
 
 
-    private ContributionGraphView githubGraph;
     private TextView githubCaption;
     private long githubStars = -1;
+    private TextView snakeStars;
+    private android.webkit.WebView snakeView;
+    private boolean snakeLoaded;
+    private android.webkit.WebView starView;
+    private boolean starLoaded;
+    private static final String STAR_LIGHT = "https://raw.githubusercontent.com/7gups/Octifine/output/star-chart-light.svg";
+    private static final String STAR_DARK = "https://raw.githubusercontent.com/7gups/Octifine/output/star-chart-dark.svg";
+    private static final String SNAKE_LIGHT = "https://raw.githubusercontent.com/7gups/Octifine/output/github-contribution-grid-snake.svg";
+    private static final String SNAKE_DARK = "https://raw.githubusercontent.com/7gups/Octifine/output/github-contribution-grid-snake-dark.svg";
     private long githubCommitCount = -1;
     private int githubYear = Calendar.getInstance(TimeZone.getTimeZone("UTC")).get(Calendar.YEAR);
     private long githubDueAt;
@@ -155,6 +163,11 @@ public final class HomeFragment extends Page {
         v.findViewById(R.id.account_limiteds).setOnClickListener(x -> startActivity(new Intent(requireContext(), LimitedsActivity.class)));
         accountCard = v.findViewById(R.id.account_card);
         accountSignIn = v.findViewById(R.id.account_signin);
+        snakeStars = v.findViewById(R.id.snake_stars);
+        snakeView = v.findViewById(R.id.snake_view);
+        starView = v.findViewById(R.id.star_view);
+        secureWebView(snakeView);
+        secureWebView(starView);
         libraryHeader = v.findViewById(R.id.library_header);
         libraryGrid = v.findViewById(R.id.library_grid);
         accountSignIn.setOnClickListener(x -> PekoraSession.toggle(requireActivity()));
@@ -162,7 +175,6 @@ public final class HomeFragment extends Page {
         alertText = v.findViewById(R.id.alert_text);
         alertLink = v.findViewById(R.id.alert_link);
         alertLink.setOnClickListener(x -> openAlertLink());
-        githubGraph = v.findViewById(R.id.github_graph);
         githubCaption = v.findViewById(R.id.github_caption);
         v.findViewById(R.id.github_open).setOnClickListener(x -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_URL))));
         v.findViewById(R.id.github_refresh).setOnClickListener(x -> loadGithub());
@@ -360,6 +372,40 @@ public final class HomeFragment extends Page {
         accountDueAt = 0;
         alertDueAt = 0;
         refresh();
+    }
+
+    /** Image-only WebView: no scripts, no file or content access. */
+    private static void secureWebView(android.webkit.WebView view) {
+        if (view == null) return;
+        android.webkit.WebSettings ws = view.getSettings();
+        ws.setJavaScriptEnabled(false);
+        ws.setAllowFileAccess(false);
+        ws.setAllowContentAccess(false);
+        view.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+    }
+
+    /** Shows the star-history chart in its own WebView, in light or dark mode. */
+    private void loadStars() {
+        if (starView == null || starLoaded) return;
+        starLoaded = true;
+        boolean dark = (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
+                == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+        String src = dark ? STAR_DARK : STAR_LIGHT;
+        String html = "<html><body style='margin:0;background:transparent'>"
+                + "<img src='" + src + "' style='width:100%;height:auto'></body></html>";
+        starView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
+    }
+
+    /** Shows the generated snake in a WebView. The image comes from the output branch the snake workflow publishes. */
+    private void loadSnake() {
+        if (snakeView == null || snakeLoaded) return;
+        snakeLoaded = true;
+        boolean dark = (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
+                == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+        String src = dark ? SNAKE_DARK : SNAKE_LIGHT;
+        String html = "<html><body style='margin:0;background:transparent'>"
+                + "<img src='" + src + "' style='width:100%;height:auto'></body></html>";
+        snakeView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
     }
 
     private String count(long v) {
@@ -582,16 +628,17 @@ public final class HomeFragment extends Page {
     }
 
     private void bindGithub(Integer stars, CommitActivity activity, String site, Release rel, boolean relFailed) {
-        if (githubGraph == null) return;
         if (stars != null) githubStars = stars;
         if (activity != null) {
-            githubGraph.setData(activity.counts, activity.months);
             githubCommitCount = activity.total;
             githubYear = activity.year;
         } else {
             githubDueAt = System.currentTimeMillis() + FEED_RETRY_MS;
         }
         githubCaption.setText(getString(R.string.home_github_caption_year, count(githubCommitCount), githubYear, count(githubStars)));
+        if (snakeStars != null && githubStars >= 0) snakeStars.setText(getString(R.string.snake_stars, count(githubStars)));
+        loadSnake();
+        loadStars();
         bindRelease(rel, relFailed);
     }
 

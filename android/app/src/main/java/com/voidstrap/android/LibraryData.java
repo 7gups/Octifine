@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -137,6 +138,7 @@ final class LibraryData {
         }, "presence-watch").start();
     }
 
+
     /** Pins the current game so it stays in the library after you leave it. Name and icon come from the meta lookup. */
     private static void saveCurrent(Context c, Game g) {
         Store store = Store.get(c);
@@ -151,6 +153,51 @@ final class LibraryData {
         String icon = m == null ? "" : Core.opt(m, "iconUrl");
         long universe = m == null ? g.universeId : m.optLong("universeId", g.universeId);
         store.pin(new Store.Game(g.placeId, universe, name == null ? "" : Store.clip(name, 200), icon == null ? "" : icon, System.currentTimeMillis()));
+    }
+
+    /** One open server for a place. jobId is what a join uses. */
+    static final class Server {
+        String jobId = "";
+        int playing;
+        int max;
+        int ping;
+        double fps;
+    }
+
+    /**
+     * Open servers for a place from the legacy server list. Returns null when the request fails, and an empty list
+     * when there are no open servers. Network call: run it off the main thread.
+     */
+    static List<Server> servers(long placeId) {
+        Object[] res = Http.request("GET", "https://octane.wtf/games/getgameinstancesjson?placeId=" + placeId + "&startIndex=0",
+                new String[] {"Accept", "application/json", "User-Agent", "Voidstrap Android"}, null, 15_000, 400_000, true);
+        if (res == null || ((int[]) res[0])[0] != 200) return null;
+        List<Server> out = new ArrayList<>();
+        try {
+            JSONArray arr = new JSONObject(new String((byte[]) res[2], StandardCharsets.UTF_8)).optJSONArray("Collection");
+            if (arr == null) return out;
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject o = arr.optJSONObject(i);
+                if (o == null) continue;
+                Server s = new Server();
+                s.jobId = o.optString("jobId", "");
+                s.max = o.optInt("Capacity", 0);
+                s.ping = o.optInt("Ping", 0);
+                s.fps = o.optDouble("Fps", 0);
+                // "PlayersCapacity" reads like "18 of 100"
+                String pc = o.optString("PlayersCapacity", "").trim();
+                String first = pc.isEmpty() ? "0" : pc.split("\\s+")[0];
+                try {
+                    s.playing = Integer.parseInt(first);
+                } catch (NumberFormatException e) {
+                    s.playing = 0;
+                }
+                if (!s.jobId.isEmpty() && (s.max <= 0 || s.playing < s.max)) out.add(s);
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return out;
     }
 
     static List<Game> base(Store store) {
