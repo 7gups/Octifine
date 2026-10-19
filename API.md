@@ -47,7 +47,7 @@ Retry the same request with both:
 - `x-csrf-token: <token>`
 - `Cookie: rbxcsrf4=<value>`
 
-Sending only the token fails with the same message. Octifine's `PekoraApi.post` and `feed.rs` `catalog_details` do this retry.
+Sending only the token fails with the same message. Octifine's`feed.rs` and `catalog_details` do this retry.
 
 ---
 
