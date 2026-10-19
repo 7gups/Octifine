@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" font-family="system-ui, sans-serif">
+<rect width="720" height="360" fill="#0d1117"/>
+<text x="56" y="28" font-size="16" font-weight="600" fill="#e6edf3">7gups/Octifine stars</text>
+<text x="696" y="28" font-size="14" text-anchor="end" fill="#8b949e">0 stars</text>
+<line x1="56" y1="320.0" x2="696" y2="320.0" stroke="#30363d" stroke-width="1"/>
+<text x="48" y="324.0" font-size="11" text-anchor="end" fill="#8b949e">0</text>
+<line x1="56" y1="267.2" x2="696" y2="267.2" stroke="#30363d" stroke-width="1"/>
+<text x="48" y="271.2" font-size="11" text-anchor="end" fill="#8b949e">2</text>
+<line x1="56" y1="188.0" x2="696" y2="188.0" stroke="#30363d" stroke-width="1"/>
+<text x="48" y="192.0" font-size="11" text-anchor="end" fill="#8b949e">5</text>
+<line x1="56" y1="135.2" x2="696" y2="135.2" stroke="#30363d" stroke-width="1"/>
+<text x="48" y="139.2" font-size="11" text-anchor="end" fill="#8b949e">7</text>
+<line x1="56" y1="56.0" x2="696" y2="56.0" stroke="#30363d" stroke-width="1"/>
+<text x="48" y="60.0" font-size="11" text-anchor="end" fill="#8b949e">10</text>
+<text x="56.0" y="346" font-size="11" fill="#8b949e">Oct 2026</text>
+<polygon points="56,320 56.0,320.0 696,320" fill="#b48cff33"/>
+<polyline points="56.0,320.0" fill="none" stroke="#b48cff" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>
