@@ -151,7 +151,7 @@ public final class Ui {
             }
         }
         TextView label = v.findViewById(com.google.android.material.R.id.snackbar_text);
-        android.graphics.drawable.Drawable logo = androidx.core.content.ContextCompat.getDrawable(a, R.drawable.pekostrap_logo);
+        android.graphics.drawable.Drawable logo = androidx.core.content.ContextCompat.getDrawable(a, R.drawable.octifine_logo);
         if (logo != null) {
             logo = logo.mutate();
             logo.setTint(Ui.attr(a, androidx.appcompat.R.attr.colorPrimary));

@@ -154,7 +154,7 @@ public final class OnboardingActivity extends AppCompatActivity {
         allow = null;
         if (ICONS[step] == 0) {
             icon.setImageTintList(iconTint);
-            icon.setImageResource(R.drawable.pekostrap_logo);
+            icon.setImageResource(R.drawable.octifine_logo);
         } else {
             icon.setImageTintList(iconTint);
             icon.setImageResource(ICONS[step]);
