@@ -10,6 +10,10 @@ on:
       - "star-chart/**"
       - ".github/workflows/star-chart.yml"
 
+concurrency:
+  group: output-branch
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -33,5 +37,6 @@ jobs:
           target_branch: output
           keep_history: true
           build_dir: dist
+          jekyll: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

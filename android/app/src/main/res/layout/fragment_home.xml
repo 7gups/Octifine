@@ -319,12 +319,16 @@
                         android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
 
-                <WebView
-                    android:id="@+id/snake_view"
+                                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="8dp">
+                    <WebView
+                    android:id="@+id/snake_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@android:color/transparent" />
+                </FrameLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -349,12 +353,16 @@
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:textColor="?attr/colorOnSurface" />
 
-                <WebView
+                                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="8dp">
+                    <WebView
                     android:id="@+id/star_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="match_parent"
                     android:background="@android:color/transparent" />
+                </FrameLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

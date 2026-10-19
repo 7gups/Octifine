@@ -7,6 +7,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: output-branch
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -14,6 +18,8 @@ jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - uses: Platane/snk/svg-only@v3
         with:
           github_user_name: ${{ github.repository_owner }}
@@ -26,5 +32,6 @@ jobs:
           target_branch: output
           keep_history: true
           build_dir: dist
+          jekyll: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
