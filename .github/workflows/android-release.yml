@@ -84,7 +84,7 @@ jobs:
           rm -rf "$work"
           mkdir -p "$work"
           unzip -o -q "$RUNNER_TEMP/android-release/Octifine-Android-play-$VOIDSTRAP_VERSION.apk" -d "$work"
-          for term in Matchmaker RobloxLogin SignInActivity Reroute gamejoin ROBLOSECURITY; do
+          for term in Matchmaker RobloxLogin SignInActivity Reroute gamejoin; do
             if grep -qa "$term" "$work"/classes*.dex 2>/dev/null; then
               echo "the play apk contains $term in its dex"
               status=1

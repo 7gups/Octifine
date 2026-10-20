@@ -8,6 +8,7 @@ Set GITHUB_TOKEN for a higher API rate limit (optional).
 import argparse
 import datetime as dt
 import json
+import math
 import os
 import urllib.request
 from xml.sax.saxutils import escape
@@ -54,12 +55,14 @@ def cumulative_by_day(star_days, today):
 
 
 def nice_max(value):
-    """Rounds the y-axis top up to a tidy number."""
-    if value <= 10:
-        return 10
-    magnitude = 10 ** (len(str(value)) - 1)
-    step = magnitude // 2 if value / magnitude < 5 else magnitude
-    return int(-(-value // step) * step)
+    """Top of the y-axis: a multiple of 4 with a nice step, so the four gridline ticks are evenly spaced."""
+    if value <= 4:
+        return 4
+    step_needed = math.ceil(value / 4)
+    magnitude = 10 ** math.floor(math.log10(step_needed))
+    for m in (1, 2, 5, 10):
+        if m * magnitude >= step_needed:
+            return 4 * m * magnitude
 
 
 THEMES = {

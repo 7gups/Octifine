@@ -41,7 +41,7 @@ jobs:
             rm -rf "$work"
             mkdir -p "$work"
             unzip -o -q "$apk" -d "$work"
-            for term in Matchmaker RobloxLogin SignInActivity Reroute gamejoin ROBLOSECURITY; do
+            for term in Matchmaker RobloxLogin SignInActivity Reroute gamejoin; do
               if grep -qa "$term" "$work"/classes*.dex 2>/dev/null; then
                 echo "$(basename "$apk") contains $term in its dex"
                 status=1

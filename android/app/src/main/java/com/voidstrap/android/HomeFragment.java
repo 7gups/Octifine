@@ -49,7 +49,6 @@ public final class HomeFragment extends Page {
     private static final String[] GITHUB_HEADERS = {"User-Agent", "Voidstrap Android", "Accept", "application/vnd.github+json"};
 
 
-    private TextView githubCaption;
     private long githubStars = -1;
     private TextView snakeStars;
     private android.webkit.WebView snakeView;
@@ -175,7 +174,6 @@ public final class HomeFragment extends Page {
         alertText = v.findViewById(R.id.alert_text);
         alertLink = v.findViewById(R.id.alert_link);
         alertLink.setOnClickListener(x -> openAlertLink());
-        githubCaption = v.findViewById(R.id.github_caption);
         v.findViewById(R.id.github_open).setOnClickListener(x -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_URL))));
         v.findViewById(R.id.github_refresh).setOnClickListener(x -> loadGithub());
         githubReleaseTitle = v.findViewById(R.id.release_title);
@@ -391,8 +389,9 @@ public final class HomeFragment extends Page {
         boolean dark = (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
                 == android.content.res.Configuration.UI_MODE_NIGHT_YES;
         String src = dark ? STAR_DARK : STAR_LIGHT;
-        String html = "<html><body style='margin:0;background:transparent'>"
-                + "<img src='" + src + "' style='width:100%;height:auto'></body></html>";
+        String html = "<html><head><style>html,body{margin:0;height:100%;background:transparent}"
+                + "img{width:100%;height:100%;object-fit:contain}</style></head><body>"
+                + "<img src='" + src + "'></body></html>";
         starView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
     }
 
@@ -403,8 +402,9 @@ public final class HomeFragment extends Page {
         boolean dark = (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
                 == android.content.res.Configuration.UI_MODE_NIGHT_YES;
         String src = dark ? SNAKE_DARK : SNAKE_LIGHT;
-        String html = "<html><body style='margin:0;background:transparent'>"
-                + "<img src='" + src + "' style='width:100%;height:auto'></body></html>";
+        String html = "<html><head><style>html,body{margin:0;height:100%;background:transparent}"
+                + "img{width:100%;height:100%;object-fit:contain}</style></head><body>"
+                + "<img src='" + src + "'></body></html>";
         snakeView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
     }
 
@@ -428,7 +428,7 @@ public final class HomeFragment extends Page {
 
     /** Headshot URL for the account avatar, or null when unavailable. */
     private static String headshotUrl(long userId) {
-        JSONObject o = PekoraApi.headshots(String.valueOf(userId), "150x150");
+        JSONObject o = OctaneApi.headshots(String.valueOf(userId), "150x150");
         JSONArray data = o == null ? null : o.optJSONArray("data");
         JSONObject first = data == null ? null : data.optJSONObject(0);
         String url = first == null ? "" : first.optString("imageUrl", "");
@@ -438,7 +438,7 @@ public final class HomeFragment extends Page {
     private void loadAlert() {
         alertDueAt = System.currentTimeMillis() + ALERT_REFRESH_MS;
         store.work.execute(() -> {
-            JSONObject info = PekoraApi.alertInfo();
+            JSONObject info = OctaneApi.alertInfo();
             store.main.post(() -> bindAlert(info));
         });
     }
@@ -452,7 +452,7 @@ public final class HomeFragment extends Page {
         alertText.setText(text);
         String link = info.optString("LinkText", "");
         String url = info.optString("LinkUrl", "");
-        alertUrl = PekoraApi.safeLink(url) ? url : null;
+        alertUrl = OctaneApi.safeLink(url) ? url : null;
         boolean showLink = alertUrl != null && !link.isEmpty();
         alertLink.setText(link);
         alertLink.setVisibility(showLink ? View.VISIBLE : View.GONE);
@@ -635,7 +635,6 @@ public final class HomeFragment extends Page {
         } else {
             githubDueAt = System.currentTimeMillis() + FEED_RETRY_MS;
         }
-        githubCaption.setText(getString(R.string.home_github_caption_year, count(githubCommitCount), githubYear, count(githubStars)));
         if (snakeStars != null && githubStars >= 0) snakeStars.setText(getString(R.string.snake_stars, count(githubStars)));
         loadSnake();
         loadStars();

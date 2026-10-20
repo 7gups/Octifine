@@ -40,7 +40,7 @@ final class PekoraLoginDialog {
             generate.setEnabled(false);
             status.setText(R.string.pekora_login_checking);
             store.work.execute(() -> {
-                long id = input.matches("\\d+") ? parseId(input) : PekoraApi.userIdForUsername(input);
+                long id = input.matches("\\d+") ? parseId(input) : OctaneApi.userIdForUsername(input);
                 store.main.post(() -> {
                     generate.setEnabled(true);
                     if (id <= 0) {
@@ -65,7 +65,7 @@ final class PekoraLoginDialog {
             verify.setEnabled(false);
             status.setText(R.string.pekora_login_checking);
             store.work.execute(() -> {
-                JSONObject info = PekoraApi.userInfo(id);
+                JSONObject info = OctaneApi.userInfo(id);
                 store.main.post(() -> {
                     verify.setEnabled(true);
                     if (info == null) {

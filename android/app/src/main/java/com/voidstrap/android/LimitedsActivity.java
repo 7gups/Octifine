@@ -134,7 +134,7 @@ public final class LimitedsActivity extends AppCompatActivity {
         String requestCursor = cursor;
         String requestCategory = category;
         store.work.execute(() -> {
-            JSONObject page = PekoraApi.collectibles(userId, requestCursor, PAGE_SIZE, requestCategory, null);
+            JSONObject page = OctaneApi.collectibles(userId, requestCursor, PAGE_SIZE, requestCategory, null);
             JSONArray data = page == null ? null : page.optJSONArray("data");
             List<JSONObject> got = new ArrayList<>();
             Map<Long, String> urls = new HashMap<>();
@@ -148,7 +148,7 @@ public final class LimitedsActivity extends AppCompatActivity {
                     ids.append(o.optLong("assetId", 0));
                 }
                 if (ids.length() > 0) {
-                    JSONObject t = PekoraApi.assetThumbs(ids.toString(), "150x150");
+                    JSONObject t = OctaneApi.assetThumbs(ids.toString(), "150x150");
                     JSONArray td = t == null ? null : t.optJSONArray("data");
                     for (int i = 0; td != null && i < td.length(); i++) {
                         JSONObject x = td.optJSONObject(i);

@@ -438,7 +438,7 @@ public final class ActivityService extends Service implements ActivityWatcher.Li
         }
         if (g.name.isEmpty()) {
             // The Rust lookup returned no name: ask the apisite place details first.
-            JSONArray places = PekoraApi.placeDetails(String.valueOf(d.placeId));
+            JSONArray places = OctaneApi.placeDetails(String.valueOf(d.placeId));
             JSONObject place = places == null ? null : places.optJSONObject(0);
             if (place != null) {
                 g.name = place.optString("name", "");
@@ -448,7 +448,7 @@ public final class ActivityService extends Service implements ActivityWatcher.Li
         }
         if (g.name.isEmpty() && d.universeId > 0) {
             // Then the universe details, which return the game name in data[0].
-            JSONArray games = PekoraApi.gamesByUniverse(String.valueOf(d.universeId));
+            JSONArray games = OctaneApi.gamesByUniverse(String.valueOf(d.universeId));
             JSONObject game = games == null ? null : games.optJSONObject(0);
             if (game != null) {
                 g.name = game.optString("name", "");

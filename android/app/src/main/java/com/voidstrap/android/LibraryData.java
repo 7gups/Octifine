@@ -93,7 +93,7 @@ final class LibraryData {
         Game found = null;
         long user = PekoraSession.userId(c);
         if (user > 0) {
-            org.json.JSONObject o = PekoraApi.presence(new long[] {user});
+            org.json.JSONObject o = OctaneApi.presence(new long[] {user});
             org.json.JSONArray arr = o == null ? null : o.optJSONArray("userPresences");
             org.json.JSONObject p = arr == null || arr.length() == 0 ? null : arr.optJSONObject(0);
             long place = p == null ? 0 : p.optLong("placeId", 0);

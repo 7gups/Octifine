@@ -36,6 +36,13 @@ Never commit cookie values. The names below are the only ones this document list
 | `.ROBLOSECURITY` | Login session. Needed for signed-in lists such as `games/v1/games/list`. |
 | `rbxcsrf4` | CSRF cookie. Set by a 403 response on POST requests. Must be sent with the token on the retry. |
 
+### How the app sends cookies
+
+- The app's Octane client is `OctaneApi`. Its `COOKIE` constant is `.ROBLOSECURITY`, the Octane login cookie.
+- The app never stores a session value, so no request sends `.ROBLOSECURITY` yet. Public calls need no login.
+- The `rbxcsrf4` cookie is sent only on the CSRF retry, as shown above.
+- The release workflows check the play build's dex for banned terms. `ROBLOSECURITY` is not on that list any more.
+
 ## CSRF on POST
 
 Every POST to Octane's API can return `403` with:
@@ -53,7 +60,7 @@ Sending only the token fails with the same message. Octifine's`feed.rs` and `cat
 
 ## Users
 
-### `GET octane.wtf/apisite/users/v1/users/{id}` — Verified
+### `GET octane.wtf/apisite/users/v1/users/{id}` - Verified
 
 Anonymous. Example for id `7395`:
 
@@ -63,13 +70,13 @@ Anonymous. Example for id `7395`:
  "hasVerifiedBadge":false,"isPremium":false,"hasAdminBadge":false}
 ```
 
-### `POST octane.wtf/apisite/users/v1/usernames/users` — Auth (CSRF)
+### `POST octane.wtf/apisite/users/v1/usernames/users` - Auth (CSRF)
 
 Body: `{"usernames":["jonfield"],"excludeBannedUsers":false}`
 
 Returns `403` with a CSRF token. The success response has not been recorded yet, so the username-to-id lookup is **untested** after the retry fix.
 
-### `GET octane.wtf/users/favorites/list-json?userId={id}&assetTypeId=9&itemsPerPage={n}` — Verified
+### `GET octane.wtf/users/favorites/list-json?userId={id}&assetTypeId=9&itemsPerPage={n}` - Verified
 
 Anonymous. `assetTypeId=9` is places. Returns:
 
@@ -84,7 +91,7 @@ Item fields are not recorded yet, because the test account had no favorites.
 
 ## Presence
 
-### `POST octane.wtf/apisite/presence/v1/presence/users` — Auth (CSRF)
+### `POST octane.wtf/apisite/presence/v1/presence/users` - Auth (CSRF)
 
 Body: `{"userIds":[7395]}`
 
@@ -102,7 +109,7 @@ After the CSRF retry, returned:
 
 ## Games
 
-### `GET games.octane.wtf/v1/games/multiget-place-details?placeIds={id}` — Verified
+### `GET games.octane.wtf/v1/games/multiget-place-details?placeIds={id}` - Verified
 
 Anonymous. Returns an **array**, not an object:
 
@@ -115,11 +122,11 @@ Anonymous. Returns an **array**, not an object:
 
 Octifine's `universe_from_details` reads the first element. The array was previously discarded, which broke universe lookup and adding by PlaceId.
 
-### `GET octane.wtf/apisite/games/v1/games?universeIds={id}` — Verified
+### `GET octane.wtf/apisite/games/v1/games?universeIds={id}` - Verified
 
 Anonymous. Returns `{"data":[{...}]}` with `id`, `rootPlaceId`, `name`, `playing`, `visits`, `maxPlayers`, `creator`, `favoritedCount`.
 
-### `GET games.octane.wtf/v1/games/list?gameSetTargetId={n}&maxRows={n}&sortToken={token}` — Auth (`.ROBLOSECURITY`)
+### `GET games.octane.wtf/v1/games/list?gameSetTargetId={n}&maxRows={n}&sortToken={token}` - Auth (`.ROBLOSECURITY`)
 
 Anonymous returns `Unauthorized`. With the cookie returns:
 
@@ -132,7 +139,7 @@ Anonymous returns `Unauthorized`. With the cookie returns:
 
 The `gameSetTargetId=96` / `sortToken=recent` list returned 7 games even with `maxRows=100`. There is no cursor or total in the response. It is not the full catalog.
 
-### `GET games.octane.wtf/v1/games/sorts?gameSortsContext=HomeSorts` — Auth (`.ROBLOSECURITY`)
+### `GET games.octane.wtf/v1/games/sorts?gameSortsContext=HomeSorts` - Auth (`.ROBLOSECURITY`)
 
 Returns:
 
@@ -147,7 +154,7 @@ Returns:
 
 Only two sorts exist.
 
-### `GET octane.wtf/apisite/games/v1/games/{universeId}/game-passes` — Verified
+### `GET octane.wtf/apisite/games/v1/games/{universeId}/game-passes` - Verified
 
 Anonymous. Returns:
 
@@ -160,11 +167,11 @@ Anonymous. Returns:
 
 The pass `id` is also its icon asset id, so the thumbnail endpoint below works with it. No `displayIconImageAssetId` is returned.
 
-### `GET games.octane.wtf/v1/games/{placeId}/servers/Public` — Not found
+### `GET games.octane.wtf/v1/games/{placeId}/servers/Public` - Not found
 
 Returned `404` for every variant tried, including `Friend` and nonsense names.
 
-### `GET octane.wtf/games/getgameinstancesjson?placeId={id}&startIndex={n}` — Verified
+### `GET octane.wtf/games/getgameinstancesjson?placeId={id}&startIndex={n}` - Verified
 
 Legacy Roblox-style server list. Anonymous. Returns:
 
@@ -176,7 +183,7 @@ Legacy Roblox-style server list. Anonymous. Returns:
 
 Octifine's `smart.rs` `servers()` reads `Collection`, uses `jobId` as the id, and counts players from `PlayersCapacity`. The `startIndex` paging has not been tested beyond the first page.
 
-### `GET octane.wtf/apisite/game-passes/v1/universes/{id}/game-passes` — Not found
+### `GET octane.wtf/apisite/game-passes/v1/universes/{id}/game-passes` - Not found
 
 Returned `404 Not found`.
 
@@ -184,7 +191,7 @@ Returned `404 Not found`.
 
 ## Catalog
 
-### `GET catalog.octane.wtf/v1/search/items?category=Featured&limit={n}` — Verified
+### `GET catalog.octane.wtf/v1/search/items?category=Featured&limit={n}` - Verified
 
 Anonymous. Returns IDs only:
 
@@ -193,7 +200,7 @@ Anonymous. Returns IDs only:
  "data":[{"itemType":"Asset","id":196627}]}
 ```
 
-### `POST catalog.octane.wtf/v1/catalog/items/details` — Auth (CSRF)
+### `POST catalog.octane.wtf/v1/catalog/items/details` - Auth (CSRF)
 
 Body: `{"items":[{"itemType":"Asset","id":196627}]}`
 
@@ -203,7 +210,7 @@ Returns `403` with a CSRF token. The retry with token and `rbxcsrf4` is implemen
 
 ## Thumbnails
 
-### `GET octane.wtf/apisite/thumbnails/v1/assets?assetIds={ids}&size={WxH}&format=Png&isCircular=false` — Verified
+### `GET octane.wtf/apisite/thumbnails/v1/assets?assetIds={ids}&size={WxH}&format=Png&isCircular=false` - Verified
 
 Anonymous. Works for assets and game-pass ids. Returns:
 
@@ -212,7 +219,7 @@ Anonymous. Works for assets and game-pass ids. Returns:
   "imageUrl":"https://tcdn.octane.wtf/<hash>.png","version":""}]}
 ```
 
-### `GET octane.wtf/apisite/thumbnails/v1/game-passes?passIds={ids}` — Not found
+### `GET octane.wtf/apisite/thumbnails/v1/game-passes?passIds={ids}` - Not found
 
 Returned nothing. `thumbnails.octane.wtf/v1/game-passes` returned `404`.
 
@@ -300,23 +307,23 @@ Octifine writes it through a helper or root shell. The Mods tab copies workspace
 
 These are GitHub's public API routes. They have a rate limit for unauthenticated requests, so the app caches them.
 
-### `GET api.github.com/repos/7gups/Octifine` — Verified
+### `GET api.github.com/repos/7gups/Octifine` - Verified
 
 Returns the repository, including `stargazers_count`. Octifine's home screen reads the star count from here for the snake card and the GitHub card. Returns `200` anonymously.
 
-### `GET api.github.com/repos/7gups/Octifine/stats/commit_activity` — Verified (202)
+### `GET api.github.com/repos/7gups/Octifine/stats/commit_activity` - Verified (202)
 
 Returns `202` with `[]`-sized body while GitHub computes the stats. It is not ready on a new or busy repo. Octifine falls back to the commit list when it gets `202`.
 
-### `GET api.github.com/repos/7gups/Octifine/commits?per_page=100&page={n}` — Untested
+### `GET api.github.com/repos/7gups/Octifine/commits?per_page=100&page={n}` - Untested
 
 Used by the commit-graph fallback, up to three pages. Each commit's date is read from `commit.author.date`.
 
-### `GET api.github.com/repos/7gups/Octifine/releases/latest` — Untested
+### `GET api.github.com/repos/7gups/Octifine/releases/latest` - Untested
 
 Used for the release card. The code treats `404` as "no release yet".
 
-### `GET api.github.com/repos/7gups/Octifine/releases?per_page=20` — Untested
+### `GET api.github.com/repos/7gups/Octifine/releases?per_page=20` - Untested
 
 Used by the in-app updater. It picks the asset whose name contains `android` and the build flavour.
 

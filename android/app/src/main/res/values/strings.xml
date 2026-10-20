@@ -1070,7 +1070,7 @@
     <string name="home_github_commits">Commits</string>
     <string name="home_github_empty">—</string>
     <string name="pekora_notice_title">Before you sign in</string>
-    <string name="pekora_notice_body">We do NOT log cookies or store them in plaintext in the app\'s own database. After you sign in, your account\'s cookie (.PEKORASECURITY) is immediately copied into encrypted storage using Android\'s encryption and is never logged. The sign-in browser keeps its normal web cookies, and signing out clears them. Do you understand?</string>
+    <string name="pekora_notice_body">We do NOT log cookies or store them in plaintext in the app\'s own database. After you sign in, your account\'s cookie (.ROBLOSECURITY) is immediately copied into encrypted storage using Android\'s encryption and is never logged. The sign-in browser keeps its normal web cookies, and signing out clears them. Do you understand?</string>
     <string name="pekora_notice_wait">Continue (%1$d)</string>
     <string name="pekora_notice_continue">Continue</string>
     <string name="pekora_notice_dont_show">Don\'t show again</string>
