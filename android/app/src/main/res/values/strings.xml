@@ -1234,5 +1234,5 @@ Crashed only with others: %2$s</string>
     <string name="star_title">Star history</string>
     <string name="library_join_short">Join</string>
     <string name="library_server_players">%1$d of %2$d players</string>
-    <string name="flag_request_copied">Details copied. Paste them into the form on GitHub.</string>
+    <string name="flag_request_opened">Opening GitHub. Tap Submit to send the request.</string>
 </resources>

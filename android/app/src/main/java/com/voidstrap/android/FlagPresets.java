@@ -804,9 +804,8 @@ public final class FlagPresets {
             String valueText = value.getText().toString().trim();
             String reasonText = reason.getText().toString().trim();
             String groupText = String.valueOf(groupSpinner.getSelectedItem());
-            Ui.copy(a, flag, FlagRequests.details(a, flag, valueText, reasonText, groupText));
-            Ui.openWeb(a, FlagRequests.issueUrl(flag));
-            Notify.say(a, Notify.GENERAL, R.string.flag_request_copied);
+            Ui.openWeb(a, FlagRequests.issueUrl(a, flag, valueText, reasonText, groupText));
+            Notify.say(a, Notify.GENERAL, R.string.flag_request_opened);
             dialog.dismiss();
         });
     }

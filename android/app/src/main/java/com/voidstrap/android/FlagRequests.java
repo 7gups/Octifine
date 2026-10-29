@@ -19,10 +19,16 @@ final class FlagRequests {
     private FlagRequests() {
     }
 
-    /** The flag-request issue form on GitHub, with the title filled in. The user pastes the details into the form. */
-    static String issueUrl(String flag) {
-        return "https://github.com/7gups/Octifine/issues/new?template=flag_request.yml&labels=flag-request&title="
-                + android.net.Uri.encode("Flag request: " + flag);
+    /**
+     * A new GitHub issue with the title and body already filled in. Blank issues accept these parameters, so the
+     * user only taps Submit. The body is shortened so the whole link stays well under URL length limits.
+     */
+    static String issueUrl(Context c, String flag, String value, String reason, String group) {
+        String body = details(c, flag, value, reason, group);
+        if (body.length() > 1500) body = body.substring(0, 1500) + "\n\n(truncated)";
+        return "https://github.com/7gups/Octifine/issues/new?labels=flag-request"
+                + "&title=" + android.net.Uri.encode("Flag request: " + flag)
+                + "&body=" + android.net.Uri.encode(body);
     }
 
     /** The request details for the clipboard, in the same order as the issue form. */
