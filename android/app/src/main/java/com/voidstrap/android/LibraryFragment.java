@@ -768,26 +768,60 @@ public final class LibraryFragment extends Page {
             return;
         }
         status.setText("");
-        LayoutInflater inf = LayoutInflater.from(requireContext());
+        Context c = requireContext();
+        int pad = Ui.dp(c, 14);
+        int avatarPx = Ui.dp(c, 30);
         int shown = 0;
         for (LibraryData.Server s : servers) {
             if (shown++ >= 10) break;
-            LinearLayout row = new LinearLayout(requireContext());
-            row.setOrientation(LinearLayout.HORIZONTAL);
-            row.setGravity(android.view.Gravity.CENTER_VERTICAL);
-            TextView info = new TextView(requireContext());
-            info.setText(getString(R.string.library_server_info, s.playing, s.max, s.ping, Math.round(s.fps)));
-            info.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodySmall);
-            info.setTextColor(Ui.attr(requireContext(), com.google.android.material.R.attr.colorOnSurface));
-            row.addView(info, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-            MaterialButton join = new MaterialButton(requireContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle);
-            join.setText(R.string.library_join_server);
+            com.google.android.material.card.MaterialCardView card = new com.google.android.material.card.MaterialCardView(c);
+            card.setCardBackgroundColor(Ui.attr(c, com.google.android.material.R.attr.colorSurfaceContainerHigh));
+            card.setRadius(Ui.dp(c, 20));
+            card.setCardElevation(0);
+            card.setStrokeWidth(0);
+
+            LinearLayout body = new LinearLayout(c);
+            body.setOrientation(LinearLayout.VERTICAL);
+            body.setPadding(pad, pad, pad, pad);
+
+            LinearLayout header = new LinearLayout(c);
+            header.setOrientation(LinearLayout.HORIZONTAL);
+            header.setGravity(android.view.Gravity.CENTER_VERTICAL);
+            TextView count = new TextView(c);
+            count.setText(getString(R.string.library_server_players, s.playing, s.max));
+            count.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_LabelLarge);
+            count.setTextColor(Ui.attr(c, com.google.android.material.R.attr.colorOnSurfaceVariant));
+            header.addView(count, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            MaterialButton join = new MaterialButton(c, null, com.google.android.material.R.attr.materialButtonTonalStyle);
+            join.setText(R.string.library_join_short);
             join.setOnClickListener(x -> {
                 ModLog.add("join server: place " + g.placeId + " job " + s.jobId);
                 Actions.launch(host(), Deeplink.place(g.placeId, s.jobId, null), g.title());
             });
-            row.addView(join);
-            list.addView(row, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            header.addView(join);
+            body.addView(header);
+
+            android.widget.GridLayout grid = new android.widget.GridLayout(c);
+            grid.setColumnCount(8);
+            grid.setPadding(0, Ui.dp(c, 10), 0, 0);
+            int margin = Ui.dp(c, 2);
+            for (String url : s.avatars) {
+                com.google.android.material.imageview.ShapeableImageView avatar = new com.google.android.material.imageview.ShapeableImageView(c);
+                avatar.setShapeAppearanceModel(com.google.android.material.shape.ShapeAppearanceModel.builder()
+                        .setAllCornerSizes(new com.google.android.material.shape.RelativeCornerSize(0.5f)).build());
+                android.widget.GridLayout.LayoutParams lp = new android.widget.GridLayout.LayoutParams();
+                lp.width = avatarPx;
+                lp.height = avatarPx;
+                lp.setMargins(margin, margin, margin, margin);
+                grid.addView(avatar, lp);
+                Net.image(avatar, url, R.color.vs_news_surface, avatarPx);
+            }
+            body.addView(grid);
+            card.addView(body);
+
+            LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            cp.setMargins(0, 0, 0, Ui.dp(c, 8));
+            list.addView(card, cp);
         }
     }
 

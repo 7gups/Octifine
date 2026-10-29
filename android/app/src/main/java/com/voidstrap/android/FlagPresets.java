@@ -801,30 +801,13 @@ public final class FlagPresets {
                 Notify.say(a, Notify.GENERAL, R.string.presets_request_invalid);
                 return;
             }
-            if (!FlagRequests.configured()) {
-                Notify.say(a, Notify.GENERAL, R.string.flag_request_unavailable);
-                return;
-            }
             String valueText = value.getText().toString().trim();
             String reasonText = reason.getText().toString().trim();
             String groupText = String.valueOf(groupSpinner.getSelectedItem());
-            send.setEnabled(false);
-            Notify.say(a, Notify.GENERAL, R.string.flag_request_sending);
-            store.work.execute(() -> {
-                int message;
-                try {
-                    FlagRequests.send(a, flag, valueText, reasonText, groupText);
-                    message = R.string.flag_request_sent;
-                } catch (java.io.IOException | RuntimeException e) {
-                    message = R.string.flag_request_failed;
-                }
-                int shown = message;
-                store.main.post(() -> {
-                    send.setEnabled(true);
-                    Notify.say(a, Notify.GENERAL, shown);
-                    if (shown == R.string.flag_request_sent) dialog.dismiss();
-                });
-            });
+            Ui.copy(a, flag, FlagRequests.details(a, flag, valueText, reasonText, groupText));
+            Ui.openWeb(a, FlagRequests.issueUrl(flag));
+            Notify.say(a, Notify.GENERAL, R.string.flag_request_copied);
+            dialog.dismiss();
         });
     }
 }

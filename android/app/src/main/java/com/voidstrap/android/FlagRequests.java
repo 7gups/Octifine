@@ -16,14 +16,22 @@ import java.nio.charset.StandardCharsets;
  * details that help reproduce it.
  */
 final class FlagRequests {
-    /** URL of the deployed flag bot, for example https://flag-bot.yourname.workers.dev. Empty until deployed. */
-    static final String ENDPOINT = "";
-
     private FlagRequests() {
     }
 
-    static boolean configured() {
-        return ENDPOINT.startsWith("https://");
+    /** The flag-request issue form on GitHub, with the title filled in. The user pastes the details into the form. */
+    static String issueUrl(String flag) {
+        return "https://github.com/7gups/Octifine/issues/new?template=flag_request.yml&labels=flag-request&title="
+                + android.net.Uri.encode("Flag request: " + flag);
+    }
+
+    /** The request details for the clipboard, in the same order as the issue form. */
+    static String details(Context c, String flag, String value, String reason, String group) {
+        return "Flag name: " + flag + "\n"
+                + "Value: " + (value.isEmpty() ? "(none)" : value) + "\n"
+                + "Group: " + group + "\n\n"
+                + "Why it helps:\n" + reason + "\n\n"
+                + "Setup:\n" + summary(c);
     }
 
     /** The setup details shown to the user and sent with the request. */
@@ -35,34 +43,6 @@ final class FlagRequests {
                 + c.getString(R.string.flag_env_patch, c.getString(patchLabel(c)));
     }
 
-    /** Returns the created issue URL. Throws IOException when the bot is unreachable or rejects the request. */
-    static String send(Context c, String flag, String value, String reason, String group) throws IOException {
-        JSONObject body = new JSONObject();
-        try {
-            body.put("flag", flag)
-                    .put("value", value)
-                    .put("reason", reason)
-                    .put("group", group)
-                    .put("pekostrapVersion", BuildConfig.VERSION_NAME)
-                    .put("androidVersion", Build.VERSION.RELEASE + " (API " + Build.VERSION.SDK_INT + ")")
-                    .put("device", Build.MANUFACTURER + " " + Build.MODEL)
-                    .put("pekoraVersion", versionOf(c, Targets.PEKORA))
-                    .put("patchMethod", c.getString(patchLabel(c)));
-        } catch (JSONException e) {
-            throw new IOException("bad request");
-        }
-        Object[] res = Http.request("POST", ENDPOINT,
-                new String[]{"Content-Type", "application/json", "Accept", "application/json", "User-Agent", "Voidstrap Android"},
-                body.toString().getBytes(StandardCharsets.UTF_8), 15_000, 16_000, false);
-        if (res == null) throw new IOException("network");
-        int code = ((int[]) res[0])[0];
-        if (code != 201) throw new IOException("status " + code);
-        try {
-            return new JSONObject(new String((byte[]) res[2], StandardCharsets.UTF_8)).optString("url", "");
-        } catch (JSONException e) {
-            throw new IOException("bad response");
-        }
-    }
 
     private static String versionOf(Context c, String pkg) {
         try {

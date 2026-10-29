@@ -39,29 +39,12 @@ import org.json.JSONObject;
 public final class HomeFragment extends Page {
     private static final long FEED_REFRESH_MS = 10 * 60_000L;
     private static final long FEED_RETRY_MS = 2 * 60_000L;
-    private static final long GITHUB_REFRESH_MS = 30 * 60_000L;
     private static final long WELCOME_REFRESH_MS = 60 * 60_000L;
     private static final long ACCOUNT_REFRESH_MS = 10 * 60_000L;
     private static final long ALERT_REFRESH_MS = 30 * 60_000L;
     private static final long AUTO_REFRESH_MS = 15 * 60_000L;
-    private static final String GITHUB_API = "https://api.github.com/repos/7gups/Octifine";
-    private static final String GITHUB_URL = "https://github.com/7gups/Octifine";
-    private static final String[] GITHUB_HEADERS = {"User-Agent", "Voidstrap Android", "Accept", "application/vnd.github+json"};
 
 
-    private long githubStars = -1;
-    private TextView snakeStars;
-    private android.webkit.WebView snakeView;
-    private boolean snakeLoaded;
-    private android.webkit.WebView starView;
-    private boolean starLoaded;
-    private static final String STAR_LIGHT = "https://raw.githubusercontent.com/7gups/Octifine/output/star-chart-light.svg";
-    private static final String STAR_DARK = "https://raw.githubusercontent.com/7gups/Octifine/output/star-chart-dark.svg";
-    private static final String SNAKE_LIGHT = "https://raw.githubusercontent.com/7gups/Octifine/output/github-contribution-grid-snake.svg";
-    private static final String SNAKE_DARK = "https://raw.githubusercontent.com/7gups/Octifine/output/github-contribution-grid-snake-dark.svg";
-    private long githubCommitCount = -1;
-    private int githubYear = Calendar.getInstance(TimeZone.getTimeZone("UTC")).get(Calendar.YEAR);
-    private long githubDueAt;
     private LinearLayout catalogGrid;
     private TextView catalogStatus;
     private long catalogDueAt;
@@ -87,12 +70,6 @@ public final class HomeFragment extends Page {
             autoHandler.postDelayed(this, AUTO_REFRESH_MS);
         }
     };
-    private String githubSite;
-    private Release githubRelease;
-    private TextView githubReleaseTitle;
-    private TextView githubReleaseMeta;
-    private TextView githubReleaseNotes;
-    private MaterialButton githubReleaseOpen;
 
     private final android.net.ConnectivityManager.NetworkCallback online = new android.net.ConnectivityManager.NetworkCallback() {
         @Override
@@ -108,13 +85,6 @@ public final class HomeFragment extends Page {
     private android.net.ConnectivityManager watching;
     private long watchingSince;
 
-    private static final class Release {
-        String tag = "";
-        String name = "";
-        String date = "";
-        String notes = "";
-        String url = "";
-    }
 
     public HomeFragment() {
         super(R.layout.fragment_home);
@@ -162,11 +132,6 @@ public final class HomeFragment extends Page {
         v.findViewById(R.id.account_limiteds).setOnClickListener(x -> startActivity(new Intent(requireContext(), LimitedsActivity.class)));
         accountCard = v.findViewById(R.id.account_card);
         accountSignIn = v.findViewById(R.id.account_signin);
-        snakeStars = v.findViewById(R.id.snake_stars);
-        snakeView = v.findViewById(R.id.snake_view);
-        starView = v.findViewById(R.id.star_view);
-        secureWebView(snakeView);
-        secureWebView(starView);
         libraryHeader = v.findViewById(R.id.library_header);
         libraryGrid = v.findViewById(R.id.library_grid);
         accountSignIn.setOnClickListener(x -> PekoraSession.toggle(requireActivity()));
@@ -174,12 +139,6 @@ public final class HomeFragment extends Page {
         alertText = v.findViewById(R.id.alert_text);
         alertLink = v.findViewById(R.id.alert_link);
         alertLink.setOnClickListener(x -> openAlertLink());
-        v.findViewById(R.id.github_open).setOnClickListener(x -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_URL))));
-        v.findViewById(R.id.github_refresh).setOnClickListener(x -> loadGithub());
-        githubReleaseTitle = v.findViewById(R.id.release_title);
-        githubReleaseMeta = v.findViewById(R.id.release_meta);
-        githubReleaseNotes = v.findViewById(R.id.release_notes);
-        githubReleaseOpen = v.findViewById(R.id.release_open);
         catalogGrid = v.findViewById(R.id.catalog_grid);
         catalogStatus = v.findViewById(R.id.catalog_status);
         v.findViewById(R.id.catalog_refresh).setOnClickListener(x -> forceRefresh());
@@ -189,7 +148,6 @@ public final class HomeFragment extends Page {
     @Override
     protected void refresh() {
         long now = System.currentTimeMillis();
-        if (now >= githubDueAt) loadGithub();
         if (now >= catalogDueAt) loadCatalog();
         loadLibrary();
         bindWelcome();
@@ -365,48 +323,14 @@ public final class HomeFragment extends Page {
     /** Marks every feed as due and reloads them now. Used by the 15-minute timer and the refresh buttons. */
     private void forceRefresh() {
         if (!isAdded() || getView() == null) return;
-        githubDueAt = 0;
         catalogDueAt = 0;
         accountDueAt = 0;
         alertDueAt = 0;
         refresh();
     }
 
-    /** Image-only WebView: no scripts, no file or content access. */
-    private static void secureWebView(android.webkit.WebView view) {
-        if (view == null) return;
-        android.webkit.WebSettings ws = view.getSettings();
-        ws.setJavaScriptEnabled(false);
-        ws.setAllowFileAccess(false);
-        ws.setAllowContentAccess(false);
-        view.setBackgroundColor(android.graphics.Color.TRANSPARENT);
-    }
 
-    /** Shows the star-history chart in its own WebView, in light or dark mode. */
-    private void loadStars() {
-        if (starView == null || starLoaded) return;
-        starLoaded = true;
-        boolean dark = (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
-                == android.content.res.Configuration.UI_MODE_NIGHT_YES;
-        String src = dark ? STAR_DARK : STAR_LIGHT;
-        String html = "<html><head><style>html,body{margin:0;height:100%;background:transparent}"
-                + "img{width:100%;height:100%;object-fit:contain}</style></head><body>"
-                + "<img src='" + src + "'></body></html>";
-        starView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
-    }
 
-    /** Shows the generated snake in a WebView. The image comes from the output branch the snake workflow publishes. */
-    private void loadSnake() {
-        if (snakeView == null || snakeLoaded) return;
-        snakeLoaded = true;
-        boolean dark = (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
-                == android.content.res.Configuration.UI_MODE_NIGHT_YES;
-        String src = dark ? SNAKE_DARK : SNAKE_LIGHT;
-        String html = "<html><head><style>html,body{margin:0;height:100%;background:transparent}"
-                + "img{width:100%;height:100%;object-fit:contain}</style></head><body>"
-                + "<img src='" + src + "'></body></html>";
-        snakeView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
-    }
 
     private String count(long v) {
         return v < 0 ? getString(R.string.home_github_empty) : String.format(Locale.getDefault(), "%,d", v);
@@ -462,203 +386,19 @@ public final class HomeFragment extends Page {
         if (alertUrl != null) startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(alertUrl)));
     }
 
-    /** A year of commit activity: counts[week][day] (day 0 = Sunday), month labels, and the total. */
-    private static final class CommitActivity {
-        int[][] counts;
-        String[] months;
-        int total;
-        int year;
-    }
 
-    private void loadGithub() {
-        githubDueAt = System.currentTimeMillis() + GITHUB_REFRESH_MS;
-        store.work.execute(() -> {
-            Integer stars = null;
-            String site = null;
-            CommitActivity activity = null;
-            Release rel = null;
-            boolean relFailed = false;
-            try {
-                JSONObject repo = new JSONObject(Net.text(GITHUB_API, 200_000));
-                stars = repo.getInt("stargazers_count");
-                site = repo.optString("homepage", "");
-            } catch (Exception e) {
-                android.util.Log.w("Voidstrap", "GitHub repo failed", e);
-            }
-            try {
-                activity = githubActivity();
-            } catch (Exception e) {
-                android.util.Log.w("Voidstrap", "GitHub activity failed", e);
-            }
-            try {
-                rel = githubRelease();
-            } catch (Exception e) {
-                relFailed = true;
-                android.util.Log.w("Voidstrap", "GitHub release failed", e);
-            }
-            Integer s = stars;
-            String h = site;
-            CommitActivity a = activity;
-            Release r = rel;
-            boolean f = relFailed;
-            store.main.post(() -> bindGithub(s, a, h, r, f));
-        });
-    }
 
     /**
      * Weekly commit counts for the last 52 weeks from GitHub's commit_activity stats. GitHub answers 202
      * while it is still computing them, which returns null here so the caller retries soon.
-     */
-    private static CommitActivity githubActivity() throws Exception {
-        Object[] res = Http.request("GET", GITHUB_API + "/stats/commit_activity", GITHUB_HEADERS, null, 15_000, 400_000, true);
-        if (res == null) throw new java.io.IOException("GitHub request failed");
-        int code = ((int[]) res[0])[0];
-        // Still computing: build the graph from the commit list instead of waiting for GitHub.
-        if (code == 202) return githubActivityFromCommits();
-        if (code != 200) throw new java.io.IOException("HTTP " + code);
-        JSONArray weeks = new JSONArray(new String((byte[]) res[2], StandardCharsets.UTF_8));
-        // Calendar year, January to December: each week goes in the column for its Wednesday's day of the year.
-        int year = Calendar.getInstance(TimeZone.getTimeZone("UTC")).get(Calendar.YEAR);
-        CommitActivity out = new CommitActivity();
-        out.year = year;
-        out.counts = new int[ContributionGraphView.WEEKS][7];
-        out.months = new String[ContributionGraphView.WEEKS];
-        SimpleDateFormat fmt = new SimpleDateFormat("MMM", Locale.getDefault());
-        fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String[] monthOfColumn = new String[ContributionGraphView.WEEKS];
-        for (int i = 0; i < weeks.length(); i++) {
-            JSONObject week = weeks.getJSONObject(i);
-            long mid = week.optLong("week", 0) * 1000L + 3L * 86400000L;
-            Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-            c.setTimeInMillis(mid);
-            if (c.get(Calendar.YEAR) != year) continue;
-            int col = (c.get(Calendar.DAY_OF_YEAR) - 1) / 7;
-            if (col < 0 || col >= ContributionGraphView.WEEKS) continue;
-            JSONArray days = week.optJSONArray("days");
-            for (int d = 0; days != null && d < 7 && d < days.length(); d++) {
-                out.counts[col][d] = days.optInt(d, 0);
-                out.total += out.counts[col][d];
-            }
-            monthOfColumn[col] = fmt.format(new Date(mid));
-        }
-        String last = "";
-        for (int col = 0; col < ContributionGraphView.WEEKS; col++) {
-            if (monthOfColumn[col] != null && !monthOfColumn[col].equals(last)) {
-                out.months[col] = monthOfColumn[col];
-                last = monthOfColumn[col];
-            }
-        }
-        return out;
-    }
 
     /**
      * The same calendar-year graph built from the recent commit list, used while GitHub is still
      * computing commit_activity. Covers the latest 300 commits.
-     */
-    private static CommitActivity githubActivityFromCommits() throws Exception {
-        int year = Calendar.getInstance(TimeZone.getTimeZone("UTC")).get(Calendar.YEAR);
-        CommitActivity out = new CommitActivity();
-        out.year = year;
-        out.counts = new int[ContributionGraphView.WEEKS][7];
-        out.months = new String[ContributionGraphView.WEEKS];
-        SimpleDateFormat fmt = new SimpleDateFormat("MMM", Locale.getDefault());
-        fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String[] monthOfColumn = new String[ContributionGraphView.WEEKS];
-        for (int page = 1; page <= 3; page++) {
-            Object[] res = Http.request("GET", GITHUB_API + "/commits?per_page=100&page=" + page, GITHUB_HEADERS, null, 15_000, 400_000, true);
-            if (res == null || ((int[]) res[0])[0] != 200) break;
-            JSONArray commits = new JSONArray(new String((byte[]) res[2], StandardCharsets.UTF_8));
-            if (commits.length() == 0) break;
-            for (int i = 0; i < commits.length(); i++) {
-                JSONObject c = commits.optJSONObject(i);
-                String date = commitDate(c);
-                if (date.length() < 10) continue;
-                Calendar day = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                day.clear();
-                day.set(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)) - 1, Integer.parseInt(date.substring(8, 10)));
-                if (day.get(Calendar.YEAR) != year) continue;
-                int col = (day.get(Calendar.DAY_OF_YEAR) - 1) / 7;
-                int row = day.get(Calendar.DAY_OF_WEEK) - 1;
-                if (col < 0 || col >= ContributionGraphView.WEEKS) continue;
-                out.counts[col][row]++;
-                out.total++;
-                monthOfColumn[col] = fmt.format(day.getTime());
-            }
-        }
-        String last = "";
-        for (int col = 0; col < ContributionGraphView.WEEKS; col++) {
-            if (monthOfColumn[col] != null && !monthOfColumn[col].equals(last)) {
-                out.months[col] = monthOfColumn[col];
-                last = monthOfColumn[col];
-            }
-        }
-        return out;
-    }
 
-    private static String commitDate(JSONObject c) {
-        if (c == null) return "";
-        JSONObject commit = c.optJSONObject("commit");
-        JSONObject author = commit == null ? null : commit.optJSONObject("author");
-        return author == null ? "" : author.optString("date", "");
-    }
 
-    /** Latest published release, or null when the repo has none yet (GitHub answers 404). */
-    private static Release githubRelease() throws Exception {
-        Object[] res = Http.request("GET", GITHUB_API + "/releases/latest", GITHUB_HEADERS, null, 15_000, 400_000, true);
-        if (res == null) throw new java.io.IOException("GitHub request failed");
-        int code = ((int[]) res[0])[0];
-        if (code == 404) return null;
-        if (code != 200) throw new java.io.IOException("HTTP " + code);
-        JSONObject o = new JSONObject(new String((byte[]) res[2], StandardCharsets.UTF_8));
-        Release r = new Release();
-        r.tag = o.optString("tag_name", "");
-        r.name = o.optString("name", "");
-        String published = o.optString("published_at", "");
-        r.date = published.length() >= 10 ? published.substring(0, 10) : published;
-        r.notes = plainNotes(o.optString("body", ""));
-        String html = o.optString("html_url", "");
-        r.url = html.startsWith("https://github.com/") ? html : GITHUB_URL + "/releases";
-        return r;
-    }
 
-    /** Strips the most common markdown so release notes read as plain text in the card. */
-    private static String plainNotes(String md) {
-        String t = md.replaceAll("(?m)^\\s*#+\\s*", "").replaceAll("[*_`]", "").replaceAll("\n{3,}", "\n\n").trim();
-        return t.length() > 600 ? t.substring(0, 600).trim() + "\u2026" : t;
-    }
 
-    private void bindGithub(Integer stars, CommitActivity activity, String site, Release rel, boolean relFailed) {
-        if (stars != null) githubStars = stars;
-        if (activity != null) {
-            githubCommitCount = activity.total;
-            githubYear = activity.year;
-        } else {
-            githubDueAt = System.currentTimeMillis() + FEED_RETRY_MS;
-        }
-        if (snakeStars != null && githubStars >= 0) snakeStars.setText(getString(R.string.snake_stars, count(githubStars)));
-        loadSnake();
-        loadStars();
-        bindRelease(rel, relFailed);
-    }
 
-    private void bindRelease(Release r, boolean failed) {
-        if (githubReleaseTitle == null) return;
-        if (r == null && failed && githubRelease != null) return; // keep the last good release on a failed refresh
-        githubRelease = r;
-        if (r == null) {
-            githubReleaseTitle.setText(failed ? R.string.home_release_failed : R.string.home_release_none);
-            githubReleaseMeta.setVisibility(View.GONE);
-            githubReleaseNotes.setVisibility(View.GONE);
-            githubReleaseOpen.setVisibility(View.GONE);
-            return;
-        }
-        githubReleaseTitle.setText(r.name.isEmpty() ? r.tag : r.name);
-        githubReleaseMeta.setText(getString(R.string.home_release_meta, r.tag, r.date));
-        githubReleaseMeta.setVisibility(View.VISIBLE);
-        githubReleaseNotes.setText(r.notes);
-        githubReleaseNotes.setVisibility(r.notes.isEmpty() ? View.GONE : View.VISIBLE);
-        githubReleaseOpen.setVisibility(View.VISIBLE);
-        githubReleaseOpen.setOnClickListener(x -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(r.url))));
-    }
 
 }

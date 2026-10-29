@@ -1232,4 +1232,7 @@ Crashed only with others: %2$s</string>
     <string name="library_server_info">%1$d of %2$d players · %3$d ms ping · %4$d FPS</string>
     <string name="library_servers_refresh">Refresh</string>
     <string name="star_title">Star history</string>
+    <string name="library_join_short">Join</string>
+    <string name="library_server_players">%1$d of %2$d players</string>
+    <string name="flag_request_copied">Details copied. Paste them into the form on GitHub.</string>
 </resources>

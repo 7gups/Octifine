@@ -162,6 +162,7 @@ final class LibraryData {
         int max;
         int ping;
         double fps;
+        final List<String> avatars = new ArrayList<>();
     }
 
     /**
@@ -191,6 +192,14 @@ final class LibraryData {
                     s.playing = Integer.parseInt(first);
                 } catch (NumberFormatException e) {
                     s.playing = 0;
+                }
+                JSONArray players = o.optJSONArray("CurrentPlayers");
+                for (int p = 0; players != null && p < players.length() && s.avatars.size() < 24; p++) {
+                    JSONObject player = players.optJSONObject(p);
+                    JSONObject thumb = player == null ? null : player.optJSONObject("Thumbnail");
+                    String url = thumb == null ? "" : thumb.optString("Url", "");
+                    if (url.startsWith("/")) url = "https://octane.wtf" + url;
+                    if (!url.isEmpty()) s.avatars.add(url);
                 }
                 if (!s.jobId.isEmpty() && (s.max <= 0 || s.playing < s.max)) out.add(s);
             }
