@@ -33,6 +33,13 @@
   Leave a star if you like the project! ⭐️
 </h5>
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/7gups/Octifine/output/star-chart-dark.svg">
+    <img alt="Star history" src="https://raw.githubusercontent.com/7gups/Octifine/output/star-chart-light.svg" width="100%"/>
+  </picture>
+</p>
+
 ---
 
 > [!IMPORTANT]
@@ -51,7 +58,7 @@ Use the `direct` build for sideloading. The `play` build is for the Play Store.
 - **Library:** pinned games, games you've played, your current game under "Playing now", game passes, join by server or link, and I'm Feeling Lucky (picks from your ten most recently played games).
 - **Flags:** about 3,000 flags confirmed to exist in the 2021 build, with search, categories, descriptions, and presets for performance, quality, network, interface and debugging.
 - **Mods:** file overlays applied to Octane, including a crash test for finding flags that crash the client (debug builds only).
-- **Home:** your library, New on the Catalog, your welcome card with limiteds, the contribution snake, and the latest release.
+- **Home:** your library, New on the Catalog, your welcome card with limiteds.
 - **Launcher:** Material 3 navigation, a floating save button, and a launch button that appears after a save.
 
 ## Building

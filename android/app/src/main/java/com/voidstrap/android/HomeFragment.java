@@ -385,20 +385,4 @@ public final class HomeFragment extends Page {
     private void openAlertLink() {
         if (alertUrl != null) startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(alertUrl)));
     }
-
-
-
-    /**
-     * Weekly commit counts for the last 52 weeks from GitHub's commit_activity stats. GitHub answers 202
-     * while it is still computing them, which returns null here so the caller retries soon.
-
-    /**
-     * The same calendar-year graph built from the recent commit list, used while GitHub is still
-     * computing commit_activity. Covers the latest 300 commits.
-
-
-
-
-
-
 }
