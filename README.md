@@ -31,7 +31,14 @@
 
 <h5 align="center">
   Leave a star if you like the project! ⭐️
+
 </h5>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/7gups/Octifine/blob/output/star-chart-dark.svg">
+    <img alt="Contribution snake" src="https://github.com/7gups/Octifine/blob/output/star-chart-light.svg" width="100%"/>
+  </picture>
+</p>
 
 <p align="center">
   <picture>
